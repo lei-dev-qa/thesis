@@ -22,7 +22,9 @@ class StoreApplicationRequest extends FormRequest
     public function rules(): array
     {
         return [
-             'title_of_assessment_applied_for' => ['required','string','max:255'],
+            'title_of_assessment_applied_for' => ['required','string','max:255'],
+            'application_type' => ['nullable','in:TWSP,Assessment Only'],
+            'photo' => ['required', 'file', 'image', 'mimes:jpeg,jpg,png', 'max:2048'],
             'surname' => ['required','string','max:255'],
             'firstname' => ['required','string','max:255'],
             'middlename' => ['nullable','string','max:255'],
@@ -54,6 +56,32 @@ class StoreApplicationRequest extends FormRequest
             'birthdate' => ['nullable','date'],
             'birthplace' => ['nullable','string','max:255'],
             'age' => ['nullable','integer','min:0','max:120'],
+            // NEW FIELDS FOR PAGES 3-4
+            'nationality' => ['nullable','string','max:255'],
+            'employment_before_training_status' => ['nullable','string','in:wage-employed,underemployed,self-employed,unemployed'],
+            'employment_before_training_type' => ['nullable','string','in:regular,casual,job order,probationary,permanent,contractual,temporary'],
+            'birthplace_region_code' => 'required|string',
+            'birthplace_region' => 'required|string',
+            'birthplace_province_code' => 'required|string',
+            'birthplace_province' => 'required|string',
+            'birthplace_city_code' => 'required|string',
+            'birthplace_city' => 'required|string',
+            'educational_attainment_before_training' => ['nullable','string','max:255'],
+            'parent_guardian_name' => ['nullable','string','max:255'],
+            'parent_guardian_region_code' => ['nullable','string'],
+            'parent_guardian_region_name' => ['nullable','string'],
+            'parent_guardian_province_code' => ['nullable','string'],
+            'parent_guardian_province_name' => ['nullable','string'],
+            'parent_guardian_city_code' => ['nullable','string'],
+            'parent_guardian_city_name' => ['nullable','string'],
+            'parent_guardian_barangay_code' => ['nullable','string'],
+            'parent_guardian_barangay_name' => ['nullable','string'],
+            'parent_guardian_street' => ['nullable','string','max:255'],
+            'parent_guardian_district' => ['nullable','string','max:255'],
+            'learner_classification' => ['nullable','array'],
+            'learner_classification.*' => ['string','max:255'],
+            'scholarship_type' => ['nullable','string','max:255'],
+            'privacy_consent' => ['required','accepted'],
 
             // Arrays
             'work_experiences' => ['array'],
@@ -88,6 +116,38 @@ class StoreApplicationRequest extends FormRequest
             'competency_assessments.*.certificate_number' => ['nullable','string','max:255'],
             'competency_assessments.*.date_of_issuance' => ['nullable','date'],
             'competency_assessments.*.expiration_date' => ['nullable','date'],
+        ];
+
+        if ($this->input('application_type') === 'TWSP') {
+            $rules = array_merge($rules, [
+                'psa_birth_certificate' => ['required','file','mimes:pdf,jpg,jpeg,png','max:5120'],
+                'psa_marriage_contract' => ['nullable','file','mimes:pdf,jpg,jpeg,png','max:5120'],
+                'high_school_document' => ['required','file','mimes:pdf,jpg,jpeg,png','max:5120'],
+                'id_pictures_1x1' => ['required','array','min:1','max:4'],
+                'id_pictures_1x1.*' => ['required','file','mimes:jpg,jpeg,png','max:2048'],
+                'id_pictures_passport' => ['required','array','min:1','max:4'],
+                'id_pictures_passport.*' => ['required','file','mimes:jpg,jpeg,png','max:2048'],
+                'government_school_id' => ['required','array','min:1','max:2'],
+                'government_school_id.*' => ['required','file','mimes:pdf,jpg,jpeg,png','max:5120'],
+                'certificate_of_indigency' => ['required','file','mimes:pdf,jpg,jpeg,png','max:5120'],
+            ]);
+        }
+                return $rules;
+    }
+    public function messages(): array
+    {
+        return [
+            'application_type.in' => 'Invalid application type selected.',
+            'psa_birth_certificate.required' => 'PSA Birth Certificate is required for TWSP.',
+            'psa_birth_certificate.max' => 'PSA Birth Certificate must not exceed 5MB.',
+            'high_school_document.required' => 'High School document is required for TWSP.',
+            'id_pictures_1x1.required' => 'Please upload 1x1 ID pictures.',
+            'id_pictures_1x1.size' => 'Please upload exactly of 1x1 ID pictures.',
+            'id_pictures_passport.required' => 'Please upload of passport size pictures.',
+            'id_pictures_passport.size' => 'Please upload exactly  of passport size pictures.',
+            'government_school_id.required' => 'Please upload  of Government/School ID.',
+            'government_school_id.size' => 'Please upload exactly of Government/School ID.',
+            'certificate_of_indigency.required' => 'Certificate of Indigency is required for TWSP.',
         ];
     }
 }

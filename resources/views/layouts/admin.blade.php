@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'TESDA Admin')</title>
 
     <!-- Bootstrap 5 CSS -->
@@ -69,6 +70,9 @@
             }
         }
     </style>
+    
+    {{-- ADD THIS LINE: Stack for additional styles --}}
+    @stack('styles')
 </head>
 
 <body>
@@ -115,7 +119,7 @@
                     </div>
 
                     <!-- Content Area -->
-                    <div class="container-fluid py-4">
+                    <div id="main-content" class="container-fluid py-4">
                         {{-- Flash Messages --}}
                         @if (session('success'))
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -138,7 +142,7 @@
                             </div>
                         @endif
 
-                        @yield('content')
+                         @yield('content')
                     </div>
                 </div>
             </div>
@@ -147,7 +151,7 @@
 
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <!-- Bootstrap Loading Check -->
     <script>
         // Ensure Bootstrap is loaded
@@ -181,6 +185,10 @@
             });
         });
     </script>
+    
+    {{-- ADD THIS LINE: Stack for additional scripts --}}
+    @stack('scripts')
+    
     @yield('scripts')
 </body>
 

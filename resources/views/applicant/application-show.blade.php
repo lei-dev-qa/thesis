@@ -219,6 +219,5 @@
                 </div>
             </div>
 
-    {{-- Add the detailed sections here later (work experiences, trainings, etc.) --}}
 </div>
 @endsection

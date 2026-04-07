@@ -62,10 +62,6 @@ class User extends Authenticatable
      *
      * @return bool True if user is assessor, false otherwise
      */
-    public function isAssessor(): bool
-    {
-        return $this->role === 'assessor';
-    }
 
     /**
      * Check if the user is an applicant.

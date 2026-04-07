@@ -16,19 +16,19 @@
                             @csrf
                             <div class="mb-3">
                                 <label for="name" class="form-label">Full Name</label>
-                                <input type="text" class="form-control" name="name" required>
+                                <input type="text" class="form-control" name="name" required value="{{ old('name', $user->name ?? '') }}">
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" name="email" required>
+                                <input type="email" class="form-control" name="email" required value="{{ old('email', $user->email ?? '') }}">
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" name="password" required>
+                                <input type="password" class="form-control" name="password" required value="{{ old('password', $user->password ?? '') }}">
                             </div>
                             <div class="mb-3">
                                 <label for="password_confirmation" class="form-label">Confirm Password</label>
-                                <input type="password" class="form-control" name="password_confirmation" required>
+                                <input type="password" class="form-control" name="password_confirmation" required value="{{ old('password_confirmation', $user->password_confirmation ?? '') }}">
                             </div>
                             <button type="submit" class="btn btn-primary">Register</button>
                         </form>
