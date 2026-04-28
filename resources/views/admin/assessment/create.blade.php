@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Create Assessment Batch - SHC-TVET')
+@section('title', 'Create Assessment Batch - SHC-TVE')
 @section('page-title', 'Create Assessment Batch')
 
 @section('content')
