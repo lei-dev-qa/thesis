@@ -16,3 +16,4 @@ class UnviewedApplicationsComposer
         $view->with('unviewedApplicationsCount', $unviewedCount);
     }
 }
+
