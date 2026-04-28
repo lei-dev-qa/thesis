@@ -20,7 +20,6 @@ class TrainingBatch extends Model
         'remarks',
     ];
 
-    // Status constants
     const STATUS_ENROLLING = 'enrolling';
     const STATUS_FULL = 'full';
     const STATUS_SCHEDULED = 'scheduled';
@@ -28,7 +27,6 @@ class TrainingBatch extends Model
     const STATUS_COMPLETED = 'completed';
     const STATUS_CANCELLED = 'cancelled';
 
-    // Relationships
     public function applications(): HasMany
     {
         return $this->hasMany(Application::class, 'training_batch_id');
@@ -44,7 +42,6 @@ class TrainingBatch extends Model
         return $this->hasMany(TrainingResult::class, 'training_batch_id');
     }
 
-    // Helper methods
     public function getEnrolledCountAttribute()
     {
         return $this->applications()->count();
@@ -70,7 +67,6 @@ class TrainingBatch extends Model
         return $this->trainingSchedule()->exists();
     }
 
-    // Scopes
     public function scopeEnrolling($query)
     {
         return $query->where('status', self::STATUS_ENROLLING);

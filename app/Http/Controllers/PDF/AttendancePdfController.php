@@ -16,21 +16,17 @@ class AttendancePdfController extends Controller
         if (!file_exists($templatePath)) {
             abort(404, 'Attendance template not found: ' . $templatePath);
         }
-
-        // Create FPDI - ONLY ONE PAGE
         $pdf = new Fpdi('P', 'mm', 'A4');
         $pdf->setSourceFile($templatePath);
 
-        // Add ONLY page 1
         $pdf->AddPage();
         $tplIdx = $pdf->importPage(1);
         $pdf->useTemplate($tplIdx, 0, 0, 210);
 
-        // Mapping array - CORRECTED COORDINATES
         $mapping = [
             'nc_program' => [
-                'x' => 85,  // Changed from 363
-                'y' => 95,   // Changed from 312
+                'x' => 85,
+                'y' => 95, 
                 'font' => 'Arial',
                 'size' => 10.5,
                 'style' => '',
@@ -42,34 +38,27 @@ class AttendancePdfController extends Controller
                     'font' => 'Arial',
                     'size' => 10,
                     'style' => '',
-
             ],
             'assessment_date' => [
-                'x' => 70,  // Changed from 363
-                'y' => 117.5,   // Changed from 345
+                'x' => 70,
+                'y' => 117.5,
                 'font' => 'Arial',
                 'size' => 11,
                 'style' => '',
             ],
-            'table_start_x' => 21,      // Changed from 363
-            'table_start_y' => 120,      // Changed from 366
+            'table_start_x' => 21,
+            'table_start_y' => 120, 
             'table_row_height' => 5,
             'table_col_widths' => [50, 0, 40, 35, 35],
         ];
-
-        // Fill in batch info
         $this->writeTextIfExists($pdf, $mapping['nc_program'], $assessment_batch->nc_program, true);
         $this->writeTextIfExists($pdf, $mapping['assessment_date'], $assessment_batch->assessment_date->format('M d, Y'));
         $this->writeTextIfExists($pdf, $mapping['training_center'], $mapping['training_center']['value']);
 
-        // Get ONLY first 10 applicants
         $applicants = $assessment_batch->applications()->take(10)->get();
-
-       
         $rowY = [131,136.5,142,147.5,153,158.5,164,169.5,175,180.5];
 
         foreach ($applicants as $i => $applicant) {
-
             $y = $rowY[$i];
 
             $pdf->SetFont('Arial','',9);
@@ -79,13 +68,11 @@ class AttendancePdfController extends Controller
             $pdf->SetXY(76.5,$y);
             $pdf->Write(4,$applicant->reference_number ?? '');
         }
-
-                // Output - ONLY ONE PAGE
                 $content = $pdf->Output('', 'S');
                 return response($content, 200)
                     ->header('Content-Type', 'application/pdf')
                     ->header('Content-Disposition', 'inline; filename="attendance_'.$assessment_batch->id.'.pdf"');
-            }
+    }
 
     private function formatFullName($applicant)
     {

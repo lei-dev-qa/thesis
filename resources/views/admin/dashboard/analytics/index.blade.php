@@ -1,4 +1,3 @@
-{{-- Assessment Volume Analytics --}}
 <div class="card analytics-card">
     <div class="card-header bg-secondary text-white">
         <div class="d-flex justify-content-between align-items-center">
@@ -17,7 +16,6 @@
         </div>
     </div>
     <div class="card-body">
-        {{-- Key Metrics Row --}}
         <div class="row mb-4">
             <div class="col-md-3">
                 <div class="card border-primary">
@@ -63,9 +61,7 @@
             </div>
         </div>
 
-        {{-- Charts Row 1: Line Chart + Donut Chart --}}
         <div class="row mb-4">
-            {{-- Monthly Trend Line Chart --}}
             <div class="col-md-8">
                 <div class="card border-0 shadow-sm">
                     <div class="card-header bg-light">
@@ -79,7 +75,6 @@
                 </div>
             </div>
 
-            {{-- Program Distribution Donut --}}
             <div class="col-md-4">
                 <div class="card border-0 shadow-sm">
                     <div class="card-header bg-light">
@@ -94,7 +89,6 @@
             </div>
         </div>
 
-        {{-- Charts Row 2: Stacked Bar Chart --}}
         <div class="row mb-4">
             <div class="col-12">
                 <div class="card border-0 shadow-sm">
@@ -110,7 +104,6 @@
             </div>
         </div>
 
-        {{-- Charts Row 3: Horizontal Bar Chart --}}
         <div class="row">
             <div class="col-12">
                 <div class="card border-0 shadow-sm">
@@ -130,19 +123,17 @@
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Store chart instances globally so we can update them
             let monthlyTrendChart = null;
             let programDistributionChart = null;
             let stackedBarChart = null;
             let yearlyProgramChart = null;
 
-            // Color palette
             const colors = [
-                'rgba(13, 110, 253, 0.8)', // Blue
-                'rgba(25, 135, 84, 0.8)', // Green
-                'rgba(255, 193, 7, 0.8)', // Yellow
-                'rgba(220, 53, 69, 0.8)', // Red
-                'rgba(111, 66, 193, 0.8)' // Purple
+                'rgba(13, 110, 253, 0.8)', 
+                'rgba(25, 135, 84, 0.8)', 
+                'rgba(255, 193, 7, 0.8)', 
+                'rgba(220, 53, 69, 0.8)', 
+                'rgba(111, 66, 193, 0.8)'
             ];
 
             const borderColors = [
@@ -153,7 +144,6 @@
                 'rgba(111, 66, 193, 1)'
             ];
 
-            // Function to initialize all charts
             function initializeCharts(data) {
                 const monthLabels = data.monthly_totals.map(m => m.month_short);
                 const monthlyCounts = data.monthly_totals.map(m => m.count);
@@ -167,7 +157,7 @@
                 const monthlyTrendCtx = document.getElementById('monthlyTrendChart');
                 if (monthlyTrendCtx) {
                     if (monthlyTrendChart) {
-                        monthlyTrendChart.destroy(); // Destroy existing chart
+                        monthlyTrendChart.destroy();
                     }
                     monthlyTrendChart = new Chart(monthlyTrendCtx, {
                         type: 'line',
@@ -351,14 +341,10 @@
                     });
                 }
             }
-
-            // Function to update metric cards
             function updateMetricCards(data) {
-                // Total assessments
                 document.querySelector('#totalAssessments').textContent = data.total_this_year;
                 document.querySelector('#totalAssessmentsYear').textContent = data.selected_year;
 
-                // YoY Growth
                 const yoyGrowth = data.year_over_year_growth;
                 const yoyElement = document.querySelector('#yoyGrowth');
                 const yoyIcon = document.querySelector('#yoyIcon');
@@ -373,30 +359,22 @@
                     yoyIcon.className = 'bi bi-arrow-down-circle text-danger fs-2';
                     yoyCard.className = 'card border-danger';
                 }
-
-                // Peak month
                 document.querySelector('#peakMonth').textContent = data.peak_month?.month_short || 'N/A';
                 document.querySelector('#peakMonthCount').textContent = data.peak_month?.count || 0;
-
-                // Most active program
                 document.querySelector('#mostActiveProgram').textContent = data.most_active_program?.name || 'N/A';
             }
 
-            // Function to load data via AJAX
             function loadVolumeData(year) {
                 const yearSelector = document.getElementById('yearSelector');
                 const analyticsCard = document.querySelector('#volume-analytics-section .card-body');
 
-                // Show loading state
                 yearSelector.disabled = true;
 
-                // Add loading overlay (optional)
                 if (analyticsCard) {
                     analyticsCard.style.opacity = '0.5';
                     analyticsCard.style.pointerEvents = 'none';
                 }
 
-                // Fetch data
                 fetch(`{{ route('admin.analytics.volume-data') }}?year=${year}`)
                     .then(response => {
                         if (!response.ok) {
@@ -405,33 +383,22 @@
                         return response.json();
                     })
                     .then(data => {
-                        console.log('Data loaded successfully:', data);
-
-                        // Update metric cards
                         updateMetricCards(data);
-
-                        // Reinitialize charts with new data
                         initializeCharts(data);
                     })
                     .catch(error => {
-                        console.error('Error loading volume data:', error);
                         alert('Failed to load data. Please try again.');
                     })
                     .finally(() => {
-                        // ✅ ALWAYS re-enable dropdown and remove loading state
-                        // This runs whether success or error
                         yearSelector.disabled = false;
 
                         if (analyticsCard) {
                             analyticsCard.style.opacity = '1';
                             analyticsCard.style.pointerEvents = 'auto';
                         }
-
-                        console.log('Dropdown re-enabled');
                     });
             }
 
-            // Year selector change handler
             const yearSelector = document.getElementById('yearSelector');
             if (yearSelector) {
                 yearSelector.addEventListener('change', function() {
@@ -440,7 +407,6 @@
                 });
             }
 
-            // Initialize charts with initial data
             const initialData = {
                 monthly_totals: {!! json_encode($volume['monthly_totals']) !!},
                 program_monthly_data: {!! json_encode($volume['program_monthly_data']) !!},

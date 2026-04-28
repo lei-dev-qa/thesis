@@ -11,7 +11,6 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                {{-- Program Summary --}}
                 <div class="row mb-4">
                     <div class="col-md-3">
                         <div class="text-center">
@@ -51,9 +50,7 @@
                     </div>
                 </div>
 
-                {{-- Charts Section --}}
                 <div class="row mb-4">
-                    {{-- LEFT: Performance Insights --}}
                     <div class="col-md-6">
                         <h6 class="text-muted mb-3">Performance Insights</h6>
 
@@ -64,7 +61,6 @@
                             $worstCoc = collect($program['coc_breakdown'])->sortBy('competent_rate')->first();
                         @endphp
 
-                        {{-- Best Performing --}}
                         <div class="card border-success mb-3">
                             <div class="card-body text-center">
                                 <i class="bi bi-trophy text-success fs-3"></i>
@@ -76,7 +72,6 @@
                             </div>
                         </div>
 
-                        {{-- Needs Improvement --}}
                         <div class="card border-warning">
                             <div class="card-body text-center">
                                 <i class="bi bi-exclamation-triangle text-warning fs-3"></i>
@@ -89,7 +84,6 @@
                         </div>
                     </div>
 
-                    {{-- RIGHT: Donut Chart --}}
                     <div class="col-md-6">
                         <div class="card border-0 shadow-sm h-100">
                             <div class="card-header bg-light">
@@ -104,7 +98,6 @@
                     </div>
                 </div>
 
-                {{-- Bar Chart - Competent vs NYC per COC --}}
                 <div class="row mb-4">
                     <div class="col-12">
                         <div class="card border-0 shadow-sm">
@@ -125,16 +118,13 @@
     </div>
 </div>
 
-{{-- Chart.js Scripts --}}
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Prepare data for {{ $program['name'] }}
             const cocLabels{{ $loopIndex }} = {!! json_encode(array_column($program['coc_breakdown']->toArray(), 'coc_code')) !!};
             const competentData{{ $loopIndex }} = {!! json_encode(array_column($program['coc_breakdown']->toArray(), 'competent_count')) !!};
             const nycData{{ $loopIndex }} = {!! json_encode(array_column($program['coc_breakdown']->toArray(), 'nyc_count')) !!};
 
-            // 1. Donut Chart - Overall Success Rate
             const donutCtx{{ $loopIndex }} = document.getElementById('donutChart{{ $loopIndex }}');
             if (donutCtx{{ $loopIndex }}) {
                 new Chart(donutCtx{{ $loopIndex }}, {
@@ -166,7 +156,6 @@
                 });
             }
 
-            // 2. Bar Chart - Competent vs NYC Comparison
             const barCtx{{ $loopIndex }} = document.getElementById('barChart{{ $loopIndex }}');
             if (barCtx{{ $loopIndex }}) {
                 new Chart(barCtx{{ $loopIndex }}, {

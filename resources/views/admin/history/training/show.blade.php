@@ -2,7 +2,6 @@
 
 @section('content')
     <div class="container-fluid py-4">
-        <!-- Back Button -->
         <div class="row mb-3">
             <div class="col-12">
                 <a href="{{ route('admin.training-batches.history') }}" class="btn btn-outline-secondary">
@@ -10,8 +9,6 @@
                 </a>
             </div>
         </div>
-
-        <!-- Batch Header -->
         <div class="card border-0 shadow-sm mb-4">
             <div class="card-header bg-white py-3">
                 <div class="row align-items-center">
@@ -47,8 +44,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Statistics Cards -->
         <div class="row mb-4">
             <div class="col-md-3">
                 <div class="card border-0 shadow-sm">
@@ -83,8 +78,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Trainees List -->
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white py-3">
                 <h5 class="fw-bold mb-0">Training Results</h5>

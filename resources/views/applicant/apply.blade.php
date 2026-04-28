@@ -1,4 +1,3 @@
-<!-- resources/views/applicant/apply.blade.php -->
 @extends('layouts.app')
 
 @section('content')
@@ -6,7 +5,6 @@
         <div class="card shadow-lg border-0">
             <div class="card-header bg-primary text-white">
                 <h3 class="mb-0">Application Form</h3>
-                <!-- Progress Bar -->
                 <div class="progress mt-3" style="height: 30px;" id="progress-bar-container">
                     <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" id="progress-bar"
                         role="progressbar" style="width: 20%;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
@@ -14,12 +12,10 @@
                     </div>
                 </div>
             </div>
-
             <div class="card-body">
                 @if (session('success'))
                     <div class="alert alert-success">{{ session('success') }}</div>
                 @endif
-
                 @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul class="mb-0">
@@ -30,7 +26,6 @@
                     </div>
                 @endif
 
-                <!-- Application Type Banner -->
                 <div id="application-info-banner" class="alert alert-info mb-3" style="display: none;">
                     <div class="d-flex justify-content-between align-items-center">
                         <span id="banner-message"></span>
@@ -148,10 +143,9 @@
                             </button>
                         </div>
                     </div>
-
                     <!-- STEP 1: Program Selection & Photo -->
                     <div id="step-1" class="form-step" style="display: none;">
-                        <h4 class="text-primary mb-4">Step 1: Program Selection & Photo</h4>
+                        <h4 class="text-primary mb-4">Program Selection & Photo</h4>
 
                         <div class="row align-items-start">
                             <div class="col-md-8">
@@ -207,7 +201,7 @@
 
                     <!-- STEP 2: Personal Information (Identity) -->
                     <div id="step-2" class="form-step" style="display: none;">
-                        <h4 class="text-primary mb-4">Step 2: Personal Information</h4>
+                        <h4 class="text-primary mb-4">Personal Information</h4>
 
                         <div class="card mb-4">
                             <div class="card-header bg-light">
@@ -368,10 +362,9 @@
                             </button>
                         </div>
                     </div>
-
                     <!-- STEP 3: Address & Location -->
                     <div id="step-3" class="form-step" style="display: none;">
-                        <h4 class="text-primary mb-4">Step 3: Address & Location</h4>
+                        <h4 class="text-primary mb-4">Address & Location</h4>
 
                         <div class="card mb-4">
                             <div class="card-header bg-light">
@@ -557,7 +550,7 @@
 
                     <!-- STEP 4: Education & Professional Background -->
                     <div id="step-4" class="form-step" style="display: none;">
-                        <h4 class="text-primary mb-4">Step 4: Education & Professional Background</h4>
+                        <h4 class="text-primary mb-4">Education & Professional Background</h4>
 
                         <div class="card mb-4">
                             <div class="card-header bg-light">
@@ -596,7 +589,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <!-- Work Experience Section -->
                         <div class="card mb-4">
                             <div class="card-header bg-light d-flex justify-content-between align-items-center">
@@ -610,7 +602,6 @@
                                 <small class="text-muted">Add at least one work experience if applicable</small>
                             </div>
                         </div>
-
                         <!-- Trainings Section -->
                         <div class="card mb-4">
                             <div class="card-header bg-light d-flex justify-content-between align-items-center">
@@ -623,7 +614,6 @@
                                 <div id="trainings"></div>
                             </div>
                         </div>
-
                         <!-- Licensure Exams Section -->
                         <div class="card mb-4">
                             <div class="card-header bg-light d-flex justify-content-between align-items-center">
@@ -636,7 +626,6 @@
                                 <div id="licensure-exams"></div>
                             </div>
                         </div>
-
                         <!-- Competency Assessments Section -->
                         <div class="card mb-4">
                             <div class="card-header bg-light d-flex justify-content-between align-items-center">
@@ -649,7 +638,6 @@
                                 <div id="competency-assessments"></div>
                             </div>
                         </div>
-
                         <div class="d-flex justify-content-between">
                             <button type="button" class="btn btn-outline-secondary px-4" id="back-to-step-3">
                                 <i class="fas fa-arrow-left"></i> Back
@@ -659,10 +647,9 @@
                             </button>
                         </div>
                     </div>
-
                     <!-- STEP 5: Additional Details -->
                     <div id="step-5" class="form-step" style="display: none;">
-                        <h4 class="text-primary mb-4">Step 5: Additional Details</h4>
+                        <h4 class="text-primary mb-4">Additional Details</h4>
 
                         <div class="card mb-4">
                             <div class="card-header bg-light">
@@ -697,7 +684,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="card mb-4">
                             <div class="card-header bg-light">
                                 <h5 class="mb-0">Educational Attainment Before Training</h5>
@@ -727,7 +713,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="card mb-4">
                             <div class="card-header bg-light">
                                 <h5 class="mb-0">Learner/Trainee/Student Classification</h5>
@@ -880,7 +865,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="card mb-4" id="scholarship-card">
                             <div class="card-header bg-light">
                                 <h5 class="mb-0">Scholarship Information</h5>
@@ -957,27 +941,21 @@
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // ========== INITIALIZATION ==========
             const applicationType = sessionStorage.getItem('application_type');
             const programName = sessionStorage.getItem('program_name');
             const form = document.getElementById('application-form');
             const banner = document.getElementById('application-info-banner');
             const bannerMessage = document.getElementById('banner-message');
-
-            // Define steps array
             const steps = ['step-0', 'step-1', 'step-2', 'step-3', 'step-4', 'step-5'];
             let currentStep = 0;
 
-            // Add hidden field for application type
             const hiddenInput = document.createElement('input');
             hiddenInput.type = 'hidden';
             hiddenInput.name = 'application_type';
             hiddenInput.value = applicationType || 'Assessment Only';
             form.appendChild(hiddenInput);
 
-            // ========== APPLICATION TYPE HANDLING ==========
             if (applicationType === 'TWSP' && programName) {
-                // Pre-fill and lock program selection
                 const programSelect = document.getElementById('title_of_assessment_applied_for');
                 if (programSelect) {
                     programSelect.value = programName;
@@ -988,7 +966,6 @@
 
                 // Show Step 0
                 showStep(0);
-
                 // Show banner
                 banner.style.display = 'block';
                 bannerMessage.innerHTML = `<strong>TWSP Application:</strong> ${programName}`;
@@ -1005,7 +982,6 @@
                     scholarshipCard.style.display = 'none';
                 }
             }
-
             // Close banner
             document.getElementById('close-banner')?.addEventListener('click', function() {
                 banner.style.display = 'none';
@@ -1095,73 +1071,60 @@
                     }
                 }
             });
-
             // Back to Step 0 from Step 1
             document.getElementById('back-to-step-0')?.addEventListener('click', function() {
                 showStep(0);
             });
-
             // Step 1 to Step 2
             document.getElementById('next-to-step-2')?.addEventListener('click', function() {
                 if (validateStep1()) {
                     showStep(2);
                 }
             });
-
             // Back to Step 1
             document.getElementById('back-to-step-1')?.addEventListener('click', function() {
                 showStep(1);
             });
-
             // Step 2 to Step 3
             document.getElementById('next-to-step-3')?.addEventListener('click', function() {
                 if (validateStep2()) {
                     showStep(3);
                 }
             });
-
             // Back to Step 2
             document.getElementById('back-to-step-2')?.addEventListener('click', function() {
                 showStep(2);
             });
-
             // Step 3 to Step 4
             document.getElementById('next-to-step-4')?.addEventListener('click', function() {
                 if (validateStep3()) {
                     showStep(4);
                 }
             });
-
             // Back to Step 3
             document.getElementById('back-to-step-3')?.addEventListener('click', function() {
                 showStep(3);
             });
-
             // Step 4 to Step 5
             document.getElementById('next-to-step-5')?.addEventListener('click', function() {
                 if (validateStep4()) {
                     showStep(5);
                 }
             });
-
             // Back to Step 4
             document.getElementById('back-to-step-4')?.addEventListener('click', function() {
                 showStep(4);
             });
-
             // ========== CANCEL BUTTON HANDLERS (Only for first steps) ==========
             const cancelModal = new bootstrap.Modal(document.getElementById('cancelModal'));
-
             // Cancel from Step 0 (TWSP)
             document.getElementById('cancel-step-0')?.addEventListener('click', function() {
                 cancelModal.show();
             });
-
             // Cancel from Step 1 (Assessment Only or TWSP Step 1)
             document.getElementById('cancel-step-1')?.addEventListener('click', function() {
                 cancelModal.show();
             });
-
             document.getElementById('confirm-cancel').addEventListener('click', function() {
                 window.location.href = '{{ route('applicant.dashboard') }}'; // Adjust this route as needed
             });
@@ -1224,14 +1187,11 @@
                         }
                     }
                 });
-
                 if (!isValid) {
                     alert('Please check the following:\n\n' + errors.join('\n'));
                 }
-
                 return isValid;
             }
-
             function validateStep1() {
                 const programSelect = document.getElementById('title_of_assessment_applied_for');
                 const photoInput = document.getElementById('photo');
@@ -1253,10 +1213,8 @@
                 } else {
                     photoInput.classList.remove('is-invalid');
                 }
-
                 return true;
             }
-
             function validateStep2() {
                 const requiredFields = document.querySelectorAll('#step-2 [required]');
                 const ageInput = document.querySelector('input[name="age"]');
@@ -1274,17 +1232,14 @@
                 } else {
                     ageInput.classList.remove('is-invalid');
                 }
-
                 return validateRequiredFields(requiredFields,
                     'Please fill in all required fields in Personal Information');
             }
-
             function validateStep3() {
                 const requiredFields = document.querySelectorAll('#step-3 [required]');
                 return validateRequiredFields(requiredFields,
                     'Please fill in all required fields in Address section');
             }
-
             function validateStep4() {
                 const requiredFields = document.querySelectorAll('#step-4 [required]');
                 const sections = ['#work-experiences', '#trainings', '#licensure-exams', '#competency-assessments'];
@@ -1305,11 +1260,9 @@
                         }
                     }
                 }
-
                 return validateRequiredFields(requiredFields,
                     'Please fill in all required fields in Education section');
             }
-
             function validateRequiredFields(fields, message) {
                 let isValid = true;
                 let firstInvalid = null;
@@ -1372,7 +1325,6 @@
                     }
                 });
             }
-
             // ========== EMPLOYMENT TYPE TOGGLE ==========
             const empBeforeStatus = document.getElementById('emp_before_status');
             const empTypeWrapper = document.getElementById('emp_type_wrapper');
@@ -1383,7 +1335,6 @@
                         'underemployed') ? 'block' : 'none';
                 });
             }
-
             // ========== "OTHERS" CHECKBOX HANDLER ==========
             const othersCheckbox = document.getElementById('lc24');
             const othersInputWrapper = document.getElementById('others-input-wrapper');
@@ -1539,7 +1490,6 @@
                     console.error('Error loading barangays:', error);
                 }
             }
-
             // Bind events
             if (regionSelect) {
                 regionSelect.addEventListener('change', e => {
@@ -1549,7 +1499,6 @@
                     if (opt?.value) loadProvinces(opt.value);
                 });
             }
-
             if (provinceSelect) {
                 provinceSelect.addEventListener('change', e => {
                     const opt = provinceSelect.selectedOptions[0];
@@ -1558,7 +1507,6 @@
                     if (opt?.value) loadCities(opt.value);
                 });
             }
-
             if (citySelect) {
                 citySelect.addEventListener('change', e => {
                     const opt = citySelect.selectedOptions[0];
@@ -1567,7 +1515,6 @@
                     if (opt?.value) loadBarangays(opt.value);
                 });
             }
-
             if (barangaySelect) {
                 barangaySelect.addEventListener('change', e => {
                     const opt = barangaySelect.selectedOptions[0];
@@ -1575,7 +1522,6 @@
                     barangayName.value = opt?.dataset.name || '';
                 });
             }
-
             // Initialize regions
             loadRegions();
 

@@ -18,31 +18,24 @@
                     </div>
 
                     <div class="row">
-                        {{-- Date Employed --}}
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Date Employed <span class="text-danger">*</span></label>
                             <input type="date" name="date_employed" class="form-control"
                                 value="{{ $app->employmentRecord ? $app->employmentRecord->date_employed->format('Y-m-d') : '' }}"
                                 required>
                         </div>
-
-                        {{-- Occupation --}}
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Occupation <span class="text-danger">*</span></label>
                             <input type="text" name="occupation" class="form-control"
                                 value="{{ $app->employmentRecord->occupation ?? '' }}"
                                 placeholder="e.g., Bookkeeper, Event Coordinator, Tourism Assistant" required>
                         </div>
-
-                        {{-- Name of Employer --}}
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Name of Employer <span class="text-danger">*</span></label>
                             <input type="text" name="employer_name" class="form-control"
                                 value="{{ $app->employmentRecord->employer_name ?? '' }}"
                                 placeholder="Company/Organization Name" required>
                         </div>
-
-                        {{-- Classification of Employer --}}
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Classification of Employer <span
                                     class="text-danger">*</span></label>
@@ -66,15 +59,11 @@
                                 </option>
                             </select>
                         </div>
-
-                        {{-- Address of Employer --}}
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Address of Employer <span class="text-danger">*</span></label>
                             <textarea name="employer_address" class="form-control" rows="3"
                                 placeholder="Complete address of employer" required>{{ $app->employmentRecord->employer_address ?? '' }}</textarea>
                         </div>
-
-                        {{-- Monthly Income --}}
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Monthly Income/Salary <span class="text-danger">*</span></label>
                             <div class="input-group">

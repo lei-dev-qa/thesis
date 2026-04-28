@@ -12,16 +12,10 @@ use Carbon\Carbon;
 use App\Notifications\Assessment\AssessmentResultNotification;
 use App\Notifications\Assessment\AssessmentScheduleNotification;
 
-
-
 use Illuminate\Http\Request;
 
 class AssessmentBatchController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    // List batches with filtering
     public function index(Request $request)
     {
         $status = $request->query('status', 'scheduled');
@@ -67,12 +61,10 @@ class AssessmentBatchController extends Controller
         // Programs for dropdown
         $availablePrograms = Application::where('status', Application::STATUS_APPROVED)
             ->where(function ($q) {
-            // BOOKKEEPING: must complete training
             $q->where(function ($bookkeeping) {
                 $bookkeeping->where('title_of_assessment_applied_for', 'BOOKKEEPING NC III')
                         ->where('training_status', Application::TRAINING_STATUS_COMPLETED);
             })
-            // Other NCs: just need approval
             ->orWhere('title_of_assessment_applied_for', '!=', 'BOOKKEEPING NC III');
         })
         ->distinct()
@@ -88,17 +80,14 @@ class AssessmentBatchController extends Controller
                 return [
                     'program' => $program,
                     'count' => $apps->count(),
-                    'applicants' => $apps,  // available if you want to show popovers/details
+                    'applicants' => $apps,
                 ];
             })->values(),
         ];
 
         return view('admin.assessment.batches', compact('batches', 'status', 'ncProgram', 'availablePrograms','eligibleApplicants', 'eligibleGrouped', 'eligibleStats'));
-        }
+    }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     // Show form to create assessment batch
     public function create()
     {
@@ -220,18 +209,12 @@ class AssessmentBatchController extends Controller
      * Display the specified resource.
      */
     // Show batch details
-    // Show batch details
     public function show(AssessmentBatch $assessment_batch)
     {
-    
-        
-        // For completed batches (history), load applicants through assessment_results
         if ($assessment_batch->status === AssessmentBatch::STATUS_COMPLETED) {
-            // Get application IDs from assessment results (preserves history)
             $applicationIds = AssessmentResult::where('assessment_batch_id', $assessment_batch->id)
                 ->pluck('application_id');
             
-            // Load those applications with their results for THIS batch
             $assignedApplications = Application::whereIn('id', $applicationIds)
                 ->with(['user'])
                 ->get();
@@ -245,13 +228,9 @@ class AssessmentBatchController extends Controller
                         ->first()
                 );
             }
-            
-            // Replace the applications collection
             $assessment_batch->setRelation('applications', $assignedApplications);
         } else {
-            // For active batches, use normal relationship
             $assessment_batch->load(['applications.user', 'applications.assessmentResults']);
-            
             // Attach the assessment result for THIS batch to each application
             foreach ($assessment_batch->applications as $app) {
                 $app->setRelation('assessmentResult', 
@@ -267,10 +246,8 @@ class AssessmentBatchController extends Controller
         $eligibleQuery = Application::where('title_of_assessment_applied_for', $assessment_batch->nc_program)
             ->where('status', Application::STATUS_APPROVED)
             ->where(function ($q) use ($assessment_batch) {
-                // For BOOKKEEPING: must complete training (first-time only)
                 if ($assessment_batch->nc_program === 'BOOKKEEPING NC III') {
                     $q->where(function($subQ) {
-                        // First-time: completed training
                         $subQ->where('training_status', Application::TRAINING_STATUS_COMPLETED)
                             ->whereNull('reassessment_payment_status');
                     })->orWhere(function($subQ) {
@@ -278,15 +255,12 @@ class AssessmentBatchController extends Controller
                         $subQ->where('reassessment_payment_status', 'verified');
                     });
                 } else {
-                    // For Other NCs: no training check needed
-                    // Just approved status is enough
                 }
             })
             ->where(function($q) {
                 $q->whereNull('assessment_status')
                 ->orWhere('assessment_status', Application::ASSESSMENT_STATUS_PENDING);
             })
-            // CRITICAL: Exclude applicants already in OTHER batches
             ->where(function($q) use ($assessment_batch) {
                 $q->whereNull('assessment_batch_id')
                 ->orWhere('assessment_batch_id', $assessment_batch->id);
@@ -358,12 +332,10 @@ class AssessmentBatchController extends Controller
     // Add applicants to batch
     public function addApplicants(Request $request, AssessmentBatch $assessment_batch)
     {
-        // Validate that batch is not completed
         if ($assessment_batch->status === AssessmentBatch::STATUS_COMPLETED) {
             return back()->with('error', 'Cannot add applicants to a completed batch.');
         }
 
-        // Validate that batch is not full
         $currentCount = $assessment_batch->applications()->count();
         if ($currentCount >= $assessment_batch->max_applicants) {
             return back()->with('error', 'This batch is already at full capacity.');
@@ -374,17 +346,13 @@ class AssessmentBatchController extends Controller
 
         $application = Application::findOrFail($request->application_id);
 
-        // Check if applicant is already assigned to another batch
         if ($application->assessment_batch_id) {
             return back()->with('error', 'This applicant is already assigned to another batch.');
         }
-
-         // Check if applicant is eligible
         if ($application->status !== Application::STATUS_APPROVED) {
             return back()->with('error', 'Only approved applicants can be assigned.');
         }
         $isReassessment = $application->reassessment_payment_status === 'verified';
-         // For BOOKKEEPING, check if training is completed
          if (!$isReassessment && 
             $assessment_batch->nc_program === 'BOOKKEEPING NC III' && 
             $application->training_status !== Application::TRAINING_STATUS_COMPLETED) {
@@ -406,25 +374,19 @@ class AssessmentBatchController extends Controller
         }
 
         return back()->with('success', $message);
-        }
+    }
     // Remove an applicant from a batch
     public function unassignApplicant(AssessmentBatch $assessment_batch, Application $application)
     {
-        // Validate that batch is not completed
         if ($assessment_batch->status === AssessmentBatch::STATUS_COMPLETED) {
             return back()->with('error', 'Cannot remove applicants from a completed batch.');
         }
-
-        // Check if application belongs to this batch
         if ($application->assessment_batch_id !== $assessment_batch->id) {
             return back()->with('error', 'This applicant is not in this batch.');
         }
-
-        // Check if applicant has assessment result
         if ($application->assessmentResult) {
             return back()->with('error', 'Cannot remove applicant with assessment result.');
         }
-
         // Remove from batch
         $application->update([
             'assessment_batch_id' => null,
@@ -437,7 +399,6 @@ class AssessmentBatchController extends Controller
     // Save assessment result for a single applicant
     public function markAssessmentCompleted(Request $request,AssessmentBatch $assessment_batch,Application $application) 
     {
-       // Must belong to this batch
         if ($application->assessment_batch_id !== $assessment_batch->id) {
             abort(404);
         }
@@ -477,14 +438,11 @@ class AssessmentBatchController extends Controller
         if ($result->wasRecentlyCreated) {
             $application->increment('reassessment_attempt');
         }
-
         if ($result->wasRecentlyCreated) {
-            // First time creating this result
             $application->update([
                 'reassessment_attempt' => $application->reassessment_attempt + 1,
             ]);
         }
-
         // Save COC results if provided (for fail/NYC results)
         if (isset($data['coc_results']) && is_array($data['coc_results'])) {
             // Delete existing COC results for this assessment
@@ -509,7 +467,7 @@ class AssessmentBatchController extends Controller
     {
         if (in_array($assessment_batch->status, [AssessmentBatch::STATUS_COMPLETED, AssessmentBatch::STATUS_CANCELLED], true)) {
         return back()->with('error', 'Batch already finalized.');
-    }
+        }
 
         $assessment_batch->load(['applications', 'results']);
         // Ensure every assigned application has a result
@@ -521,22 +479,17 @@ class AssessmentBatchController extends Controller
         }
 
         DB::transaction(function () use ($assessment_batch) {
-            // Update each application outcome
             $resultsByApp = $assessment_batch->results->keyBy('application_id');
-
             foreach ($assessment_batch->applications as $application) {
                 $res = $resultsByApp[$application->id] ?? null;
                 if (!$res) {
                     continue;
                 }
-
                 if ($res->result === AssessmentResult::RESULT_PASS) {
                     $application->assessment_status = Application::ASSESSMENT_STATUS_COMPLETED;
                 } elseif ($res->result === AssessmentResult::RESULT_FAIL) {
                     $application->assessment_status = Application::ASSESSMENT_STATUS_FAILED;
                 } else {
-                    // Policy choice: keep as assigned, or mark failed.
-                    // $application->assessment_status = Application::ASSESSMENT_STATUS_ASSIGNED;
                     $application->assessment_status = Application::ASSESSMENT_STATUS_ASSIGNED;
                 }
 
@@ -635,7 +588,6 @@ class AssessmentBatchController extends Controller
      */
     private function timeRangesOverlap($start1, $end1, $start2, $end2)
     {
-        // Convert to comparable format (minutes since midnight)
         $start1Minutes = $this->timeToMinutes($start1);
         $end1Minutes = $this->timeToMinutes($end1);
         $start2Minutes = $this->timeToMinutes($start2);
@@ -672,7 +624,7 @@ class AssessmentBatchController extends Controller
         // Assign only up to max_applicants
         foreach ($eligibleApplicants as $applicant) {
             if ($assignedCount >= $batch->max_applicants) {
-                break; // Stop if we've reached the limit
+                break;
             }
             
             $applicant->update([
@@ -745,7 +697,6 @@ class AssessmentBatchController extends Controller
 
     public function sendScheduleNotifications(AssessmentBatch $assessment_batch)
     {
-        // Get all assigned applicants in this batch
         $applications = $assessment_batch->applications()->with('user')->get();
         
         if ($applications->isEmpty()) {
@@ -753,7 +704,6 @@ class AssessmentBatchController extends Controller
         }
         
         $sentCount = 0;
-        
         foreach ($applications as $application) {
             try {
                 // Send notification to each applicant
@@ -768,7 +718,6 @@ class AssessmentBatchController extends Controller
         $assessment_batch->update([
             'schedule_notifications_sent_at' => now()
         ]);
-        
         return back()->with('success', "Schedule notifications sent to {$sentCount} applicant(s).");
     }
 }

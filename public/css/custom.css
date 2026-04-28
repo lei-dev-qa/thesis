@@ -13,7 +13,6 @@ nav{
     background-color:  #1e3a5f;
 }
 
-/* Gradient background layer */
 .hero-section::before {
     content: '';
     position: absolute;
@@ -25,7 +24,6 @@ nav{
     z-index: 1;
 }
 
-/* Background image layer with opacity */
 .hero-section::after {
     content: '';
     position: absolute;
@@ -40,7 +38,6 @@ nav{
     z-index: 2;
 }
 
-/* Top to bottom gradient overlay */
 .hero-section .gradient-overlay {
     position: absolute;
     top: 0;
@@ -51,7 +48,6 @@ nav{
     z-index: 3;
 }
 
-/* Content container */
 .hero-section .container {
     position: relative;
     z-index: 4;

@@ -2,7 +2,6 @@
 
 @section('content')
     <div class="container-fluid py-4">
-        <!-- Back Button -->
         <div class="row mb-3">
             <div class="col-12">
                 <a href="{{ route('admin.training-batches.index') }}" class="btn btn-outline-secondary">
@@ -10,8 +9,6 @@
                 </a>
             </div>
         </div>
-
-        <!-- Batch Header -->
         <div class="card border-0 shadow-sm mb-4">
             <div class="card-header bg-white py-3">
                 <div class="row align-items-center">
@@ -37,8 +34,7 @@
                         <span class="badge bg-danger">{{ $failedCount }} Failed</span>
                     </div>
                 </div>
-            </div> <!-- Closing card-header -->
-
+            </div>
             @if ($batch->trainingSchedule)
                 <div class="card-body">
                     <div class="mb-0">
@@ -53,9 +49,7 @@
                     </div>
                 </div>
             @endif
-        </div> <!-- Closing card -->
-
-        <!-- Action Buttons -->
+        </div> 
         <div class="row mb-3">
             <div class="col-12">
                 @if (!$batch->is_full)
@@ -63,15 +57,12 @@
                         <i class="bi bi-person-plus"></i> Add Applicant
                     </button>
                 @endif
-                {{-- Check if batch has a training schedule and applications --}}
                 @if ($batch->trainingSchedule && $batch->trainingSchedule->applications->count() > 0)
-                    {{-- Check if notifications were already sent --}}
                     @if ($batch->trainingSchedule->schedule_notifications_sent_at)
                         <button type="button" class="btn btn-primary" disabled>
                             <i class="fas fa-check"></i> Schedule Notifications Sent
                         </button>
                     @else
-                        {{-- Show normal send button when not sent yet --}}
                         <form action="{{ route('admin.training-schedules.send-schedule', $batch->trainingSchedule) }}"
                             method="POST" class="d-inline">
                             @csrf
@@ -82,13 +73,11 @@
                         </form>
                     @endif
                 @endif
-
                 @if ($batch->is_full && !$batch->hasSchedule())
                     <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createScheduleModal">
                         <i class="bi bi-calendar-plus"></i> Create Schedule
                     </button>
                 @endif
-
                 @if ($batch->status !== 'completed')
                     <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#completeBatchModal">
                         <i class="bi bi-check-circle-fill"></i> Mark Batch as Done
@@ -96,8 +85,6 @@
                 @endif
             </div>
         </div>
-
-        <!-- Trainees List -->
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white py-3">
                 <div class="row align-items-center">
@@ -105,7 +92,6 @@
                         <h5 class="fw-bold mb-0">Enrolled Trainees</h5>
                     </div>
                     <div class="col-md-6 text-end">
-                        <!-- Bulk Action Buttons -->
                         <div class="btn-group" id="bulkActions" style="display: none;">
                             <button type="button" class="btn btn-success btn-sm" onclick="bulkComplete()">
                                 <i class="bi bi-check-circle"></i> Complete Selected
@@ -116,8 +102,7 @@
                         </div>
                     </div>
                 </div>
-            </div> <!-- Closing card-header -->
-
+            </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-hover">
@@ -195,53 +180,21 @@
                 </div>
             </div>
         </div>
-
-        <!-- Individual Modals (Complete, Fail, Remove) -->
         @foreach ($batch->applications as $application)
-            {{-- Remove Applicant Modal --}}
             @include('admin.trainees.component.remove-applicant', [
                 'batch' => $batch,
                 'application' => $application,
             ])
         @endforeach
-
-        {{-- Add Applicant Modal --}}
         @include('admin.trainees.component.add-applicant', [
             'batch' => $batch,
             'availableApplicants' => $availableApplicants,
         ])
-
-        {{-- Create Schedule Modal --}}
         @include('admin.trainees.component.create-schedule', ['batch' => $batch])
-
-        {{-- Completion and Failure Modal  --}}
         @include('admin.trainees.component.bulk-actions')
-
-        {{-- Mark Batch as Done Modal --}}
         @include('admin.trainees.component.complete-batch', [
             'batch' => $batch,
             'completedCount' => $completedCount,
             'failedCount' => $failedCount,
         ])
-
-        {{-- <script>
-            // Auto-submit forms after selection (optional enhancement)
-            document.addEventListener('DOMContentLoaded', function() {
-                // Auto-submit quick complete form when remarks are selected
-                const quickCompleteSelect = document.querySelector(
-                    '#quickCompleteModal select[name="training_remarks"]');
-                if (quickCompleteSelect) {
-                    quickCompleteSelect.addEventListener('change', function() {
-                        if (this.value && this.value !== '') {
-                            // Optional: Auto-submit after 1 second delay
-                            setTimeout(() => {
-                                if (confirm('Auto-complete with selected remarks?')) {
-                                    document.getElementById('quickCompleteForm').submit();
-                                }
-                            }, 1000);
-                        }
-                    });
-                }
-            });
-        </script> --}}
-    @endsection
+@endsection

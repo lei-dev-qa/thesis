@@ -11,7 +11,6 @@ use App\Models\Application\Application;
 class TrainingScheduleNotification extends Notification
 {
     use Queueable;
-    
     protected $trainingSchedule;
     protected $application;
 
@@ -44,7 +43,6 @@ class TrainingScheduleNotification extends Notification
             ->line('• Days: ' . $this->trainingSchedule->days)
             ->line('• Venue: ' . $this->trainingSchedule->venue);
 
-        // Add instructor if available
         if ($this->trainingSchedule->instructor) {
             $message->line('• Instructor: ' . $this->trainingSchedule->instructor);
         }

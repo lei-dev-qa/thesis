@@ -14,7 +14,6 @@
                         <i class="fas fa-info-circle"></i>
                         Upload the official receipt for the applicant's initial payment.
                     </div>
-
                     <div class="mb-3">
                         <label for="official_receipt_photo" class="form-label">
                             Official Receipt Photo <span class="text-danger">*</span>

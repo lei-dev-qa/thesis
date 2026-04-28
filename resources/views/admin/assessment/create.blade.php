@@ -10,7 +10,6 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
-    
     @if ($errors->any())
         <div class="alert alert-danger alert-dismissible fade show">
             <i class="bi bi-exclamation-triangle"></i>
@@ -31,9 +30,7 @@
         <div class="card-body">
             <form method="POST" action="{{ route('admin.assessment-batches.store') }}">
                 @csrf
-
                 <div class="row g-3">
-                    <!-- NC Program Selection -->
                     <div class="col-md-6">
                         <label class="form-label">NC Program <span class="text-danger">*</span></label>
                         <select name="nc_program" id="nc_program" class="form-select" required>
@@ -43,18 +40,12 @@
                                 @if ($count === 0)
                                     @continue
                                 @endif
-
                                 <option value="{{ $program }}">
                                     {{ $program }} ({{ $count }} eligible)
                                 </option>
                             @endforeach
                         </select>
-                        {{-- @error('nc_program')
-                            <div class="text-danger small">{{ $message }}</div>
-                        @enderror --}}
                     </div>
-
-                    <!-- Batch Name -->
                     <div class="col-md-6">
                         <label class="form-label">Batch Name <span class="text-danger">*</span></label>
                         <input type="text" name="batch_name" class="form-control"
@@ -64,11 +55,9 @@
                         @enderror
                         <small class="text-muted">Auto-generated if left empty</small>
                     </div>
-                    <!-- Intensive Review Day 1 -->
                     <div class="col-12 mt-3">
                         <h6 class="text-primary">Intensive Review Day 1</h6>
                     </div>
-
                     <div class="col-md-4">
                         <label class="form-label">Review Day 1 Date</label>
                         <input type="date" name="intensive_review_day1" class="form-control"
@@ -77,7 +66,6 @@
                             <div class="text-danger small">{{ $message }}</div>
                         @enderror
                     </div>
-
                     <div class="col-md-4">
                         <label class="form-label">Day 1 Start Time</label>
                         <input type="time" name="intensive_review_day1_start" class="form-control"
@@ -86,7 +74,6 @@
                             <div class="text-danger small">{{ $message }}</div>
                         @enderror
                     </div>
-
                     <div class="col-md-4">
                         <label class="form-label">Day 1 End Time</label>
                         <input type="time" name="intensive_review_day1_end" class="form-control"
@@ -95,12 +82,9 @@
                             <div class="text-danger small">{{ $message }}</div>
                         @enderror
                     </div>
-
-                    <!-- Intensive Review Day 2 -->
                     <div class="col-12 mt-3">
                         <h6 class="text-primary">Intensive Review Day 2</h6>
                     </div>
-
                     <div class="col-md-4">
                         <label class="form-label">Review Day 2 Date</label>
                         <input type="date" name="intensive_review_day2" class="form-control"
@@ -109,7 +93,6 @@
                             <div class="text-danger small">{{ $message }}</div>
                         @enderror
                     </div>
-
                     <div class="col-md-4">
                         <label class="form-label">Day 2 Start Time</label>
                         <input type="time" name="intensive_review_day2_start" class="form-control"
@@ -118,7 +101,6 @@
                             <div class="text-danger small">{{ $message }}</div>
                         @enderror
                     </div>
-
                     <div class="col-md-4">
                         <label class="form-label">Day 2 End Time</label>
                         <input type="time" name="intensive_review_day2_end" class="form-control"
@@ -127,7 +109,6 @@
                             <div class="text-danger small">{{ $message }}</div>
                         @enderror
                     </div>
-                    <!-- Assessment Date -->
                     <div class="col-12 mt-3">
                         <h6 class="text-primary">Intensive Review Day 1</h6>
                     </div>
@@ -139,8 +120,6 @@
                             <div class="text-danger small">{{ $message }}</div>
                         @enderror
                     </div>
-
-                    <!-- Start Time -->
                     <div class="col-md-4">
                         <label class="form-label">Start Time <span class="text-danger">*</span></label>
                         <input type="time" name="start_time" class="form-control"
@@ -149,8 +128,6 @@
                             <div class="text-danger small">{{ $message }}</div>
                         @enderror
                     </div>
-
-                    <!-- End Time -->
                     <div class="col-md-4">
                         <label class="form-label">End Time <span class="text-danger">*</span></label>
                         <input type="time" name="end_time" class="form-control"
@@ -159,7 +136,6 @@
                             <div class="text-danger small">{{ $message }}</div>
                         @enderror
                     </div>
-                    <!-- Venue -->
                     <div class="col-md-6">
                         <label class="form-label">Venue <span class="text-danger">*</span></label>
                         <input type="text" name="venue" class="form-control" placeholder="Assessment venue"
@@ -168,8 +144,6 @@
                             <div class="text-danger small">{{ $message }}</div>
                         @enderror
                     </div>
-
-                    <!-- Assessor -->
                     <div class="col-md-6">
                         <label class="form-label">Assessor Name</label>
                         <input type="text" name="assessor_name" class="form-control"
@@ -179,13 +153,11 @@
                         @enderror
                     </div>
                 </div>
-
                 <div class="alert alert-info mt-3">
                     <i class="bi bi-info-circle"></i>
                     <strong>Auto-Assignment:</strong> Eligible applicants from the selected NC program will be automatically
                     assigned to this batch based on their training completion date.
                 </div>
-
                 <div class="d-flex justify-content-between mt-4">
                     <a href="{{ route('admin.assessment-batches.index') }}" class="btn btn-secondary">
                         <i class="bi bi-arrow-left"></i> Cancel

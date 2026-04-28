@@ -26,7 +26,6 @@
                             <strong><i class="bi bi-book"></i> Training Schedule</strong>
                         </div>
                         <div class="card-body">
-                            {{-- Date Row --}}
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label class="text-muted small">Start Date</label>
@@ -46,8 +45,6 @@
                                     </small>
                                 </div>
                             </div>
-
-                            {{-- Time Row --}}
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label class="text-muted small">Venue</label>

@@ -14,9 +14,9 @@ return new class extends Migration
             $table->string('psa_birth_certificate')->nullable();
             $table->string('psa_marriage_contract')->nullable();
             $table->string('high_school_document')->nullable();
-            $table->json('id_pictures_1x1')->nullable(); // 4 pcs
-            $table->json('id_pictures_passport')->nullable(); // 4 pcs
-            $table->json('government_school_id')->nullable(); // 2 pcs
+            $table->json('id_pictures_1x1')->nullable();
+            $table->json('id_pictures_passport')->nullable();
+            $table->json('government_school_id')->nullable();
             $table->string('certificate_of_indigency')->nullable();
             $table->timestamps();
         });

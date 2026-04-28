@@ -1,4 +1,3 @@
-{{-- resources/views/admin/dashboard/assessment/index.blade.php --}}
 <div class="card analytics-card">
     <div class="card-header bg-success text-light">
         <h5 class="mb-0">
@@ -6,7 +5,6 @@
         </h5>
     </div>
     <div class="card-body">
-        {{-- Assessment Metrics --}}
         <div class="row text-center mb-4">
             <div class="col-6">
                 <div class="text-success">
@@ -24,7 +22,6 @@
             </div>
         </div>
 
-        {{-- Program Overview (Clickable) --}}
         <div class="mb-4">
             <h6 class="text-muted mb-3">Program Performance Overview</h6>
             @if (isset($assessment['programs']) && count($assessment['programs']) > 0)
@@ -58,7 +55,6 @@
             @endif
         </div>
 
-        {{-- Reassessment Analysis --}}
         <div>
             <h6 class="text-muted mb-3">Reassessment Analysis</h6>
             <div class="row text-center">
@@ -85,7 +81,6 @@
     </div>
 </div>
 
-{{-- Enhanced COC Detail Modals with Charts --}}
 @if (isset($assessment['programs']) && count($assessment['programs']) > 0)
     @foreach ($assessment['programs'] as $program)
         @include('admin.dashboard.assessment.component.coc-performance-analysis', [

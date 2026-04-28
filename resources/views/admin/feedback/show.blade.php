@@ -15,14 +15,10 @@
                 <i class="bi bi-arrow-left"></i> Back to Batches
             </a>
         </div>
-
-        <!-- Search Bar -->
         <div class="card-header bg-light ">
             <input type="text" id="searchInput" value="{{ request('q') }}" class="form-control"
                 placeholder="Search by applicant name...">
         </div>
-
-        <!-- Applicants Block (for AJAX replacement) -->
         <div id="applicantsBlock">
             <div class="card-body">
                 <div class="table-responsive">
@@ -47,8 +43,6 @@
                                             ' ' .
                                             ($application->name_extension ?? ''),
                                     );
-
-                                    // Get assessment result and map to Competent/Not Yet Competent
                                     $assessmentResult = $application->assessmentResult;
                                     if ($assessmentResult) {
                                         if ($assessmentResult->result === 'Competent') {
@@ -65,14 +59,10 @@
                                         $assessmentStatus = 'N/A';
                                         $assessmentBadgeClass = 'secondary';
                                     }
-
-                                    // Get training result
                                     $trainingResult = $application->trainingResult;
                                     $trainingStatus = $application->training_status
                                         ? ucfirst($application->training_status)
                                         : 'N/A';
-
-                                    // Check if employment record exists
                                     $hasEmployment = $application->employmentRecord !== null;
                                 @endphp
                                 <tr>
@@ -82,7 +72,6 @@
                                             <span class="badge bg-danger ms-2">NEW</span>
                                         @endif
                                     </td>
-
                                     <td>{{ $fullName }}</td>
                                     <td>
                                         <span
@@ -115,23 +104,18 @@
                                         @endif
                                     </td>
                                 </tr>
-
-                                <!-- Add Employment Modal -->
                                 @if (!$hasEmployment)
                                     @include('admin.feedback.component.add-employment', [
                                         'application' => $application,
                                         'fullName' => $fullName,
                                     ])
                                 @endif
-
-                                <!-- View/Edit Employment Modal -->
                                 @if ($hasEmployment)
                                     @include('admin.feedback.component.view-edit-employment', [
                                         'application' => $application,
                                         'fullName' => $fullName,
                                     ])
                                 @endif
-
                             @empty
                                 <tr>
                                     <td colspan="4" class="text-center text-muted">No completed applicants found.</td>
@@ -141,8 +125,6 @@
                     </table>
                 </div>
             </div>
-
-            <!-- Pagination -->
             <div class="d-flex justify-content-center mt-3 mb-3" id="applicantsPagination">
                 {{ $applications->onEachSide(1)->withQueryString()->links('pagination::bootstrap-5') }}
             </div>
@@ -154,7 +136,6 @@
     <script>
         let timer;
 
-        // Debounced live search
         document.getElementById('searchInput').addEventListener('keyup', function() {
             clearTimeout(timer);
             timer = setTimeout(() => {
@@ -172,21 +153,16 @@
                         const doc = new DOMParser().parseFromString(html, 'text/html');
                         document.getElementById('applicantsBlock').innerHTML =
                             doc.querySelector('#applicantsBlock').innerHTML;
-
-                        // Re-attach event listeners after AJAX reload
                         attachModalListeners();
                     })
                     .catch(error => console.error('Error fetching search results:', error));
             }, 400);
         });
-
-        // Function to attach modal listeners
         function attachModalListeners() {
             document.querySelectorAll('[data-employment-id]').forEach(button => {
                 button.addEventListener('click', function() {
                     const employmentId = this.getAttribute('data-employment-id');
 
-                    // Mark as viewed when modal is opened
                     fetch(`{{ url('/admin/employment-feedback') }}/${employmentId}/mark-viewed`, {
                             method: 'POST',
                             headers: {
@@ -198,14 +174,11 @@
                         .then(response => response.json())
                         .then(data => {
                             if (data.success) {
-                                // Remove NEW badge from this row
                                 const row = this.closest('tr');
                                 const newBadge = row.querySelector('.badge.bg-danger');
                                 if (newBadge && newBadge.textContent === 'NEW') {
                                     newBadge.remove();
                                 }
-
-                                // Update sidebar count (optional - will update on page refresh)
                                 updateSidebarCount();
                             }
                         })
@@ -213,8 +186,6 @@
                 });
             });
         }
-
-        // Function to update sidebar count
         function updateSidebarCount() {
             fetch('{{ route('admin.employment-feedback.index') }}', {
                     headers: {
@@ -235,8 +206,6 @@
                     }
                 });
         }
-
-        // Initial attachment of listeners
         document.addEventListener('DOMContentLoaded', function() {
             attachModalListeners();
         });

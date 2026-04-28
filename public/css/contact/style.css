@@ -3,7 +3,7 @@ nav{
 }
 @media (max-width: 991.98px) {
   #hero-contact {
-    margin-top: 50px; /* Larger on mobile since navbar might be taller */
+    margin-top: 50px;
   }
 }
 #hero-contact {

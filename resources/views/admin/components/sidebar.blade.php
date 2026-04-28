@@ -1,6 +1,5 @@
 <nav class="sidebar bg-light">
     <div class="p-3">
-        <!-- Logo/Brand -->
         <div class="text-center mb-4 text-primary">
             <h5 class="text-primary mb-0">
                 <i class="bi bi-gear-fill"></i> SHC-TVET Admin
@@ -8,9 +7,7 @@
             <small class="text-primary">Management System</small>
         </div>
 
-        <!-- Navigation Menu -->
         <ul class="nav nav-pills flex-column">
-            <!-- Dashboard -->
             <li class="nav-item">
                 <a class="nav-link text-primary {{ request()->routeIs('admin.dashboard') ? 'active' : '' }} "
                     href="{{ route('admin.dashboard') }}">
@@ -25,21 +22,15 @@
                     Calendar
                 </a>
             </li>
-
-            <!-- User Management Section -->
             <li class="nav-item mt-3">
                 <small class="text-dark text-uppercase fw-bold px-3">User Management</small>
             </li>
-
-            <!-- TWSP Announcements -->
             <li class="nav-item">
                 <a class="nav-link text-primary {{ request()->routeIs('admin.twsp.*') ? 'active' : '' }}"
                     href="{{ route('admin.twsp.index') }}">
                     <i class="bi bi-megaphone"></i> TWSP
                 </a>
             </li>
-
-            <!-- Contact Messages -->
             <li class="nav-item">
                 <a class="nav-link text-primary d-flex align-items-center justify-content-between {{ request()->routeIs('admin.contact.messages') ? 'active' : '' }}"
                     href="{{ route('admin.contact.messages') }}">
@@ -54,8 +45,6 @@
                     @endif
                 </a>
             </li>
-
-            <!-- Applicants -->
             <li class="nav-item">
                 <a class="nav-link text-primary d-flex align-items-center justify-content-between {{ request()->routeIs('admin.applications.*') ? 'active' : '' }}"
                     href="{{ route('admin.applicants.index') }}">
@@ -70,8 +59,6 @@
                     @endif
                 </a>
             </li>
-
-            <!-- List of Enrollment -->
             <li class="nav-item">
                 <a class="nav-link text-primary {{ request()->routeIs('admin.training-batches.index*') ? 'active' : '' }}"
                     href="{{ route('admin.training-batches.index') }}">
@@ -79,7 +66,6 @@
                     Trainees List
                 </a>
             </li>
-            <!-- Assessment Batches -->
             <li class="nav-item">
                 <a class="nav-link text-primary {{ request()->routeIs('admin.assessment-batches.*') && !request()->routeIs('admin.assessment-batches.history') ? 'active' : '' }}"
                     href="{{ route('admin.assessment-batches.index') }}">
@@ -87,7 +73,6 @@
                     Assessment
                 </a>
             </li>
-
             <li class="nav-item">
                 <a class="nav-link text-primary {{ request()->routeIs('admin.reassessment.*') ? 'active' : '' }}"
                     href="{{ route('admin.reassessment.index') }}">
@@ -107,7 +92,6 @@
                     </div>
                 </a>
             </li>
-            <!-- In sidebar.blade.php -->
             <li class="nav-item">
                 <a class="nav-link text-primary d-flex align-items-center justify-content-between {{ request()->routeIs('admin.employment-feedback.*') ? 'active' : '' }}"
                     href="{{ route('admin.employment-feedback.index') }}">
@@ -125,16 +109,10 @@
                     @endif
                 </a>
             </li>
-
-
-            <!-- Divider -->
             <hr class="text-secondary my-3">
-
-            <!-- History -->
             <li class="nav-item ">
                 <small class="text-muted text-uppercase fw-bold px-3">History</small>
             </li>
-
             <li class="nav-item">
                 <a class="nav-link text-primary {{ request()->routeIs('admin.history.index*') ? 'active' : '' }}"
                     href="{{ route('admin.history.index') }}">
@@ -142,7 +120,6 @@
                     Application 
                 </a>
             </li>
-
             <li class="nav-item">
                 <a class="nav-link text-primary {{ request()->routeIs('admin.training-batches.history') ? 'active' : '' }}"
                     href="{{ route('admin.training-batches.history') }}">
@@ -150,21 +127,16 @@
                     <span>Training</span>
                 </a>
             </li>
-
             <li class="nav-item">
                 <a class="nav-link text-primary {{ request()->routeIs('admin.assessment-batches.history') ? 'active' : '' }}"
                     href="{{ route('admin.assessment-batches.history') }}">
                     <i class="bi bi-archive"></i> Assessment 
                 </a>
             </li>
-
-            <!-- Divider -->
             <hr class="text-secondary my-3">
 
         </ul>
     </div>
-
-    <!-- Footer -->
     <div class="mt-auto p-3">
         <div class="text-center">
             <small class="text-muted">
@@ -176,7 +148,6 @@
 </nav>
 
 <style>
-    /* Additional sidebar styling */
     .sidebar {
         position: sticky;
         top: 0;
@@ -206,14 +177,11 @@
         text-align: center;
     }
 
-    /* Sub-menu styling */
     .sidebar .nav .nav .nav-link {
         font-size: 0.875rem;
         padding: 0.5rem 1rem;
         margin: 0.125rem 0;
     }
-
-    /* Scrollbar styling for webkit browsers */
     .sidebar::-webkit-scrollbar {
         width: 4px;
     }

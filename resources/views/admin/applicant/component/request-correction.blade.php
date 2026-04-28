@@ -14,7 +14,6 @@
                         <i class="fas fa-info-circle"></i>
                         The applicant will receive an email notification and can edit their application.
                     </div>
-
                     <div class="mb-3">
                         <label class="form-label">What needs to be corrected? <span
                                 class="text-danger">*</span></label>

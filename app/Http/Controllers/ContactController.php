@@ -31,7 +31,6 @@ class ContactController extends Controller
         } catch (\Exception $e) {
             Log::warning('Contact email failed: ' . $e->getMessage());
         }
-
         return back()->with('success', 'Thank you! Your message has been sent.');
     }
 
@@ -40,14 +39,13 @@ class ContactController extends Controller
         $messages = ContactMessage::latest()->paginate(15);
         return view('admin.contact.index', compact('messages'));
     }
-     public function markAsRead($id)
+    public function markAsRead($id)
     {
         $message = ContactMessage::findOrFail($id);
         
         if (!$message->is_read) {
             $message->update(['is_read' => true]);
         }
-
         return back();
     }
 
@@ -55,8 +53,7 @@ class ContactController extends Controller
     public function show($id)
     {
         $message = ContactMessage::findOrFail($id);
-        
-        // Mark as read when viewing
+
         if (!$message->is_read) {
             $message->update(['is_read' => true]);
         }

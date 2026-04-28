@@ -38,7 +38,7 @@ class TraineeSeeder extends Seeder
         $trainingBatch = TrainingBatch::firstOrCreate(
             [
                 'nc_program' => 'BOOKKEEPING NC III',
-                'batch_number' => 1,
+                'batch_number' => 2,
             ],
             [
                 'max_students' => 25,
@@ -67,7 +67,7 @@ class TraineeSeeder extends Seeder
             $applicant = User::create([
                 'name' => $filipinoFirstNames[array_rand($filipinoFirstNames)] . ' ' . 
                           $filipinoLastNames[array_rand($filipinoLastNames)],
-                'email' => 'traineex' . $i . '@example.com',
+                'email' => 'traineess' . $i . '@example.com',
                 'password' => Hash::make('password'),
                 'role' => 'applicant',
                 'email_verified_at' => now(),

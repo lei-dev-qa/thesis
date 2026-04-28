@@ -17,7 +17,6 @@ return new class extends Migration
             $table->text('new_value')->nullable();
             $table->timestamp('changed_at');
             $table->timestamps();
-            
             $table->index(['application_id', 'changed_at']);
         });
     }

@@ -38,13 +38,11 @@ class TrainingSchedule extends Model
         'schedule_notifications_sent_at' => 'datetime',
     ];
 
-    // Status constants
     const STATUS_ACTIVE = 'active';
     const STATUS_ONGOING = 'ongoing';
     const STATUS_COMPLETED = 'completed';
     const STATUS_CANCELLED = 'cancelled';
 
-    // Relationships
     public function trainingBatch(): BelongsTo
     {
         return $this->belongsTo(TrainingBatch::class);
@@ -55,7 +53,6 @@ class TrainingSchedule extends Model
         return $this->hasMany(Application::class, 'training_schedule_id');
     }
 
-    // Helper methods
     public function getEnrolledCountAttribute()
     {
         return $this->applications()
@@ -73,7 +70,6 @@ class TrainingSchedule extends Model
         return $this->enrolled_count >= $this->max_students;
     }
 
-    // Scopes
     public function scopeActive($query)
     {
         return $query->where('status', self::STATUS_ACTIVE);

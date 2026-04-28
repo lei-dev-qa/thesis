@@ -12,9 +12,6 @@ use Illuminate\Http\Request;
 
 class TrainingBatchController extends Controller
 {
-    /**
-     * Display a listing of training batches
-     */
     public function index(Request $request)
     {
         $query = TrainingBatch::with([
@@ -148,7 +145,6 @@ class TrainingBatchController extends Controller
             return back()->with('error', 'Only approved applicants can be enrolled.');
         }
 
-        // Refresh the batch to ensure we have the latest trainingSchedule relationship
         $batch->load('trainingSchedule');
 
         // Determine the training status based on whether schedule exists

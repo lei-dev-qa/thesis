@@ -5,7 +5,6 @@
 
 @section('content')
     <div class="container-fluid py-4">
-        <!-- Tabs -->
         <ul class="nav nav-tabs mb-3" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" data-bs-toggle="tab" href="#pending">
@@ -23,9 +22,7 @@
                 </a>
             </li>
         </ul>
-
         <div class="tab-content">
-            <!-- Pending Tab -->
             <div class="tab-pane fade show active" id="pending">
                 <div class="card">
                     <div class="card-body">
@@ -99,7 +96,6 @@
                                                     </form>
                                                 </td>
                                             </tr>
-                                            <!-- COC Details Modal -->
                                             @include('admin.reassessment.component.coc-details', [
                                                 'app' => $app,
                                             ])
@@ -115,8 +111,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Verified Tab -->
             <div class="tab-pane fade" id="verified">
                 <div class="card">
                     <div class="card-body">
@@ -170,7 +164,6 @@
                                                     </button>
                                                 </td>
                                             </tr>
-                                            {{-- Upload Official Receipt Modal --}}
                                             @include(
                                                 'admin.reassessment.component.upload-official-receipt',
                                                 [
@@ -190,8 +183,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Rejected Tab -->
             <div class="tab-pane fade" id="rejected">
                 <div class="card">
                     <div class="card-body">

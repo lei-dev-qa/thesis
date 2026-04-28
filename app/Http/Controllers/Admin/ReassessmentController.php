@@ -25,7 +25,7 @@ class ReassessmentController extends Controller
                 $query->where('reassessment_payment_status', 'verified')
                     ->orWhere('second_reassessment_payment_status', 'verified');
             })
-            ->whereNull('assessment_batch_id') // Not yet assigned to batch
+            ->whereNull('assessment_batch_id')
             ->with(['user', 'assessmentResult.cocResults'])
             ->orderBy('updated_at', 'desc')
             ->get();
@@ -39,28 +39,10 @@ class ReassessmentController extends Controller
             ->orderBy('updated_at', 'desc')
             ->get();
 
-        // Count both 1st and 2nd reassessment payments this month
-        $monthlyTotal = Application::where(function($query) {
-                $query->whereNotNull('reassessment_payment_status')
-                    ->orWhereNotNull('second_reassessment_payment_status');
-            })
-            ->where(function($query) {
-                $query->where(function($q) {
-                    $q->whereMonth('reassessment_payment_date', now()->month)
-                    ->whereYear('reassessment_payment_date', now()->year);
-                })
-                ->orWhere(function($q) {
-                    $q->whereMonth('second_reassessment_payment_date', now()->month)
-                    ->whereYear('second_reassessment_payment_date', now()->year);
-                });
-            })
-            ->count();
-
         return view('admin.reassessment.index', compact(
             'pendingPayments',
             'verifiedPayments',
             'rejectedPayments',
-            'monthlyTotal'
         ));
     }
 
@@ -75,9 +57,7 @@ class ReassessmentController extends Controller
         }
         
         if ($action === 'verify') {
-            // Check if this is a 2nd reassessment payment
             $isSecondReassessment = $application->second_reassessment_payment_proof !== null;
-            
             if ($isSecondReassessment) {
                 $application->update([
                     'second_reassessment_payment_status' => 'verified',
@@ -91,14 +71,11 @@ class ReassessmentController extends Controller
                     'assessment_batch_id' => null,
                 ]);
             }
-            
             $application->user->notify(new PaymentVerifiedNotification($application, true));
 
             return back()->with('success', 'Payment verified successfully. Applicant can now be assigned to an assessment batch.');
         } elseif ($action === 'reject') {
-            // Check if this is a 2nd reassessment payment
             $isSecondReassessment = $application->second_reassessment_payment_proof !== null;
-            
             if ($isSecondReassessment) {
                 $application->update([
                     'second_reassessment_payment_status' => 'rejected',

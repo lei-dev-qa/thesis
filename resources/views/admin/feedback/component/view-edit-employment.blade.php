@@ -1,6 +1,5 @@
 @props(['application', 'fullName'])
 
-<!-- View/Edit Employment Modal -->
 <div class="modal fade" id="viewEmploymentModal{{ $application->id }}" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">

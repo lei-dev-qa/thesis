@@ -29,7 +29,6 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)){
             $user = Auth::user();
 
-            // Redirect based on role
             return match($user->role){
                 'admin' => redirect()->route('admin.dashboard'),
                 'assessor' => redirect()->route('assessor.dashboard'),
@@ -37,7 +36,6 @@ class AuthController extends Controller
                 default => redirect()->route('home'),
             };
         }
-        
         return back()->withErrors([
             'email' => 'Invalid email or password.'
         ]);
@@ -62,9 +60,9 @@ class AuthController extends Controller
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => bcrypt($validated['password']),
-            'role' => 'applicant', // Default role
+            'role' => 'applicant',
         ]);
-
+        
         Auth::login($user);
 
         return redirect()->route('applicant.dashboard');
@@ -79,29 +77,29 @@ class AuthController extends Controller
     public function handleGoogleCallback()
     {
         try {
-        $googleUser = Socialite::driver('google')->stateless()->user();
-        
-        $user = User::where('email', $googleUser->email)->first();
+            $googleUser = Socialite::driver('google')->stateless()->user();
+            
+            $user = User::where('email', $googleUser->email)->first();
 
-        if (!$user){
-            $user = User::create([
-                'name' => $googleUser->name,
-                'email' => $googleUser->email,
-                'password' => bcrypt(uniqid()), // Random password
-                'role' => 'applicant', // Default role
-                'email_verified_at' => now(),
+            if (!$user){
+                $user = User::create([
+                    'name' => $googleUser->name,
+                    'email' => $googleUser->email,
+                    'password' => bcrypt(uniqid()),
+                    'role' => 'applicant',
+                    'email_verified_at' => now(),
+                ]);
+            }
+            
+            Auth::login($user);
+
+            return redirect()->route('applicant.dashboard');
+
+            }catch (\Exception $e){
+            return redirect()->route('login')->withErrors([
+                'error' => 'Google login failed. Please try again'
             ]);
         }
-        
-        Auth::login($user);
-
-        return redirect()->route('applicant.dashboard');
-
-        }catch (\Exception $e){
-        return redirect()->route('login')->withErrors([
-            'error' => 'Google login failed. Please try again'
-        ]);
-    }
     }
 
     public function logout()

@@ -12,13 +12,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('assessment_result_id')->constrained('assessment_results')->cascadeOnDelete();
             $table->foreignId('application_id')->constrained('applications')->cascadeOnDelete();
-            $table->string('coc_code'); // e.g., 'COC 1', 'COC 2'
-            $table->string('coc_title'); // e.g., 'Journalize Transactions'
+            $table->string('coc_code');
+            $table->string('coc_title'); 
             $table->enum('result', ['competent', 'not_yet_competent'])->default('not_yet_competent');
             $table->text('remarks')->nullable();
             $table->timestamps();
-            
-            // Index for faster queries
             $table->index(['application_id', 'coc_code']);
             $table->index('result');
         });

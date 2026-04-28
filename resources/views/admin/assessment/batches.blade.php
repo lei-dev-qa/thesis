@@ -4,14 +4,12 @@
 @section('page-title', 'Assessment Batches')
 
 @section('content')
-
     @if (session('error'))
         <div class="alert alert-danger alert-dismissible fade show">
             {{ session('error') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
-
     <div class="row">
         <div class="col-md-4">
             <div class="card border-secondary h-100 ">
@@ -79,9 +77,7 @@
                 </div>
             </div>
         </div>
-
     </div>
-
 
     <div class="card mb-3">
         <div class="card-header d-flex justify-content-between align-items-center">
@@ -90,9 +86,7 @@
                 <i class="bi bi-plus-circle"></i> Create New Batch
             </a>
         </div>
-
         <div class="card-body">
-            <!-- Filters -->
             <form method="GET" class="row g-3 mb-3">
                 <div class="col-md-4">
                     <select name="status" class="form-select" onchange="this.form.submit()">
@@ -106,7 +100,6 @@
                         </option>
                     </select>
                 </div>
-
                 <div class="col-md-4">
                     <select name="nc_program" class="form-select" onchange="this.form.submit()">
                         <option value="">All NC Programs</option>
@@ -118,8 +111,6 @@
                     </select>
                 </div>
             </form>
-
-            <!-- Batch Table -->
             <div class="table-responsive">
                 <table class="table table-hover align-middle">
                     <thead>
@@ -181,7 +172,6 @@
                     </tbody>
                 </table>
             </div>
-
             <div class="mt-3">
                 {{ $batches->links() }}
             </div>

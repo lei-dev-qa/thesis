@@ -1,4 +1,3 @@
-{{-- resources/views/admin/dashboard/training/index.blade.php --}}
 <div class="card analytics-card">
     <div class="card-header bg-success text-white">
         <h5 class="mb-0">
@@ -7,10 +6,8 @@
     </div>
     <div class="card-body">
         <div class="row">
-            {{-- Left: Pie Chart - Completed vs Failed --}}
             <div class="col-md-4">
                 <h6 class="text-muted mb-3 text-center">Training Completion Rate</h6>
-                
                 @php
                     $completedCount = $training['completed_count'] ?? 0;
                     $failedCount = $training['failed_count'] ?? 0;
@@ -20,14 +17,12 @@
                     $failedPercentage = $training['failed_percentage'] ?? 0;
                 @endphp
                 
-                {{-- Pie Chart Container --}}
                 <div class="d-flex justify-content-center mb-3">
                     <div class="position-relative" style="width: 200px; height: 200px;">
                         <canvas id="trainingPieChart"></canvas>
                     </div>
                 </div>
                 
-                {{-- Legend --}}
                 <div class="text-center">
                     <div class="d-flex justify-content-center align-items-center mb-2">
                         <span class="badge bg-success me-2" style="width: 15px; height: 15px;"></span>
@@ -43,11 +38,8 @@
                     </div>
                 </div>
             </div>
-            
-            {{-- Right: Batch Performance & Metrics --}}
+
             <div class="col-md-8">
-                
-                {{-- Batch Performance --}}
                 <div>
                     <h6 class="text-muted mb-3">Batch Performance</h6>
                     @if(isset($training['batches']) && count($training['batches']) > 0)
@@ -76,7 +68,6 @@
     </div>
 </div>
 
-{{-- Chart.js Script --}}
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
@@ -91,8 +82,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 datasets: [{
                     data: [{{ $completedCount }}, {{ $failedCount }}],
                     backgroundColor: [
-                        '#198754', // Green for completed
-                        '#dc3545'  // Red for failed
+                        '#198754',
+                        '#dc3545' 
                     ],
                     borderWidth: 2,
                     borderColor: '#ffffff'

@@ -6,7 +6,6 @@
         </div>
 
         <div class="row g-4 ">
-            {{-- Card 1 --}}
             <div class="col-md-6 col-lg-4 ">
                 <div class="card h-100 text-white" style="background-color: rgba(255,255,255,0.1);">
                     <div class="card-body">
@@ -19,8 +18,6 @@
                     </div>
                 </div>
             </div>
-
-            {{-- Card 2 --}}
             <div class="col-md-6 col-lg-4">
                 <div class="card h-100 text-white" style="background-color: rgba(255,255,255,0.1);">
                     <div class="card-body">
@@ -33,8 +30,6 @@
                     </div>
                 </div>
             </div>
-
-            {{-- Card 3 --}}
             <div class="col-md-6 col-lg-4">
                 <div class="card h-100 text-white" style="background-color: rgba(255,255,255,0.1);">
                     <div class="card-body">
@@ -47,8 +42,6 @@
                     </div>
                 </div>
             </div>
-
-            {{-- Card 4 --}}
             <div class="col-md-6 col-lg-4">
                 <div class="card h-100 text-white" style="background-color: rgba(255,255,255,0.1);">
                     <div class="card-body">
@@ -61,8 +54,6 @@
                     </div>
                 </div>
             </div>
-
-            {{-- Card 5 --}}
             <div class="col-md-6 col-lg-4">
                 <div class="card h-100 text-white" style="background-color: rgba(255,255,255,0.1);">
                     <div class="card-body">
@@ -75,7 +66,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-md-6 col-lg-4">
                 <div class="card h-100 text-white" style="background-color: rgba(255,255,255,0.1);">
                     <div class="card-body d-flex justify-content-center align-items-center">
@@ -108,14 +98,13 @@
                         <small class="text-muted">Training Days</small>
                     </div>
                 </div>
-
                 <p class="lead">Be a TESDA Scholar! Create your profile now at <a href="https://bsrs.tesda.gov.ph"
                         target="_blank" class="fw-bold text-decoration-none">bsrs.tesda.gov.ph</a></p>
                 <div class="d-flex justify-content-center align-items-center">
-                    <a href="https://bsrs.tesda.gov.ph" target="_blank" class="btn btn-primary px-5 rounded-pill shadow">Apply for Scholarship</a>
+                    <a href="https://bsrs.tesda.gov.ph" target="_blank"
+                        class="btn btn-primary px-5 rounded-pill shadow">Apply for Scholarship</a>
                 </div>
             </div>
-
             <div class="col-lg-6">
                 <div class="card border-0 shadow-lg rounded-4">
                     <div class="card-body p-4 p-lg-5">

@@ -10,7 +10,6 @@ use App\Models\Application\Application;
 class ApplicationResubmittedNotification extends Notification
 {
     use Queueable;
-    
     protected $application;
 
     public function __construct(Application $application)

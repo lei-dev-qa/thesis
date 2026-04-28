@@ -1,151 +1,4 @@
-{{-- resources/views/applicant/dashboard.blade.php --}}
 @extends('layouts.app')
-
-@push('styles')
-    <style>
-        /* Step Indicator Styles */
-        .step-indicator {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            position: relative;
-            padding: 20px 0;
-            overflow-x: auto;
-        }
-
-        .step-indicator::before {
-            content: '';
-            position: absolute;
-            top: 35px;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: #e9ecef;
-            z-index: 0;
-        }
-
-        .step {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-            flex: 1;
-            min-width: 100px;
-            z-index: 1;
-        }
-
-        .step-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: #e9ecef;
-            color: #6c757d;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 18px;
-            margin-bottom: 10px;
-            border: 3px solid #fff;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .step-label {
-            text-align: center;
-            font-size: 12px;
-            color: #6c757d;
-            max-width: 100px;
-            line-height: 1.3;
-            font-weight: 500;
-        }
-
-        .step.active .step-icon {
-            background: #0d6efd;
-            color: white;
-            border-color: #0d6efd;
-            animation: pulse 2s infinite;
-        }
-
-        .step.active .step-label {
-            color: #0d6efd;
-            font-weight: 600;
-        }
-
-        .step.completed .step-icon {
-            background: #198754;
-            color: white;
-            border-color: #198754;
-        }
-
-        .step.completed .step-label {
-            color: #198754;
-            font-weight: 600;
-        }
-
-        .step.completed.failed-result .step-icon {
-            background: #dc3545 !important;
-            color: white !important;
-            border-color: #dc3545 !important;
-        }
-
-        .step.completed.failed-result .step-label {
-            color: #dc3545 !important;
-            font-weight: 600;
-        }
-
-        @keyframes pulse {
-
-            0%,
-            100% {
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 0 0 0 rgba(13, 110, 253, 0.7);
-            }
-
-            50% {
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 0 0 10px rgba(13, 110, 253, 0);
-            }
-        }
-
-        .application-card {
-            transition: transform 0.2s ease;
-            border-radius: 12px;
-        }
-
-        .application-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
-        }
-
-        .application-type-card {
-            transition: all 0.3s ease;
-        }
-
-        .application-type-card:hover:not(.opacity-50) {
-            transform: scale(1.02);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        @media (max-width: 768px) {
-            .step-indicator {
-                flex-wrap: nowrap;
-                overflow-x: auto;
-            }
-
-            .step {
-                min-width: 80px;
-            }
-
-            .step-icon {
-                width: 40px;
-                height: 40px;
-                font-size: 14px;
-            }
-
-            .step-label {
-                font-size: 10px;
-            }
-        }
-    </style>
-@endpush
 
 @section('content')
     <div class="container py-4">
@@ -155,7 +8,6 @@
                 <i class="bi bi-plus-circle"></i> Apply
             </button>
         </div>
-
         @if (session('error'))
             <div class="alert alert-danger alert-dismissible fade show">
                 <i class="bi bi-exclamation-circle me-2"></i>{{ session('error') }}
@@ -169,7 +21,6 @@
                 get started.
             </div>
         @else
-            {{-- Correction Needed Alert --}}
             @php
                 $needsCorrection = $twspApps
                     ->where('correction_requested', true)
@@ -450,9 +301,6 @@
                                             @endif
                                         </div>
                                     </div>
-
-
-
                                     {{-- Step 4: Training Result --}}
                                     <div
                                         class="step {{ $app->training_status === 'completed' ? 'completed' : ($app->trainingBatch && $app->trainingBatch->hasSchedule() ? 'active' : '') }}">
@@ -465,8 +313,6 @@
                                         </div>
                                         <div class="step-label">Training Result</div>
                                     </div>
-
-
                                     {{-- Step 5: Scheduled for Assessment --}}
                                     <div
                                         class="step {{ $firstAssessmentResult ? 'completed' : ($app->assessment_batch_id && $app->assessmentBatch && $app->assessmentBatch->assessment_date ? 'completed' : ($app->training_status === 'completed' ? 'active' : '')) }}">
@@ -523,10 +369,6 @@
                                             @endif
                                         </div>
                                     </div>
-
-
-
-
                                     {{-- Step 6: Assessment Result (with NYC badge) --}}
                                     <div
                                         class="step {{ $firstAssessmentResult ? 'completed' : ($app->assessment_batch_id ? 'active' : '') }} {{ $firstAssessmentResult && $firstAssessmentResult->result === 'Not Yet Competent' ? 'failed-result' : '' }}">
@@ -544,7 +386,6 @@
                                         </div>
                                         <div class="step-label">Assessment Result</div>
                                     </div>
-
                                     {{-- Step 7: Reassessment Pay --}}
                                     @if ($firstAssessmentResult && $firstAssessmentResult->result === 'Not Yet Competent')
                                         <div
@@ -558,7 +399,6 @@
                                             </div>
                                             <div class="step-label">Reassessment Pay</div>
                                         </div>
-
                                         {{-- Step 8: Admin Review (Payment Verification) --}}
                                         <div
                                             class="step {{ $app->reassessment_payment_status === 'verified' ? 'completed' : ($app->reassessment_payment_status === 'submitted' || $app->reassessment_payment_status === 'pending' ? 'active' : '') }}">
@@ -571,7 +411,6 @@
                                             </div>
                                             <div class="step-label">Admin Review</div>
                                         </div>
-
                                         {{-- Step 9: Reassessment Scheduled --}}
                                         <div
                                             class="step {{ $reassessmentResult || ($app->assessment_batch_id && $app->reassessment_payment_status === 'verified') ? 'completed' : ($app->reassessment_payment_status === 'verified' ? 'active' : '') }}">
@@ -595,7 +434,6 @@
                                                                 $app->title_of_assessment_applied_for
                                                             ]['assessment'] ?? 0;
                                                     @endphp
-
                                                     @if ($hasReassessmentSchedule && !$reassessmentResult)
                                                         {{-- Schedule exists - show View Schedule button only --}}
                                                         <br>
@@ -613,8 +451,6 @@
                                                 @endif
                                             </div>
                                         </div>
-
-
                                         {{-- Step 10: Reassessment Result (with NYC badge) --}}
                                         <div
                                             class="step {{ $reassessmentResult ? 'completed' : ($app->reassessment_payment_status === 'verified' && $app->assessment_batch_id ? 'active' : '') }} {{ $reassessmentResult && $reassessmentResult->result === 'Not Yet Competent' ? 'failed-result' : '' }}">
@@ -632,7 +468,6 @@
                                             </div>
                                             <div class="step-label">Reassessment Result</div>
                                         </div>
-
                                         {{-- Step 11: Reassessment Pay (2nd) --}}
                                         @if ($reassessmentResult && $reassessmentResult->result === 'Not Yet Competent')
                                             <div
@@ -649,7 +484,6 @@
                                                 </div>
                                                 <div class="step-label">Reassessment Pay (2nd)</div>
                                             </div>
-
                                             {{-- Step 12: Admin Review (2nd Payment) --}}
                                             <div
                                                 class="step {{ $app->second_reassessment_payment_status === 'verified' ? 'completed' : ($app->second_reassessment_payment_status === 'submitted' || $app->second_reassessment_payment_status === 'pending' ? 'active' : '') }}">
@@ -662,7 +496,6 @@
                                                 </div>
                                                 <div class="step-label">Admin Review</div>
                                             </div>
-
                                             {{-- Step 13: 2nd Reassessment Scheduled --}}
                                             @if (!$app->hasFailedTwice())
                                                 <div
@@ -706,7 +539,6 @@
                                                     </div>
                                                 </div>
                                             @endif
-
                                             {{-- Step 14: 2nd Reassessment Result (with NYC badge) --}}
                                             <div
                                                 class="step {{ $secondReassessmentResult ? 'completed' : ($app->assessment_batch_id && $app->second_reassessment_payment_status === 'verified' ? 'active' : '') }} {{ $secondReassessmentResult && $secondReassessmentResult->result === 'Not Yet Competent' ? 'failed-result' : '' }}">
@@ -727,7 +559,6 @@
                                         @endif
                                     @endif
                                 </div>
-
                                 {{-- Status Info --}}
                                 <div class="row">
                                     <div class="col-md-4">
@@ -783,8 +614,6 @@
                                         </p>
                                     </div>
                                 </div>
-
-
                                 {{-- Action Buttons --}}
                                 <div class="d-flex gap-2 mt-3">
                                     <a href="{{ route('applicant.applications.show', $app->id) }}"
@@ -797,7 +626,6 @@
                                             <i class="fas fa-edit"></i> Edit Application
                                         </a>
                                     @endif
-
                                     @if (
                                         $firstAssessmentResult &&
                                             $firstAssessmentResult->result === 'Not Yet Competent' &&
@@ -807,7 +635,6 @@
                                             <i class="bi bi-credit-card"></i> Pay for Reassessment
                                         </button>
                                     @endif
-
                                     {{-- View Official Receipt Button (Reassessment) for TWSP --}}
                                     @if ($app->reassessment_payment_status === 'verified' && $app->reassessment_official_receipt_photo)
                                         <a href="{{ Storage::url($app->reassessment_official_receipt_photo) }}"
@@ -815,7 +642,6 @@
                                             <i class="bi bi-file-earmark-text"></i> View Reassessment Receipt
                                         </a>
                                     @endif
-
                                     @php
                                         $reassessmentResult =
                                             $app->assessmentResults->count() > 1
@@ -832,7 +658,6 @@
                                             <i class="bi bi-credit-card"></i> Pay for 2nd Reassessment
                                         </button>
                                     @endif
-
                                     {{-- View Official Receipt Button (2nd Reassessment) for TWSP --}}
                                     @if ($app->second_reassessment_payment_status === 'verified' && $app->second_reassessment_official_receipt_photo)
                                         <a href="{{ Storage::url($app->second_reassessment_official_receipt_photo) }}"
@@ -855,7 +680,6 @@
                         </div>
                     @endforelse
                 </div>
-
                 <!-- Assessment Only Tab -->
                 <div class="tab-pane fade" id="assessment" role="tabpanel">
                     @forelse ($assessmentApps as $app)
@@ -889,7 +713,6 @@
                                     @endif
                                 </div>
                             </div>
-
                             <div class="card-body">
                                 {{-- Get the FIRST assessment result (not the latest) --}}
                                 @php
@@ -908,8 +731,6 @@
                                         ->skip(2)
                                         ->first();
                                 @endphp
-
-
                                 {{-- Progress Indicator for Assessment Only (6 steps) --}}
                                 <div class="step-indicator mb-4">
                                     {{-- Step 1: Application Submitted --}}
@@ -917,7 +738,6 @@
                                         <div class="step-icon"><i class="bi bi-check fs-4"></i></div>
                                         <div class="step-label">Application Submitted</div>
                                     </div>
-
                                     {{-- Step 2: Payment --}}
                                     <div
                                         class="step {{ $app->payment_status === 'verified' ? 'completed' : ($app->payment_status === 'submitted' ? 'active' : '') }}">
@@ -930,7 +750,6 @@
                                         </div>
                                         <div class="step-label">Payment</div>
                                     </div>
-
                                     {{-- Step 3: Admin Review --}}
                                     <div
                                         class="step {{ $app->status === 'approved' ? 'completed' : ($app->payment_status === 'verified' ? 'active' : '') }}">
@@ -976,7 +795,6 @@
                                             @endif
                                         </div>
                                     </div>
-
                                     {{-- Step 5: Assessment Result --}}
                                     <div
                                         class="step {{ $firstAssessmentResult ? 'completed' : ($app->assessment_batch_id ? 'active' : '') }} {{ $firstAssessmentResult && $firstAssessmentResult->result === 'Not Yet Competent' ? 'failed-result' : '' }}">
@@ -994,7 +812,6 @@
                                         </div>
                                         <div class="step-label">Assessment Result</div>
                                     </div>
-
                                     {{-- Step 6: Reassessment Pay --}}
                                     @if ($firstAssessmentResult && $firstAssessmentResult->result === 'Not Yet Competent')
                                         <div
@@ -1008,7 +825,6 @@
                                             </div>
                                             <div class="step-label">Reassessment Pay</div>
                                         </div>
-
                                         {{-- Step 7: Admin Review (Payment Verification) --}}
                                         <div
                                             class="step {{ $app->reassessment_payment_status === 'verified' ? 'completed' : ($app->reassessment_payment_status === 'submitted' || $app->reassessment_payment_status === 'pending' ? 'active' : '') }}">
@@ -1061,7 +877,6 @@
                                                 </div>
                                             </div>
                                         @endif
-
                                         {{-- Step 9: Reassessment Result --}}
                                         <div
                                             class="step {{ $reassessmentResult ? 'completed' : ($app->reassessment_payment_status === 'verified' && $app->assessment_batch_id ? 'active' : '') }} {{ $reassessmentResult && $reassessmentResult->result === 'Not Yet Competent' ? 'failed-result' : '' }}">
@@ -1079,7 +894,6 @@
                                             </div>
                                             <div class="step-label">Reassessment Result</div>
                                         </div>
-
                                         {{-- Step 10: Reassessment Pay (2nd) --}}
                                         @if ($reassessmentResult && $reassessmentResult->result === 'Not Yet Competent')
                                             <div
@@ -1154,13 +968,10 @@
                                             </div>
                                         </div>
                                     @endif
-
                                     {{-- Step 13: 2nd Reassessment Result (Always visible) --}}
                                     @if ($reassessmentResult && $reassessmentResult->result === 'Not Yet Competent')
                                         <div
                                             class="step {{ $secondReassessmentResult ? 'completed' : ($app->assessment_batch_id && $app->second_reassessment_payment_status === 'verified' ? 'active' : '') }}">
-
-
                                             <div class="step-icon">
                                                 @if ($secondReassessmentResult)
                                                     @if ($secondReassessmentResult->result === 'Not Yet Competent')
@@ -1177,8 +988,6 @@
                                         </div>
                                     @endif
                                 </div>
-
-
                                 {{-- Status Info --}}
                                 <div class="row">
                                     <div class="col-md-4">
@@ -1228,28 +1037,24 @@
                                         </p>
                                     </div>
                                 </div>
-
                                 {{-- Action Buttons --}}
                                 <div class="d-flex gap-2 mt-3">
                                     <a href="{{ route('applicant.applications.show', $app->id) }}"
                                         class="btn btn-primary">
                                         <i class="bi bi-eye"></i> View Details
                                     </a>
-
                                     @if ($app->correction_requested)
                                         <a href="{{ route('applicant.applications.edit', $app->id) }}"
                                             class="btn btn-warning">
                                             <i class="fas fa-edit"></i> Edit Application
                                         </a>
                                     @endif
-
                                     @if ($app->payment_status === 'pending' || $app->payment_status === 'rejected')
                                         <button class="btn btn-warning" data-bs-toggle="modal"
                                             data-bs-target="#paymentModal{{ $app->id }}">
                                             <i class="fas fa-upload"></i> Upload Payment
                                         </button>
                                     @endif
-
                                     {{-- View Official Receipt Button (Initial Payment) --}}
                                     @if ($app->payment_status === 'verified' && $app->official_receipt_photo)
                                         <a href="{{ Storage::url($app->official_receipt_photo) }}" target="_blank"
@@ -1257,7 +1062,6 @@
                                             <i class="bi bi-file-earmark-text"></i> View Official Receipt
                                         </a>
                                     @endif
-
                                     @if (
                                         $app->assessmentResult &&
                                             $app->assessmentResult->result === 'Not Yet Competent' &&
@@ -1267,7 +1071,6 @@
                                             <i class="bi bi-credit-card"></i> Pay for Reassessment
                                         </button>
                                     @endif
-
                                     {{-- View Official Receipt Button (Reassessment) --}}
                                     @if ($app->reassessment_payment_status === 'verified' && $app->reassessment_official_receipt_photo)
                                         <a href="{{ Storage::url($app->reassessment_official_receipt_photo) }}"
@@ -1275,7 +1078,6 @@
                                             <i class="bi bi-file-earmark-text"></i> View Reassessment Receipt
                                         </a>
                                     @endif
-
                                     @if (
                                         $reassessmentResult &&
                                             $reassessmentResult->result === 'Not Yet Competent' &&
@@ -1286,7 +1088,6 @@
                                             <i class="bi bi-credit-card"></i> Pay for 2nd Reassessment
                                         </button>
                                     @endif
-
                                     {{-- View Official Receipt Button (2nd Reassessment) --}}
                                     @if ($app->second_reassessment_payment_status === 'verified' && $app->second_reassessment_official_receipt_photo)
                                         <a href="{{ Storage::url($app->second_reassessment_official_receipt_photo) }}"
@@ -1294,8 +1095,6 @@
                                             <i class="bi bi-file-earmark-text"></i> View 2nd Reassessment Receipt
                                         </a>
                                     @endif
-
-
                                 </div>
                             </div>
                         </div>
@@ -1314,19 +1113,18 @@
         $twspAnnouncement = \App\Models\TWSP\TwspAnnouncement::getActive();
         $twspAvailable = $twspAnnouncement && $twspAnnouncement->hasAvailableSlots();
     @endphp
-    {{-- Application Type Modal --}}
+
     @include('applicant.component.application-type', [
         'twspAnnouncement' => $twspAnnouncement,
         'twspAvailable' => $twspAvailable,
     ])
 
-    {{-- Payment Upload Modals --}}
     @foreach ($assessmentApps as $app)
         @include('applicant.component.payment-upload', [
             'app' => $app,
         ])
     @endforeach
-    {{-- Assessment Schedule Modals --}}
+
     @foreach ($applications as $app)
         @if ($app->assessment_batch_id && $app->assessmentBatch)
             @include('applicant.component.assessment-schedule', [
@@ -1335,7 +1133,6 @@
         @endif
     @endforeach
 
-    {{-- Reassessment Schedule Modal --}}
     @foreach ($applications as $app)
         @if ($app->reassessment_payment_status === 'verified' && $app->assessmentBatch)
             @include('applicant.component.reassessment-schedule', [
@@ -1343,10 +1140,8 @@
             ])
         @endif
     @endforeach
-
     </div>
 
-    {{-- Reassessment Payment Modals --}}
     @foreach ($applications as $app)
         @php
             $assessmentResult = $app->latestAssessmentResult;
@@ -1358,16 +1153,11 @@
             ])
         @endif
     @endforeach
-    {{-- 2nd Reassessment Payment Modal --}}
+
     @foreach ($applications as $app)
         @php
-            // Get all failed results
             $failedResults = $app->assessmentResults->where('result', 'Not Yet Competent')->values();
-
-            // 1st reassessment is the 2nd failed result (index 1)
             $reassessmentResult = $failedResults->count() > 1 ? $failedResults->get(1) : null;
-
-            // 2nd reassessment is the 3rd failed result (index 2)
             $secondReassessmentResult = $failedResults->count() > 2 ? $failedResults->get(2) : null;
         @endphp
 
@@ -1378,7 +1168,7 @@
             ])
         @endif
     @endforeach
-    {{-- Training Schedule Modals --}}
+
     @foreach ($twspApps as $app)
         @if ($app->training_batch_id && $app->trainingBatch && $app->trainingBatch->hasSchedule())
             @include('applicant.component.training-schedule', [
@@ -1386,34 +1176,23 @@
             ])
         @endif
     @endforeach
-
 @endsection
 
 @push('scripts')
     <script>
-        // ========== TAB PERSISTENCE ==========
         document.addEventListener('DOMContentLoaded', function() {
             const twspTab = document.getElementById('twsp-tab');
             const assessmentTab = document.getElementById('assessment-tab');
             const twspPane = document.getElementById('twsp');
             const assessmentPane = document.getElementById('assessment');
-
-            // Get saved tab from localStorage
             const savedTab = localStorage.getItem('activeApplicationTab');
 
-            // Restore the saved tab on page load
             if (savedTab === 'assessment') {
-                // Remove active from TWSP
                 twspTab.classList.remove('active');
                 twspPane.classList.remove('show', 'active');
-
-                // Add active to Assessment
                 assessmentTab.classList.add('active');
                 assessmentPane.classList.add('show', 'active');
             }
-            // If savedTab is 'twsp' or null, TWSP tab is already active by default
-
-            // Save tab selection when clicked
             twspTab.addEventListener('click', function() {
                 localStorage.setItem('activeApplicationTab', 'twsp');
             });
@@ -1423,14 +1202,12 @@
             });
         });
 
-        // ========== EXISTING CODE ==========
         function selectApplicationType(type) {
             sessionStorage.setItem('application_type', type);
             sessionStorage.setItem('program_name', 'BOOKKEEPING NC III');
             window.location.href = "{{ route('applicant.apply.create') }}";
         }
 
-        // Hover effects for application type cards
         document.querySelectorAll('.application-type-card').forEach(card => {
             card.addEventListener('mouseenter', function() {
                 if (!this.classList.contains('opacity-50')) {
@@ -1449,7 +1226,6 @@
             window.location.href = "{{ route('applicant.apply.create') }}";
         }
 
-        // Hover effects for application type cards
         document.querySelectorAll('.application-type-card').forEach(card => {
             card.addEventListener('mouseenter', function() {
                 if (!this.classList.contains('opacity-50')) {

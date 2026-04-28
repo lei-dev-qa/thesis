@@ -43,27 +43,18 @@
                             </tbody>
                         </table>
                     </div>
-
                     <div class="alert alert-warning">
                         <i class="bi bi-info-circle"></i>
                         <strong>Note:</strong> Reassessment requires you to retake ALL COCs, not just the NYC
                         ones.
                     </div>
-
                     <hr>
-
                     <div class="mb-3">
                         <label class="form-label">Upload Payment Proof <span
                                 class="text-danger">*</span></label>
                         <input type="file" name="payment_proof" class="form-control"
                             accept="image/*,.pdf" required>
                         <small class="text-muted">Accepted formats: JPG, PNG, PDF (Max 2MB)</small>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Payment Reference Number (Optional)</label>
-                        <input type="text" name="payment_reference" class="form-control"
-                            placeholder="e.g., GCash Ref #, Bank Transaction #">
                     </div>
                 </div>
                 <div class="modal-footer">

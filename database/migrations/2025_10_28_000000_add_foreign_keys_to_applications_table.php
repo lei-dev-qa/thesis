@@ -6,12 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     * 
-     * Add foreign key constraints to applications table.
-     * This must run AFTER training_batches, training_schedules, and assessment_batches tables are created.
-     */
     public function up(): void
     {
         Schema::table('applications', function (Blueprint $table) {
@@ -32,9 +26,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::table('applications', function (Blueprint $table) {

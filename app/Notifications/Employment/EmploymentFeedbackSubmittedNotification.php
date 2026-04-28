@@ -21,17 +21,11 @@ class EmploymentFeedbackSubmittedNotification extends Notification
         $this->application = $application;
     }
 
-    /**
-     * Get the notification's delivery channels.
-     */
     public function via(object $notifiable): array
     {
         return ['mail'];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     */
     public function toMail(object $notifiable): MailMessage
     {
         $applicantName = trim($this->application->firstname . ' ' . $this->application->surname);
@@ -57,9 +51,6 @@ class EmploymentFeedbackSubmittedNotification extends Notification
             ->salutation('SHC-TVET Training and Assessment Centre System');
     }
 
-    /**
-     * Get the array representation of the notification.
-     */
     public function toArray(object $notifiable): array
     {
         return [

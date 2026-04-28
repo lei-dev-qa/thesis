@@ -30,7 +30,6 @@
                             @if ($app->assessmentBatch->intensive_review_day1)
                                 <div class="mb-2">
                                     <div class="row align-items-center">
-                                        {{-- Column 1: Date --}}
                                         <div class="col-md-6">
                                             <label class="text-muted small">Day 1</label>
                                             <h6 class="mb-0">
@@ -41,8 +40,6 @@
                                                 </span>
                                             </h6>
                                         </div>
-
-                                        {{-- Column 2: Time --}}
                                         <div class="col-md-6">
                                             <label class="text-muted small">Time</label>
                                             <h6 class="mb-0">
@@ -59,7 +56,6 @@
                             @if ($app->assessmentBatch->intensive_review_day2)
                                 <div class="mb-2">
                                     <div class="row align-items-center">
-                                        {{-- Column 1: Date --}}
                                         <div class="col-md-6">
                                             <label class="text-muted small">Day 2</label>
                                             <h6 class="mb-0">
@@ -70,8 +66,6 @@
                                                 </span>
                                             </h6>
                                         </div>
-
-                                        {{-- Column 2: Time --}}
                                         <div class="col-md-6">
                                             <label class="text-muted small">Time</label>
                                             <h6 class="mb-0">

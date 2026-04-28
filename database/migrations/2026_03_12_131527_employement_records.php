@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('occupation');
             $table->string('employer_name');
             $table->text('employer_address');
-            $table->string('employer_classification'); // e.g., Private, Government, NGO
+            $table->string('employer_classification');
             $table->decimal('monthly_income', 10, 2);
             $table->timestamp('viewed_at')->nullable();
             $table->timestamps();

@@ -19,25 +19,18 @@ class ApplicationFormPdfController extends Controller
             abort(404, 'TESDA template not found: ' . $templatePath);
         }
 
-        // Create FPDI (A4, mm)
         $pdf = new Fpdi('P', 'mm', 'A4');
         $pageCount = $pdf->setSourceFile($templatePath);
-
-        // --- Mapping arrays: page => fields with x,y,font,size[,w]
-        // These coordinates are **starting estimates** (mm) — fine-tune them after testing.
         $mapping = [
 
             // PAGE 1 (Application section)
             1 => [
-                 // Photo box 
                 'photo' => [
                     'x'=> 171,
                     'y'=> 55.2,
                     'w'=> 29,
                     'h'=> 40.7
                 ],
-
-                // Name of School/Training Center/Company:
                 'training_center' => [
                 'value' => 'SACRED HEART COLLEGE OF LUCENA CITY, INC',
                 'x' => 77,
@@ -47,16 +40,13 @@ class ApplicationFormPdfController extends Controller
                 'style' => 'B',
 
                 ],
-                // Reference Number (15 character boxes)
                 'reference_number' => [
-                    'x' => 60,           // Starting X position (adjust based on template)
-                    'y' => 63,           // Starting Y position (adjust based on template)
+                    'x' => 60,         
+                    'y' => 63,        
                     'font' => 'Arial',
                     'size' => 10,
                     'style' => 'B',
                 ],
-
-                // Address
                 'training_center_address' => [
                     'value' => '1 Merchan Street, Lucena City',
                     'x' => 20.5,
@@ -64,9 +54,7 @@ class ApplicationFormPdfController extends Controller
                     'font' => 'Arial',
                     'size' => 9,
                     'style' => 'B',
-                   
                 ],
-                // Title / NC Program
                 'title_of_assessment_applied_for' => [
                     'x'=>58.5,
                     'y'=>131.4,
@@ -75,8 +63,6 @@ class ApplicationFormPdfController extends Controller
                     'w'=>150, 
                     'style'=> '',
                 ],
-
-                // Name fields
                 'surname' => [
                     'x'=> 36,
                     'y'=> 165,
@@ -113,8 +99,6 @@ class ApplicationFormPdfController extends Controller
                     'size'=>10,
                     'style'=> '',
                 ],
-
-                // Mailing Address
                 'street_address' => [
                     'x'=> 34,
                     'y'=> 187,
@@ -169,8 +153,6 @@ class ApplicationFormPdfController extends Controller
                     'size'=> 9,
                     'style'=> '',
                 ],
-
-                // Mother and Father names
                 'mothers_name' => [
                     'x'=> 34.7,
                     'y'=> 206.9,
@@ -185,8 +167,6 @@ class ApplicationFormPdfController extends Controller
                     'size'=> 8,
                     'style'=> '',
                 ],
-
-                // Sex checkboxes (male/female) — coords approximate
                 'sex_male_box' => [
                     'x'=> 5,
                     'y'=> 221
@@ -195,8 +175,6 @@ class ApplicationFormPdfController extends Controller
                     'x'=> 5,
                     'y'=> 227
                 ],
-
-                // Civil status checkbox sample positions (adjust)
                 'civil_single_box' => [
                     'x'=> 27,
                     'y'=> 221
@@ -213,8 +191,6 @@ class ApplicationFormPdfController extends Controller
                     'x'=> 27,
                     'y'=> 240
                 ],
-
-                // Contact
                 'mobile' => [
                     'x'=> 62,
                     'y'=> 226.8,
@@ -229,8 +205,6 @@ class ApplicationFormPdfController extends Controller
                     'size'=> 9,
                     'style' => ''
                 ],
-
-                // Highest Educational Attainment
                 'edu_elementary_box' => [
                     'x'=> 125,
                     'y'=> 221
@@ -267,8 +241,6 @@ class ApplicationFormPdfController extends Controller
                     'style' => '',
                     'break_at14' => 8,
                 ],
-
-                 // Employment status checkboxes
                 'employment_casual_box' => [
                     'x'=> 164.5,
                     'y'=> 221
@@ -293,12 +265,6 @@ class ApplicationFormPdfController extends Controller
                     'x'=> 164.5,
                     'y'=> 250
                 ],
-                // 'employment_unemployed_box' => [
-                //     'x'=> 0,
-                //     'y'=> 0
-                // ],
-
-                // Birthdate / birthplace / age
                 'birthdate' => [
                     'x'=> 47,
                     'y'=> 254,
@@ -320,45 +286,35 @@ class ApplicationFormPdfController extends Controller
                     'size'=> 9,
                     'style' => ''
                 ],
-
-                // Address (multiline)
                 'address' => ['x'=>28,'y'=>92,'font'=>'Arial','size'=>9,'w'=>150],
-
-                // Admission / Schedule info (some forms show schedule on page1)
                 'schedule' => ['x'=>28,'y'=>154,'font'=>'Arial','size'=>9],
 
-                 // Work experience table starting point
                 'work_start_x' => 27,
                 'work_start_y' => 274,
-                'work_col_widths' => [29.5, 21, 44, 35, 32], // company,position,duration,salary,status,years
+                'work_col_widths' => [29.5, 21, 44, 35, 32],
                 'work_row_height' => 4,
                 'work_max_rows' => 3,
             ],
 
             // PAGE 2 (Work experience / Trainings / Licensure / Competency / Admission Slip)
             2 => [
-
-                // Trainings table
                 'train_start_x' => 6,
                 'train_start_y' => 25,
-                'train_col_widths' => [65, 35.5, 39, 20, 35], // title,venue,duration,hours,conducted_by
+                'train_col_widths' => [65, 35.5, 39, 20, 35],
                 'train_row_height' => 5.5,
                 'train_max_rows' => 4,
 
-                // Licensure table
                 'lic_start_x' => 6,
                 'lic_start_y' => 67.8,
                 'lic_col_widths' => [61,11,43,30,30,20],
                 'lic_row_height' => 4,
                 'lic_max_rows' => 3,
 
-                // Competency assessment table
                 'comp_start_x' => 6,
                 'comp_start_y' => 106,
                 'comp_col_widths' => [61,20,30,31,35,20],
                 'comp_row_height' => 4.5,
                 'comp_max_rows' => 3,
-
                 'reference_number' => [
                     'x' => 56,          
                     'y' => 149.5,          
@@ -401,7 +357,6 @@ class ApplicationFormPdfController extends Controller
                     'font' => 'Arial',
                     'size' => 8,
                     'style' => 'B',
-
                 ],
                 'assessment_date' => [
                     'x' => 42,          
@@ -417,7 +372,6 @@ class ApplicationFormPdfController extends Controller
                     'size' => 9,
                     'style' => '',
                 ],
-                
                 'photo' => [
                     'x'=> 174.2,
                     'y'=> 162.5,
@@ -432,7 +386,6 @@ class ApplicationFormPdfController extends Controller
                     'w'=> 35.8,
                     'h'=> 23.7
                 ],
-                // Surname
                 'surname' => [
                     'x'=> 40,
                     'y'=> 94,
@@ -440,7 +393,6 @@ class ApplicationFormPdfController extends Controller
                     'size' => 9,
                     'style' => '',
                 ],
-                // Firstname
                 'firstname' => [
                     'x'=> 108,
                     'y'=> 94,
@@ -448,7 +400,6 @@ class ApplicationFormPdfController extends Controller
                     'size' => 9,
                     'style' => '',
                 ],
-                // Middlename
                 'middlename' => [
                     'x'=> 170,
                     'y'=> 94,
@@ -456,7 +407,6 @@ class ApplicationFormPdfController extends Controller
                     'size' => 9,
                     'style' => '',
                 ],
-                // Number, Street
                 'street_address' => [
                     'x' => 40,
                     'y' => 104,
@@ -464,7 +414,6 @@ class ApplicationFormPdfController extends Controller
                     'size' => 9,
                     'style' => '',
                 ],
-                // Barangay 
                 'barangay_name' => [
                     'x' => 108,
                     'y' => 104,
@@ -472,7 +421,6 @@ class ApplicationFormPdfController extends Controller
                     'size' => 9,
                     'style' => '',
                 ],
-                // District
                 'district' => [
                     'x' => 170,
                     'y' => 104,
@@ -480,7 +428,6 @@ class ApplicationFormPdfController extends Controller
                     'size' => 9,
                     'style' => '',
                 ],
-                // Region
                 'region_name' => [
                     'x' => 170,
                     'y' => 127,
@@ -488,7 +435,6 @@ class ApplicationFormPdfController extends Controller
                     'size' => 9,
                     'style' => '',
                 ],
-                // Province
                 'province_name' => [
                     'x' => 108,
                     'y' => 127,
@@ -496,7 +442,6 @@ class ApplicationFormPdfController extends Controller
                     'size' => 9,
                     'style' => '',
                 ],
-                // City/Municipality
                 'city_name' => [
                     'x' => 40,
                     'y' => 127,
@@ -504,7 +449,6 @@ class ApplicationFormPdfController extends Controller
                     'size' => 9,
                     'style' => '',
                 ],
-                // Email
                 'email' => [
                     'x' => 40,
                     'y' => 137,
@@ -512,7 +456,6 @@ class ApplicationFormPdfController extends Controller
                     'size' => 9,
                     'style' => '',
                 ],
-                // Contact Number(s)
                 'mobile' => [
                     'x' => 130,
                     'y' => 137,
@@ -520,9 +463,6 @@ class ApplicationFormPdfController extends Controller
                     'size' => 9,
                     'style' => '',
                 ],
-                // Email
-                
-                // Nationality
                 'nationality' => [
                     'x' => 170,
                     'y' => 137,
@@ -530,8 +470,6 @@ class ApplicationFormPdfController extends Controller
                     'size' => 9,
                     'style' => '',
                 ],
-                // Personal Information 
-                // Sex
                  'sex_male_box' => [
                     'x' => 11.5,
                     'y' => 165,
@@ -540,7 +478,6 @@ class ApplicationFormPdfController extends Controller
                     'x' => 11.5,
                     'y' => 170,
                  ],
-                 // Civil Status
                  'civil_single_box'  => [
                     'x' => 44.5,
                     'y' => 165,
@@ -557,14 +494,12 @@ class ApplicationFormPdfController extends Controller
                     'x' => 44.5,
                     'y' => 173.5,
                  ],
-                 // Employment before training
-                 // Employment Status 
+
                 'emp_before_wage_employed_box' => ['x' => 94, 'y' => 168.5],
                 'emp_before_underemployed_box' => ['x' => 94, 'y' => 173.5],
                 'emp_before_self_employed_box' => ['x' => 94, 'y' => 185.5],
                 'emp_before_unemployed_box' => ['x' => 94, 'y' => 190],
         
-                // Employment Type checkboxes (if wage-employed)
                 'emp_type_casual_box' => ['x' => 139.7, 'y' => 173.5],
                 'emp_type_probationary_box' => ['x' => 139.7, 'y' => 177.5],
                 'emp_type_contractual_box' => ['x' => 139.7, 'y' => 181.5],
@@ -573,16 +508,15 @@ class ApplicationFormPdfController extends Controller
                 'emp_type_permanent_box' => ['x' => 164.5, 'y' => 177],
                 'emp_type_temporary_box' => ['x' => 164.5, 'y' => 181.5],
 
-                // Birthdate
                'birthdate_month' => [
-                    'x' => 37,  // adjust to where the month should appear
+                    'x' => 37, 
                     'y' => 196,
                     'font' => 'Arial',
                     'size' => 9,
                     'style' => '',
                 ],
                 'birthdate_day' => [
-                    'x' => 84,  // adjust to where the day should appear
+                    'x' => 84, 
                     'y' => 196,
                     'font' => 'Arial',
                     'size' => 9,
@@ -595,7 +529,6 @@ class ApplicationFormPdfController extends Controller
                     'size' => 9,
                     'style' => '',
                 ],
-                // Age
                 'age' => [
                     'x' => 170, 
                     'y' => 196,
@@ -603,7 +536,6 @@ class ApplicationFormPdfController extends Controller
                     'size' => 9,
                     'style' => '',
                 ],
-                // Birthplace
                 'birthplace_city' => [
                     'x' => 37,
                     'y' => 211.5,
@@ -625,7 +557,7 @@ class ApplicationFormPdfController extends Controller
                     'size' => 9,
                     'style' => '',
                 ],
-                // Educational Attainment Before Training - checkboxes
+
                 'edu_before_no_grade_box' => ['x' => 9.3, 'y' => 230],
                 'edu_before_elem_undergrad_box' => ['x' => 9.3, 'y' => 237.5],
                 'edu_before_elem_grad_box' => ['x' => 9.3, 'y' => 242.5],
@@ -640,7 +572,6 @@ class ApplicationFormPdfController extends Controller
                 'edu_before_masteral_box' => ['x' => 140, 'y' => 242.5],
                 'edu_before_doctorate_box' => ['x' => 140, 'y' => 250.2],
 
-                // Parent/Guardian Info
                 'parent_guardian_name' => [
                     'x' => 45,
                     'y' => 269,
@@ -660,8 +591,6 @@ class ApplicationFormPdfController extends Controller
             
             // PAGE 4 - Educational Attainment & Classifications
             4 => [
-                // Learner Classification checkboxes (many options)
-                // Column 1
                 'learner_4ps_box' => ['x' => 9, 'y' => 28],
                 'learner_displaced_workers_box' => ['x' => 9, 'y' => 35],
                 'learner_afp_pnp_wounded_box' => ['x' => 9, 'y' => 41],
@@ -670,7 +599,7 @@ class ApplicationFormPdfController extends Controller
                 'learner_rebel_returnees_box' => ['x' => 9, 'y' => 61],
                 'learner_tesda_alumni_box' => ['x' => 9, 'y' => 69],
                 'learner_disaster_victims_box' => ['x' => 9, 'y' => 76],
-                // Column 2
+                
                 'learner_agrarian_box' => ['x' => 71.5, 'y' => 28],
                 'learner_drug_dependents_box' => ['x' => 71.5, 'y' => 33],
                 'learner_farmers_fishermen_box' => ['x' => 72, 'y' => 43],
@@ -679,7 +608,7 @@ class ApplicationFormPdfController extends Controller
                 'learner_returning_ofw_box' => ['x' => 72, 'y' => 61],
                 'learner_tvet_trainers_box' => ['x' => 72, 'y' => 69],
                 'learner_wounded_afp_pnp_box' => ['x' => 72, 'y' => 76],
-                // Column 3
+                
                 'learner_balik_probinsya_box' => ['x' => 137.5, 'y' => 28],
                 'learner_afp_pnp_killed_box' => ['x' => 137.5, 'y' => 33],
                 'learner_indigenous_box' => ['x' => 137.5, 'y' => 43],
@@ -689,7 +618,6 @@ class ApplicationFormPdfController extends Controller
                 'learner_uniformed_box' => ['x' => 137.5, 'y' => 69],
                 'learner_others_box' => ['x' => 137.5, 'y' => 75],
 
-                //  Name of Course/Qualification
                 'title_of_assessment_applied_for' => [
                     'x' => 10,
                     'y' => 126.5,
@@ -697,7 +625,6 @@ class ApplicationFormPdfController extends Controller
                     'size' => 9,
                     'style' => '',
                 ],
-                // Scholarship type
                 'scholarship_type' => [
                     'x' => 10,
                     'y' => 140,
@@ -705,8 +632,6 @@ class ApplicationFormPdfController extends Controller
                     'size' => 9,
                     'style' => '',
                 ],
-                
-                // Privacy consent checkboxes
                 'privacy_agree_box' => ['x' => 69.5, 'y' => 171],
                 'privacy_disagree_box' => ['x' => 72, 'y' => 200],
 
@@ -740,33 +665,22 @@ class ApplicationFormPdfController extends Controller
             ],
         ];
 
-        // --- Loop pages and overlay data
         for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
             $pdf->AddPage();
             $tplIdx = $pdf->importPage($pageNo);
             $pdf->useTemplate($tplIdx, 0, 0, 210);
-
-            // Page-specific overlays
             if ($pageNo === 1 && !empty($mapping[1])) {
                 $m = $mapping[1];
-                // In the page 1 overlay section, change:
                 if (!empty($application->reference_number)) {
                     $this->writeTextIfExists($pdf, $mapping[1]['reference_number'], $application->reference_number, null, 6.8);
                 }
-
                 $this->writeTextIfExists($pdf, $m['title_of_assessment_applied_for'], $application->title_of_assessment_applied_for ?? '');
-
                 $this->writeTextIfExists($pdf, $m['training_center'], $m['training_center']['value']);
-
                 $this->writeTextIfExists($pdf, $m['training_center_address'], $m['training_center_address']['value']);
-                
                 $this->writeTextIfExists($pdf, $m['surname'], $application->surname ?? '', null, 6);
-
                 $this->writeTextIfExists($pdf, $m['firstname'], $application->firstname ?? '', null, 6);
                 $this->writeTextIfExists($pdf, $m['middlename'], $application->middlename ?? '',null, 6);
-
                 $this->writeTextIfExists($pdf, $m['middleinitial'], $application->middleinitial ?? '', null);
-
                 $this->writeTextIfExists($pdf, $m['name_extension'], $application->name_extension ?? '', null);
 
                 // Sex - checkbox
@@ -776,7 +690,6 @@ class ApplicationFormPdfController extends Controller
                 } elseif ($sex === 'female') {
                     $this->drawCheckbox($pdf, $m['sex_female_box']);
                 }
-                // Mailing Address
                 $this->writeTextIfExists($pdf, $m['street_address'], $application->street_address ?? '', null);
                 $this->writeTextIfExists($pdf, $m['barangay_name'], $application->barangay_name ?? '', null);
                 $this->writeTextIfExists($pdf, $m['district'], $application->district ?? '', null);
@@ -784,12 +697,9 @@ class ApplicationFormPdfController extends Controller
                 $this->writeTextIfExists($pdf, $m['region_name'], $application->region_name ?? '', null);
                 $this->writeTextIfExists($pdf, $m['zip_code'], $application->zip_code ?? '', null);
                 $this->writeTextIfExists($pdf, $m['province_name'], $application->province_name ?? '', null);
-                
-                // Mother and Father names
                 $this->writeTextIfExists($pdf, $m['mothers_name'], $application->mothers_name ?? '', null);
                 $this->writeTextIfExists($pdf, $m['fathers_name'], $application->fathers_name ?? '', null);
                 
-                // Civil status - naive mapping (you can expand)
                 $civil_status = strtolower($application->civil_status ?? '');
                 if ($civil_status === 'single') {
                     $this->drawCheckbox($pdf, $m['civil_single_box']);
@@ -801,7 +711,6 @@ class ApplicationFormPdfController extends Controller
                     $this->drawCheckbox($pdf, $m['civil_separated_box']);
                 }
 
-                // Contact Number(s)
                 $this->writeTextIfExists($pdf, $m['mobile'], $application->mobile ?? '');
                 $this->writeTextIfExists($pdf, $m['email'], $application->email ?? '');
                 
@@ -825,7 +734,6 @@ class ApplicationFormPdfController extends Controller
                     }
                 }
 
-                // Employment status
                 $employment_status = strtolower($application->employment_status ?? '');
                 if ($employment_status === 'casual'){
                     $this->drawCheckbox($pdf, $m['employment_casual_box']);
@@ -840,13 +748,11 @@ class ApplicationFormPdfController extends Controller
                 }else if ($employment_status === 'ofw'){
                     $this->drawCheckbox($pdf, $m['employment_ofw_box']);
                 }
-              
-                // Birthdate / birthplace / age
+
                 $this->writeTextIfExists($pdf, $m['birthdate'], $this->formatDate($application->birthdate ?? ''), null, 8.5);
                 $this->writeTextIfExists($pdf, $m['birthplace'], $application->birthplace ?? '');
                 $this->writeTextIfExists($pdf, $m['age'], $application->age ?? '');
 
-                // Work experiences table
                 $pdf->SetAutoPageBreak(false);
                 $this->drawTableRows(
                     $pdf,
@@ -858,8 +764,7 @@ class ApplicationFormPdfController extends Controller
                     ['company_name', 'position', function($row){ return ($row->date_from ?? ''). '  '.($row->date_to ?? ''); }, 'monthly_salary', 'appointment_status', 'years_experience'],
                     $m['work_max_rows']
                 );
-                
-                // Photo
+            
                 if (!empty($m['photo']) && !empty($application->photo)) {
                     $photoPath = storage_path('app/public/' . $application->photo);
                     if (file_exists($photoPath)) {
@@ -867,12 +772,10 @@ class ApplicationFormPdfController extends Controller
                     }
                 }
             }
-
             // PAGE 2: tables and admission slip
             if ($pageNo === 2 && !empty($mapping[2])) {
                 $m = $mapping[2];
 
-                // Trainings
                 $this->drawTableRows(
                     $pdf,
                     $m['train_start_x'],
@@ -884,7 +787,6 @@ class ApplicationFormPdfController extends Controller
                     $m['train_max_rows']
                 );
 
-                // Licensure
                 $this->drawTableRows(
                     $pdf,
                     $m['lic_start_x'],
@@ -896,7 +798,6 @@ class ApplicationFormPdfController extends Controller
                     $m['lic_max_rows']
                 );
 
-                // Competency Assessments
                 $this->drawTableRows(
                     $pdf,
                     $m['comp_start_x'],
@@ -907,23 +808,17 @@ class ApplicationFormPdfController extends Controller
                     ['title', 'qualification_level', 'industry_sector', 'certificate_number', 'date_of_issuance', 'expiration_date'],
                     $m['comp_max_rows']
                 );
-                // Reference No.
                 if (!empty($application->reference_number)) {
                     $this->writeTextIfExists($pdf, $m['reference_number'], $application->reference_number, null, 6.8);
                 }
-                // // Name of Applicant
-                // Format the full name properly
                 $firstName = $application->firstname ?? '';
                 $middleInitial = $application->middleinitial ?? '';
                 $surname = $application->surname ?? '';
 
-                // Format middle initial if exists
                 if (!empty($middleInitial)) {
-                    // Ensure it has a period
                     $middleInitial = rtrim($middleInitial, '.') . '.';
                 }
 
-                // Build full name array and filter out empty values
                 $nameParts = array_filter([
                     $firstName,
                     $middleInitial,
@@ -931,41 +826,29 @@ class ApplicationFormPdfController extends Controller
                 ]);
 
                 $fullName = implode(' ', $nameParts);
-
-                // Write the full name in one field
                 $this->writeTextIfExists($pdf, $m['fullname1'], $fullName, null);
 
-                // ========== FULLNAME 2 (Centered using your logic) ==========
                 if (isset($m['fullname2'])) {
-                    // Get all name values
                     $firstname = $application->firstname ?? '';
                     $middleInitial = $application->middleinitial ?? '';
                     $surname = $application->surname ?? '';
 
-                    // Format middle initial
                     if (!empty($middleInitial)) {
                         $middleInitial = strtoupper(substr($middleInitial, 0, 1)) . '.';
                     }
 
-                    // Set font for fullname2
                     $pdf->SetFont($m['fullname2']['font'], $m['fullname2']['style'], $m['fullname2']['size']);
 
-                    // Calculate widths using the font of fullname2
                     $firstnameWidth = $pdf->GetStringWidth($firstname);
                     $middleInitialWidth = $pdf->GetStringWidth($middleInitial);
                     $surnameWidth = $pdf->GetStringWidth($surname);
 
-                    // Add spacing between fields
                     $spacing = 2;
                     $totalWidth = $firstnameWidth + $middleInitialWidth + $surnameWidth + ($spacing * 2);
 
-                    // USE THE X FROM MAPPING AS THE CENTER POINT
-                    $centerX = $m['fullname2']['x'];  // This is your 50 from mapping
-                    
-                    // Calculate starting X so that the entire name block is centered around $centerX
+                    $centerX = $m['fullname2']['x'];
                     $startX = $centerX - ($totalWidth / 2);
 
-                    // Write firstname in fullname2 position
                     $firstnameX = $startX;
                     $this->writeTextIfExists($pdf, [
                         'x' => $firstnameX,
@@ -975,7 +858,6 @@ class ApplicationFormPdfController extends Controller
                         'style' => $m['fullname2']['style']
                     ], $firstname, null);
 
-                    // Write middle initial
                     $middleX = $firstnameX + $firstnameWidth + $spacing;
                     $this->writeTextIfExists($pdf, [
                         'x' => $middleX,
@@ -985,7 +867,6 @@ class ApplicationFormPdfController extends Controller
                         'style' => $m['fullname2']['style']
                     ], $middleInitial, null);
 
-                    // Write surname
                     $surnameX = $middleX + $middleInitialWidth + $spacing;
                     $this->writeTextIfExists($pdf, [
                         'x' => $surnameX,
@@ -995,12 +876,9 @@ class ApplicationFormPdfController extends Controller
                         'style' => $m['fullname2']['style']
                     ], $surname, null);
                 }
-                // // Tel. No.
                 $this->writeTextIfExists($pdf, $m['mobile'], $application->mobile ?? '');
-                // // Assessment Applied for
                 $this->writeTextIfExists($pdf, $m['title_of_assessment_applied_for'], $application->title_of_assessment_applied_for ?? '');
-                // // Name of School/Training Center/Company:
-                $this->writeTextIfExists($pdf, $m['training_center'], $m['training_center']['value']);                // Photo
+                $this->writeTextIfExists($pdf, $m['training_center'], $m['training_center']['value']);
                 if (!empty($m['photo']) && !empty($application->photo)) {
                     $photoPath = storage_path('app/public/' . $application->photo);
                     if (file_exists($photoPath)) {
@@ -1023,36 +901,23 @@ class ApplicationFormPdfController extends Controller
             // PAGE 3: Additional Information
             if ($pageNo === 3 && !empty($mapping[3])) {
                 $m = $mapping[3];
-                // Photo
                 if (!empty($m['photo']) && !empty($application->photo)) {
                     $photoPath = storage_path('app/public/' . $application->photo);
                     if (file_exists($photoPath)) {
                         $pdf->Image($photoPath, $m['photo']['x'], $m['photo']['y'], $m['photo']['w'] ?? 100, $m['photo']['h'] ?? 105);
                     }
                 }
-                // lastname
                 $this->writeTextIfExists($pdf, $m['surname'],$this->formatSurnameWithExtension($application));
-                // Firstname
                 $this->writeTextIfExists($pdf, $m['firstname'], $application->firstname ?? '', null);
-                 // Middlename
                 $this->writeTextIfExists($pdf, $m['middlename'], $application->middlename ?? '',null);
-
                 $this->writeTextIfExists($pdf, $m['district'], $application->district ?? '', null);
-                // Steet
                 $this->writeTextIfExists($pdf, $m['street_address'], $application->street_address ?? '', null);
-                // Brgy
                 $this->writeTextIfExists($pdf, $m['barangay_name'], $application->barangay_name ?? '', null);
-                // Region
                 $this->writeTextIfExists($pdf, $m['region_name'], $application->region_name ?? '', null);
-                // Province
                 $this->writeTextIfExists($pdf, $m['province_name'], $application->province_name ?? '', null);
-                // City
                 $this->writeTextIfExists($pdf, $m['city_name'], $application->city_name ?? '', null);
-                // Email
                 $this->writeTextIfExists($pdf, $m['email'], $application->email ?? '');
-                // Contact Number(s)
                 $this->writeTextIfExists($pdf, $m['mobile'], $application->mobile ?? '');
-                // Nationality
                 $this->writeTextIfExists($pdf, $m['nationality'], $application->nationality ?? 'Filipino');
                 
                 // Sex - checkbox
@@ -1073,7 +938,6 @@ class ApplicationFormPdfController extends Controller
                 }else {
                     $this->drawCheckbox($pdf, $m['civil_separated_box']);
                 }
-
                 // Employment before training - Status
                 $empBeforeStatus = strtolower($application->employment_before_training_status ?? '');
                 if ($empBeforeStatus === 'wage-employed') {
@@ -1085,7 +949,6 @@ class ApplicationFormPdfController extends Controller
                 } elseif ($empBeforeStatus === 'unemployed') {
                     $this->drawCheckbox($pdf, $m['emp_before_unemployed_box']);
                 }
-                
                 // Employment Type (if wage-employed or underemployed)
                 $empType = strtolower($application->employment_before_training_type ?? '');
                 if ($empType === 'regular') {
@@ -1103,23 +966,15 @@ class ApplicationFormPdfController extends Controller
                 } elseif ($empType === 'temporary') {
                     $this->drawCheckbox($pdf, $m['emp_type_temporary_box']);
                 }
-
-                // Birthdate
                 $birthdateParts = $this->splitDate($application->birthdate ?? '');
-
                 $this->writeTextIfExists($pdf, $m['birthdate_month'], $birthdateParts['month']);
                 $this->writeTextIfExists($pdf, $m['birthdate_day'], $birthdateParts['day']);
                 $this->writeTextIfExists($pdf, $m['birthdate_year'], $birthdateParts['year']);
-
-                // Age
                 $this->writeTextIfExists($pdf, $m['age'], $application->age ?? '');
-
-                // Birthplace
                 $this->writeTextIfExists($pdf, $m['birthplace_city'], $application->birthplace_city ?? '');
                 $this->writeTextIfExists($pdf, $m['birthplace_province'], $application->birthplace_province ?? '');
                 $this->writeTextIfExists($pdf, $m['birthplace_region'], $application->birthplace_region ?? '');
 
-                // Educational Attainment Before Training
                 $eduBefore = strtolower($application->educational_attainment_before_training ?? '');
                 $eduCheckboxMap = [
                     'no grade completed' => 'edu_before_no_grade_box',
@@ -1136,14 +991,10 @@ class ApplicationFormPdfController extends Controller
                     'masteral' => 'edu_before_masteral_box',
                     'doctorate' => 'edu_before_doctorate_box',
                 ];
-                
                 if (isset($eduCheckboxMap[$eduBefore])) {
                     $this->drawCheckbox($pdf, $m[$eduCheckboxMap[$eduBefore]]);
                 }
-                // Parent/Guardian
                 $this->writeTextIfExists($pdf, $m['parent_guardian_name'], $application->parent_guardian_name ?? '');
-                
-                // Format parent/guardian address
                 $parentAddress = $this->formatParentGuardianAddress($application);
                 $this->writeTextIfExists($pdf, $m['parent_guardian_address'], $parentAddress, $m['parent_guardian_address']['w'] ?? null);
             }
@@ -1151,14 +1002,10 @@ class ApplicationFormPdfController extends Controller
             // PAGE 4: Educational Attainment & Classifications
             if ($pageNo === 4 && !empty($mapping[4])) {
                 $m = $mapping[4];
-                // Learner Classification (multiple selections possible)
                 $learnerClassifications = $application->learner_classification;
-                // Ensure it's always an array
                 if (is_string($learnerClassifications)) {
-                    // If it's a JSON string, decode it
                     $learnerClassifications = json_decode($learnerClassifications, true) ?? [];
                 } elseif (!is_array($learnerClassifications)) {
-                    // If it's null or something else, make it an empty array
                     $learnerClassifications = [];
                 }
                 $learnerCheckboxMap = [
@@ -1190,73 +1037,53 @@ class ApplicationFormPdfController extends Controller
                 $othersText = '';
                 foreach ($learnerClassifications as $classification) {
                     if ($classification === 'others') {
-                        // Draw the "Others" checkbox
                         if (!empty($m['learner_others_box'])) {
                             $this->drawCheckbox($pdf, $m[$learnerCheckboxMap[$classification]]);
                         }
                     } elseif (array_key_exists($classification, $learnerCheckboxMap) && !empty($m[$learnerCheckboxMap[$classification]])) {
-                            // Draw checkbox for known classifications
                             $this->drawCheckbox($pdf, $m[$learnerCheckboxMap[$classification]]);
                     } else {
-                        // This is the "others" text (not a predefined value)
                         if ($classification !== 'others' && !array_key_exists($classification, $learnerCheckboxMap)) {
                             $othersText = $classification;
                         }
                     }
                 }
-
-                // Print the "Others" text if it exists
                 if (!empty($othersText)) {
                     $pdf->SetFont('Arial', '', 8);
-                    $pdf->SetXY(153, 74); // Adjust X,Y position as needed
+                    $pdf->SetXY(153, 74);
                     $pdf->Write(4, $othersText);
                 }
-
-
-                //  Name of Course/Qualification
                 $this->writeTextIfExists($pdf, $m['title_of_assessment_applied_for'], $application->title_of_assessment_applied_for ?? '');
-                
-                // Scholarship type
                 $this->writeTextIfExists($pdf, $m['scholarship_type'], $application->scholarship_type ?? '');
                 
-                // Privacy consent
                 if ($application->privacy_consent) {
                     $this->drawCheckbox($pdf, $m['privacy_agree_box']);
                 } else {
                     $this->drawCheckbox($pdf, $m['privacy_disagree_box']);
                 }
-                // Name fields centering logic
                 $pdf->SetFont($m['firstname']['font'], $m['firstname']['style'], $m['firstname']['size']);
 
-                // Get all name values
                 $firstname = $application->firstname ?? '';
                 $middleInitial = $application->middleinitial ?? '';
                 $surname = $application->surname ?? '';
 
-                // Format middle initial
                 if (!empty($middleInitial)) {
                     $middleInitial = strtoupper(substr($middleInitial, 0, 1)) . '.';
                 }
 
-                // Calculate widths
                 $firstnameWidth = $pdf->GetStringWidth($firstname);
                 $middleInitialWidth = $pdf->GetStringWidth($middleInitial);
                 $surnameWidth = $pdf->GetStringWidth($surname);
 
-                // Add spacing between fields (2 units spacing between each field)
                 $spacing = 2;
                 $totalWidth = $firstnameWidth + $middleInitialWidth + $surnameWidth + ($spacing * 2);
 
-                // Starting X position (center of the name field area)
-                // Assuming the name field area spans from x=15 to x=100 (adjust based on your PDF form)
                 $nameFieldStart = -5;
                 $nameFieldEnd = 100;
                 $nameFieldWidth = $nameFieldEnd - $nameFieldStart;
 
-                // Calculate starting X to center the entire name block
                 $startX = $nameFieldStart + (($nameFieldWidth - $totalWidth) / 2);
 
-                // Write firstname
                 $firstnameX = $startX;
                 $this->writeTextIfExists($pdf, [
                     'x' => $firstnameX, 
@@ -1266,7 +1093,6 @@ class ApplicationFormPdfController extends Controller
                     'style' => $m['firstname']['style']
                 ], $firstname, null);
 
-                // Write middle initial
                 $middleX = $firstnameX + $firstnameWidth + $spacing;
                 $this->writeTextIfExists($pdf, [
                     'x' => $middleX, 
@@ -1275,8 +1101,7 @@ class ApplicationFormPdfController extends Controller
                     'size' => $m['middleinitial']['size'], 
                     'style' => $m['middleinitial']['style']
                 ], $middleInitial, null);
-
-                // Write surname
+                
                 $surnameX = $middleX + $middleInitialWidth + $spacing;
                 $this->writeTextIfExists($pdf, [
                     'x' => $surnameX, 
@@ -1286,7 +1111,6 @@ class ApplicationFormPdfController extends Controller
                     'style' => $m['surname']['style']
                 ], $surname, null);
                 
-                // Photo
                 if (!empty($m['photo']) && !empty($application->photo)) {
                     $photoPath = storage_path('app/public/' . $application->photo);
                     if (file_exists($photoPath)) {
@@ -1312,7 +1136,6 @@ class ApplicationFormPdfController extends Controller
         if ($extension !== '') {
             return $surname . ', ' . $extension;
         }
-
         return $surname;
     }
     private function splitDate($date)
@@ -1320,34 +1143,30 @@ class ApplicationFormPdfController extends Controller
         if (!$date) return ['month' => '', 'day' => '', 'year' => ''];
         $dt = \Carbon\Carbon::parse($date);
         return [
-            'month' => $dt->format('F'),  // Full month name
-            'day' => $dt->format('d'),    // Day with leading zero (or 'j' for no leading zero)
-            'year' => $dt->format('Y'),   // Year
+            'month' => $dt->format('F'),
+            'day' => $dt->format('d'),   
+            'year' => $dt->format('Y'),   
         ];
     }
     private function formatParentGuardianAddress($app)
     {
         $parts = [];
         
-        // First line: street and barangay
         $firstLine = [];
         if ($app->parent_guardian_street) $firstLine[] = $app->parent_guardian_street;
         if ($app->parent_guardian_barangay_name) $firstLine[] = $app->parent_guardian_barangay_name;
         
-        // Second line: district, city, province, region
         $secondLine = [];
         if ($app->parent_guardian_district) $secondLine[] = $app->parent_guardian_district;
         if ($app->parent_guardian_city_name) $secondLine[] = $app->parent_guardian_city_name;
         if ($app->parent_guardian_province_name) $secondLine[] = $app->parent_guardian_province_name;
         if ($app->parent_guardian_region_name) $secondLine[] = $app->parent_guardian_region_name;
         
-        // Combine with line break
         if (!empty($firstLine)) $parts[] = implode(', ', $firstLine);
         if (!empty($secondLine)) $parts[] = implode(', ', $secondLine);
         
         return implode("\n", $parts);
     }
-
 
     private function writeTextIfExists(Fpdi $pdf, $meta, $value, $width = null, $boxWidth = null)
     {
@@ -1366,10 +1185,9 @@ class ApplicationFormPdfController extends Controller
             $length = strlen($text);
 
             if ($length > $limit) {
-                $pdf->SetFont($font, $style, 7); // smaller font
+                $pdf->SetFont($font, $style, 7);
                 $line1 = substr($text, 0, $limit);
                 $line2 = substr($text, $limit);
-
 
                 $pdf->SetXY($x, $y - 1);
                 $pdf->Write(4, $line1);
@@ -1384,8 +1202,6 @@ class ApplicationFormPdfController extends Controller
             }
                 return;
         }
-    
-        // If boxWidth is provided, write each character with spacing
         if ($boxWidth !== null) {
             $length = strlen($text);
             for ($i = 0; $i < $length; $i++) {
@@ -1415,10 +1231,8 @@ class ApplicationFormPdfController extends Controller
                 $pdf->Write(4, $line);
             }
         }
-        // Otherwise, use the original behavior (normal text or MultiCell)
         else {
             $pdf->SetXY($x, $y);
-            
             if ($width) {
                 $pdf->MultiCell($width, 4, $text, 0, 'L');
             } else {
@@ -1435,7 +1249,6 @@ class ApplicationFormPdfController extends Controller
         $currentLine = '';
 
         foreach ($words as $word) {
-            // Check if adding word keeps hyphenated name in same chunk
             if (strlen($currentLine . ($currentLine ? ' ' : '') . $word) <= $charLimit) {
                 $currentLine .= ($currentLine ? ' ' : '') . $word;
             } else {
@@ -1453,17 +1266,12 @@ class ApplicationFormPdfController extends Controller
     private function breakTextByCharacterLimit2($text, $charLimit = 17)
     {
         $lines = [];
-
-        // Split into hyphenated groups first
         $groups = explode('-', $text);
-
         $currentLine = '';
 
         foreach ($groups as $index => $group) {
-            // Add hyphen back unless it's the last group
             $segment = $group . ($index < count($groups) - 1 ? '-' : '');
 
-            // Check if adding this group exceeds the character limit
             if (strlen($currentLine . ($currentLine ? '' : '') . $segment) > $charLimit) {
                 $lines[] = rtrim($currentLine, '-');
                 $currentLine = $segment;
@@ -1481,55 +1289,49 @@ class ApplicationFormPdfController extends Controller
 
     private function drawCheckbox(Fpdi $pdf, $meta)
     {
-        // meta: ['x'=>..,'y'=>..] — this writes a small ✓ or X; you can switch to Image(check.png,..)
         if (empty($meta)) return;
         $x = $meta['x'];
         $y = $meta['y'];
-        $pdf->SetFont('ZapfDingbats','',16); // check-like fonts
+        $pdf->SetFont('ZapfDingbats','',16); 
         $pdf->SetXY($x, $y - 1);
-        $pdf->Write(4, chr(52)); // '✓' glyph in ZapfDingbats (approx). If not, fallback:
-        // alternative: use 'X'
-        // $pdf->SetFont('Arial','B',10);
-        // $pdf->Write(4, 'X');
+        $pdf->Write(4, chr(52)); 
     }
 
-   private function drawTableRows(Fpdi $pdf, $startX, $startY, array $colWidths, $rowHeight, $rowsCollection, array $columns, $maxRows = 3)
-{
-    $y = $startY;
-    $rowIndex = 0;
+    private function drawTableRows(Fpdi $pdf, $startX, $startY, array $colWidths, $rowHeight, $rowsCollection, array $columns, $maxRows = 3)
+    {
+        $y = $startY;
+        $rowIndex = 0;
 
-    foreach ($rowsCollection as $row) {
-        if ($rowIndex >= $maxRows) break;
-        $x = $startX;
-        
-        foreach ($columns as $colIndex => $colKey) {
-            $cellWidth = $colWidths[$colIndex] ?? 30;
-            $pdf->SetXY($x, $y + ($rowIndex * $rowHeight) );
+        foreach ($rowsCollection as $row) {
+            if ($rowIndex >= $maxRows) break;
+            $x = $startX;
             
-            $text = '';
-            if (is_callable($colKey)) {
-                $text = $colKey($row);
-            } else {
-                $text = $row->{$colKey} ?? '';
-            }
-            
-            $text = (string)$text;
+            foreach ($columns as $colIndex => $colKey) {
+                $cellWidth = $colWidths[$colIndex] ?? 30;
+                $pdf->SetXY($x, $y + ($rowIndex * $rowHeight) );
+                
+                $text = '';
+                if (is_callable($colKey)) {
+                    $text = $colKey($row);
+                } else {
+                    $text = $row->{$colKey} ?? '';
+                }
+                
+                $text = (string)$text;
 
-            if ($colIndex === 1) {
-                $pdf->SetFont('Arial', '', 6); // Bold, size 10
-            } else {
-                $pdf->SetFont('Arial', '', 8); // Normal, size 9
+                if ($colIndex === 1) {
+                    $pdf->SetFont('Arial', '', 6);
+                } else {
+                    $pdf->SetFont('Arial', '', 8); 
+                }
+                
+                $pdf->Cell($cellWidth, $rowHeight, $text, 0, 0, 'L');
+                
+                $x += $cellWidth;
             }
-            
-            // Use Cell instead of MultiCell to prevent wrapping
-            $pdf->Cell($cellWidth, $rowHeight, $text, 0, 0, 'L');
-            
-            $x += $cellWidth;
+            $rowIndex++;
         }
-        
-        $rowIndex++;
     }
-}
 
     private function formatAddress($app)
     {

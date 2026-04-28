@@ -23,10 +23,7 @@
         </div>
     </div>
 </div>
-
-{{-- JavaScript for Bulk Actions --}}
 <script>
-    // Bulk selection functions
     function toggleSelectAll() {
         const selectAll = document.getElementById('selectAll');
         const checkboxes = document.querySelectorAll('.trainee-checkbox');
@@ -34,10 +31,8 @@
         checkboxes.forEach(checkbox => {
             checkbox.checked = selectAll.checked;
         });
-
         toggleBulkActions();
     }
-
     function toggleBulkActions() {
         const checkedBoxes = document.querySelectorAll('.trainee-checkbox:checked');
         const bulkActions = document.getElementById('bulkActions');
@@ -48,7 +43,6 @@
             bulkActions.style.display = 'none';
         }
     }
-
     function bulkComplete() {
         const checkedBoxes = document.querySelectorAll('.trainee-checkbox:checked');
         const applicationIds = Array.from(checkedBoxes).map(cb => cb.value);
@@ -57,19 +51,14 @@
             alert('Please select trainees to complete.');
             return;
         }
-
         document.getElementById('bulkActionTitle').textContent = 'Bulk Complete Training';
         document.getElementById('bulkActionContent').innerHTML =
             `<p>Mark <strong>${applicationIds.length}</strong> selected trainee(s) as completed?</p>`;
         document.getElementById('bulkActionBtn').textContent = 'Complete All';
         document.getElementById('bulkActionBtn').className = 'btn btn-success';
-
-        // Set form action and hidden inputs
         document.getElementById('bulkActionForm').action = '{{ route('admin.training-batches.bulk-complete') }}';
 
-        // Add hidden inputs for application IDs
         const form = document.getElementById('bulkActionForm');
-        // Remove existing hidden inputs
         form.querySelectorAll('input[name="application_ids[]"]').forEach(input => input.remove());
 
         applicationIds.forEach(id => {
@@ -79,7 +68,6 @@
             input.value = id;
             form.appendChild(input);
         });
-
         new bootstrap.Modal(document.getElementById('bulkActionModal')).show();
     }
 
@@ -97,13 +85,10 @@
             `<p>Mark <strong>${applicationIds.length}</strong> selected trainee(s) as failed?</p>`;
         document.getElementById('bulkActionBtn').textContent = 'Fail All';
         document.getElementById('bulkActionBtn').className = 'btn btn-danger';
-
-        // Set form action and hidden inputs
         document.getElementById('bulkActionForm').action = '{{ route('admin.training-batches.bulk-fail') }}';
 
-        // Add hidden inputs for application IDs
         const form = document.getElementById('bulkActionForm');
-        // Remove existing hidden inputs
+
         form.querySelectorAll('input[name="application_ids[]"]').forEach(input => input.remove());
 
         applicationIds.forEach(id => {

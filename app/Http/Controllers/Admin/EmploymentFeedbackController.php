@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 
 class EmploymentFeedbackController extends Controller
 {
-    // First page: List of training batches
     public function index()
     {
         $batches = TrainingBatch::where('status', TrainingBatch::STATUS_COMPLETED)
@@ -37,7 +36,6 @@ class EmploymentFeedbackController extends Controller
             ->orderBy('batch_number', 'desc')
             ->paginate(15);
 
-        // Get statistics for each batch
         $batchStats = [];
         foreach ($batches as $batch) {
             $batchStats[$batch->id] = [

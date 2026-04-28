@@ -8,8 +8,6 @@
                 <p class="text-muted">Completed training batches</p>
             </div>
         </div>
-
-        <!-- Completed Batches Table -->
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white py-3">
                 <h5 class="fw-bold mb-0">Completed Training Batches</h5>

@@ -16,9 +16,7 @@
                 <div><small><strong>Remarks:</strong> {{ $application->review_remarks }}</small></div>
             @endif
         </div>
-        <!-- Reference Number Section -->
         <div class="card-body">
-            <!-- Reference Number Section - Only show after approval -->
             @if ($application->status === \App\Models\Application\Application::STATUS_APPROVED)
                 <div class="card mb-3">
                     <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
@@ -31,7 +29,6 @@
                     </div>
                     <div class="card-body">
                         @if ($application->reference_number)
-                            <!-- Display Mode: Show saved reference with edit button -->
                             <div id="referenceDisplay" class="d-flex justify-content-between align-items-center">
                                 <div class="border border-primary p-1 flex-grow-1">
                                     <i class="fas fa-check-circle"></i>
@@ -41,8 +38,6 @@
                                     <i class="fas fa-edit"></i> Edit
                                 </button>
                             </div>
-
-                            <!-- Edit Mode: Hidden by default -->
                             <form id="referenceForm"
                                 action="{{ route('admin.applications.update-reference', $application->id) }}" method="POST"
                                 class="d-none d-flex gap-2">
@@ -96,7 +91,6 @@
                     </div>
                 </div>
             @endif
-
         </div>
         @if ($application->was_corrected)
             <div class="border border-warning mb-3 p-3">
@@ -108,8 +102,6 @@
                     <i class="fas fa-info-circle"></i>
                     This application was previously sent back for corrections and has been resubmitted by the applicant.
                 </p>
-
-                {{-- Show what was requested to be corrected --}}
                 @if ($application->correction_message)
                     <div class="mt-3 mb-3">
                         <p class="mb-1"><strong><i class="fas fa-clipboard-list"></i> Original Correction
@@ -122,8 +114,6 @@
                         </small>
                     </div>
                 @endif
-
-                {{-- Show what fields were changed --}}
                 @php
                     $latestChanges = $application
                         ->changes()
@@ -131,7 +121,6 @@
                         ->orderBy('field_label')
                         ->get();
                 @endphp
-
                 @if ($latestChanges->isNotEmpty())
                     <div class="mt-3">
                         <p class="mb-2"><strong><i class="fas fa-edit"></i> Fields Changed by Applicant:</strong></p>
@@ -181,7 +170,6 @@
                         </p>
                     </div>
                 @endif
-
                 <div class="mt-3 pt-3 border-top">
                     <p class="mb-0">
                         <i class="fas fa-exclamation-triangle text-warning"></i>
@@ -191,7 +179,6 @@
                 </div>
             </div>
         @endif
-
         @if ($application->application_type === 'Assessment Only')
             <div class="card mb-3">
                 <div class="card-header bg-primary text-light">
@@ -226,7 +213,6 @@
                                         class="text-danger">{{ $application->payment_remarks }}</span></p>
                             @endif
                         </div>
-
                         <div class="col-md-6">
                             @if ($application->payment_proof)
                                 <p><strong>Payment Proof:</strong></p>
@@ -234,8 +220,6 @@
                                     class="btn btn-sm btn-primary mb-2">
                                     <i class="bi bi-eye"></i> View Payment Proof
                                 </a>
-
-                                {{-- Admin actions for submitted payments --}}
                                 @if ($application->payment_status === 'submitted')
                                     <div class="mt-2">
                                         <form action="{{ route('admin.payment.verify', $application->id) }}"
@@ -246,15 +230,12 @@
                                                 <i class="fas fa-check"></i> Verify Payment
                                             </button>
                                         </form>
-
                                         <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
                                             data-bs-target="#rejectPaymentModal">
                                             <i class="fas fa-times"></i> Reject Payment
                                         </button>
                                     </div>
                                 @endif
-
-                                {{-- Upload Official Receipt button (after payment is verified) --}}
                                 @if ($application->payment_status === 'verified')
                                     <div class="mt-3">
                                         <p><strong>Official Receipt:</strong></p>
@@ -268,7 +249,6 @@
                                                 {{ $application->official_receipt_uploaded_at->format('M d, Y h:i A') }}
                                             </small>
                                         @endif
-
                                         <button class="btn btn-sm btn-success mt-2" data-bs-toggle="modal"
                                             data-bs-target="#uploadOfficialReceiptModal">
                                             <i class="fas fa-upload"></i>
@@ -286,36 +266,27 @@
                 </div>
             </div>
         @endif
-
         @if ($application->correction_requested)
             <div class="card border-danger mb-4">
                 <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
-
                     <span>
                         <i class="fas fa-exclamation-triangle"></i> Correction Requested
                     </span>
-
                     <small>
                         Requested on: {{ $application->correction_requested_at->format('M d, Y h:i A') }}
                     </small>
-
                 </div>
-
                 <div class="card-body">
                     <p><strong>Message sent to applicant:</strong></p>
-
                     <div class="bg-light p-3 rounded border mb-3">
                         {{ $application->correction_message }}
                     </div>
-
                     <hr>
-
                     <p class="mb-0 small text-muted">
                         <i class="fas fa-info-circle"></i>
                         Waiting for the applicant to make corrections and resubmit.
                         The application status will return to <strong>"Pending"</strong> after resubmission.
                     </p>
-
                 </div>
             </div>
         @endif
@@ -323,17 +294,12 @@
             <div class="card-header bg-primary text-light">
                 Application Summary
             </div>
-
             <div class="card-body">
                 <div class="row">
-
-                    <!-- LEFT COLUMN -->
                     <div class="col-md-6">
-
                         <p><strong class="text-primary">Title of Assessment</strong><br>
                             {{ $application->title_ofAssessment_applied_for ?? $application->title_of_assessment_applied_for }}
                         </p>
-
                         <p><strong class="text-primary">Full Name</strong><br>
                             {{ $application->surname }},
                             {{ $application->firstname }}
@@ -344,7 +310,6 @@
                                 {{ $application->name_extension }}
                             @endif
                         </p>
-
                         <p><strong class="text-primary">Address</strong><br>
                             {{ $application->street_address }}
                             @if ($application->barangay_name)
@@ -363,7 +328,6 @@
                                 , {{ $application->zip_code }}
                             @endif
                         </p>
-
                         <p><strong class="text-primary">Contact</strong><br>
                             @if ($application->mobile)
                                 Mobile: {{ $application->mobile }}
@@ -372,7 +336,6 @@
                                 <br>Email: {{ $application->email }}
                             @endif
                         </p>
-
                         <p><strong class="text-primary">Personal</strong><br>
                             @if ($application->sex)
                                 Sex: {{ ucfirst($application->sex) }}
@@ -381,12 +344,8 @@
                                 <br>Civil Status: {{ $application->civil_status }}
                             @endif
                         </p>
-
                     </div>
-
-                    <!-- RIGHT COLUMN -->
                     <div class="col-md-6">
-
                         <p><strong class="text-primary">Birth Information</strong><br>
                             @if ($application->birthdate)
                                 Birthdate:
@@ -399,7 +358,6 @@
                                 <br>Age: {{ $application->age }}
                             @endif
                         </p>
-
                         <p><strong class="text-primary">Education & Employment</strong><br>
                             @if ($application->highest_educational_attainment)
                                 HEA: {{ $application->highest_educational_attainment }}
@@ -408,7 +366,6 @@
                                 <br>Employment Status: {{ $application->employment_status }}
                             @endif
                         </p>
-
                         <p><strong class="text-primary">Parents</strong><br>
                             @if ($application->mothers_name)
                                 Mother: {{ $application->mothers_name }}
@@ -417,13 +374,10 @@
                                 <br>Father: {{ $application->fathers_name }}
                             @endif
                         </p>
-
                         <p><strong class="text-primary">Submitted</strong><br>
                             {{ $application->created_at?->toDayDateTimeString() }}
                         </p>
-
                     </div>
-
                 </div>
             </div>
         </div>
@@ -460,7 +414,6 @@
                 </div>
             </div>
         </div>
-
         <div class="card mt-3">
             <div class="card-header">Other Training Seminars Attended</div>
             <div class="card-body p-0">
@@ -490,7 +443,6 @@
                 </div>
             </div>
         </div>
-
         <div class="card mt-3">
             <div class="card-header">Licensure Examination(s) Passed</div>
             <div class="card-body p-0">
@@ -522,7 +474,6 @@
                 </div>
             </div>
         </div>
-
         <div class="card mt-3">
             <div class="card-header">Competency Assessment(s) Passed</div>
             <div class="card-body p-0">
@@ -563,7 +514,6 @@
                             class="btn btn-light me-1">
                             <i class="bi bi-file-pdf mx-1"></i>Print Documents
                         </a>
-
                     </div>
                 </div>
                 <div class="card-body p-3 text-primary">
@@ -599,7 +549,6 @@
                                 @endif
                             </div>
                         </div>
-
                         {{-- PSA Marriage Contract --}}
                         <div class="col-md-4 col-sm-6">
                             <div class="border border-primary rounded p-2 h-100">
@@ -631,7 +580,6 @@
                                 @endif
                             </div>
                         </div>
-
                         {{-- High School Document --}}
                         <div class="col-md-4 col-sm-6">
                             <div class="border border-primary rounded p-2 h-100">
@@ -663,7 +611,6 @@
                                 @endif
                             </div>
                         </div>
-
                         {{-- Certificate of Indigency --}}
                         <div class="col-md-4 col-sm-6">
                             <div class="border border-primary rounded p-2 h-100">
@@ -695,7 +642,6 @@
                                 @endif
                             </div>
                         </div>
-
                         {{-- 1x1 ID Pictures --}}
                         <div class="col-md-4 col-sm-6">
                             <div class="border border-primary rounded p-2 h-100">
@@ -734,7 +680,6 @@
                                 @endif
                             </div>
                         </div>
-
                         {{-- Passport Size Pictures --}}
                         <div class="col-md-4 col-sm-6">
                             <div class="border border-primary rounded p-2 h-100">
@@ -773,7 +718,6 @@
                                 @endif
                             </div>
                         </div>
-
                         {{-- Government/School ID --}}
                         <div class="col-md-4 col-sm-6">
                             <div class="border border-primary rounded p-2 h-100">
@@ -818,7 +762,6 @@
             </div>
         @endif
 
-
         <form method="POST" action="{{ route('admin.applications.approve', $application) }}" class="d-inline">
             @csrf
             @if ($application->status === \App\Models\Application\Application::STATUS_PENDING)
@@ -828,7 +771,6 @@
                         <i class="fas fa-check"></i> Approve Application
                     </button>
                 </form>
-
                 <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#requestCorrectionModal">
                     <i class="fas fa-edit"></i> Request Correction
                 </button>
@@ -840,17 +782,10 @@
             @endif
             <a href="{{ route('admin.applications.print_pdf', $application) }}" target="_blank"
                 class="btn btn-primary">Print TESDA Form(PDF)</a>
-
     </div>
-
-    {{-- Request Correction Modal --}}
     @include('admin.applicant.component.request-correction', ['application' => $application])
-    {{-- Payment Rejection Modal --}}
     @include('admin.applicant.component.reject-payment', ['application' => $application])
-    {{-- Upload Official Receipt Modal --}}
     @include('admin.applicant.component.upload-official-receipt', ['application' => $application])
-
-
 @endsection
 <script>
     function toggleReferenceEdit() {
@@ -879,19 +814,16 @@
 </script>
 <style>
     @media print {
-
         .btn,
         nav,
         .sidebar,
         .card-header button {
             display: none !important;
         }
-
         .card {
             border: 1px solid #000;
             page-break-inside: avoid;
         }
-
         img {
             max-width: 150px;
         }

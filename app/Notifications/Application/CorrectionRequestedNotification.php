@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Notifications\Application;
-
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -12,14 +11,10 @@ class CorrectionRequestedNotification extends Notification
 {
     use Queueable;
     protected $application;
-    /**
-     * Create a new notification instance.
-     */
     public function __construct($application)
     {
          $this->application = $application;
     }
-
     /**
      * Get the notification's delivery channels.
      *
@@ -30,9 +25,6 @@ class CorrectionRequestedNotification extends Notification
         return ['mail'];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     */
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
@@ -51,7 +43,6 @@ class CorrectionRequestedNotification extends Notification
                     ->salutation('Best regards, SHC-TVET Assessment Center');
     
     }
-
     /**
      * Get the array representation of the notification.
      *

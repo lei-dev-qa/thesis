@@ -13,7 +13,6 @@ class ApplicantEmploymentController extends Controller
 {
     public function store(Request $request, Application $application)
     {
-        // Ensure the application belongs to the authenticated user
         if ($application->user_id !== auth()->id()) {
             abort(403, 'Unauthorized access to this application.');
         }

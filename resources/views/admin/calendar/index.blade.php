@@ -29,7 +29,6 @@
         </div>
     </div>
 
-    <!-- Event Details Modal -->
     <div class="modal fade" id="eventModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -79,8 +78,7 @@
     .fc-button {
         text-transform: capitalize !important;
     }
-    
-    /* Ensure events are visible */
+
     .fc-daygrid-event-harness {
         margin-bottom: 2px;
     }
@@ -97,9 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('Calendar element not found!');
         return;
     }
-
     var events = @json($events ?? []);
-    
     try {
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
@@ -114,7 +110,6 @@ document.addEventListener('DOMContentLoaded', function() {
             eventClick: function(info) {
                 info.jsEvent.preventDefault();
                 
-                // ✅ FIX: Get type from correct location
                 let eventType = info.event.extendedProps.type || info.event._def.extendedProps.type;
                 let typeLabel = eventType === 'training' ? 'Training' : 
                                eventType === 'assessment' ? 'Assessment' : 
@@ -136,7 +131,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 `;
                 
-                // ✅ ADD: Show time for assessment and intensive review
                 if (info.event.extendedProps.time_start && info.event.extendedProps.time_end) {
                     details += `<div class="mb-3"><strong>Time:</strong> ${info.event.extendedProps.time_start} - ${info.event.extendedProps.time_end}</div>`;
                 }
@@ -153,7 +147,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     details += `<div class="mb-3"><strong>Assessor:</strong> ${info.event.extendedProps.assessor}</div>`;
                 }
                 
-                // ✅ ADD: Show date range for training
                 if (info.event.extendedProps.start_date && info.event.extendedProps.end_date) {
                     details += `<div class="mb-3"><strong>Duration:</strong> ${info.event.extendedProps.start_date} - ${info.event.extendedProps.end_date}</div>`;
                 }
@@ -179,6 +172,5 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
-
 @endpush
 

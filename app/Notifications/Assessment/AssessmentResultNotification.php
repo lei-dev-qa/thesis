@@ -20,18 +20,11 @@ class AssessmentResultNotification extends Notification
         $this->application = $application;
         $this->assessmentResult = $assessmentResult;
     }
-
-    /**
-     * Get the notification's delivery channels.
-     */
     public function via(object $notifiable): array
     {
         return ['mail'];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     */
     public function toMail(object $notifiable): MailMessage
     {
         $applicantName = trim($this->application->firstname . ' ' . $this->application->surname);
@@ -44,7 +37,6 @@ class AssessmentResultNotification extends Notification
             ->greeting('Hello ' . $applicantName . ',');
         
         if ($isPassed) {
-            // PASSED
             $message->line('Congratulations! You have **PASSED** your assessment for ' . $ncProgram . '.')
                 ->line('**Assessment Details:**')
                 ->line('• NC Program: ' . $ncProgram)
@@ -58,14 +50,12 @@ class AssessmentResultNotification extends Notification
                 ->line('Thank you,')
                 ->salutation('SHC-TVET Training and Assessment Centre');
         } else {
-            // FAILED
             $message->line('Your assessment result for ' . $ncProgram . ' is now available.')
                 ->line('**Assessment Details:**')
                 ->line('• NC Program: ' . $ncProgram)
                 ->line('• Result: **NOT YET COMPETENT (NYC)**')
                 ->line('• Assessment Date: ' . $this->assessmentResult->assessed_at->format('F d, Y'));
             
-            // Show which COCs failed if available
             $nycCocs = $this->assessmentResult->getNycCocs();
             if ($nycCocs->isNotEmpty()) {
                 $message->line('**Competencies that need improvement:**');
@@ -86,9 +76,6 @@ class AssessmentResultNotification extends Notification
         return $message;
     }
 
-    /**
-     * Get the array representation of the notification.
-     */
     public function toArray(object $notifiable): array
     {
         return [

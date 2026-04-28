@@ -4,38 +4,31 @@
 @section('page-title', 'Performance Evaluation')
 
 @section('content')
-    {{-- Overview Cards --}}
     @include('admin.dashboard.overview.cards')
-
-    {{-- Analytics Sections --}}
     <div class="row">
         <div class="col-12 mb-4">
             @include('admin.dashboard.applicant.index')
         </div>
     </div>
 
-    {{-- Training Analytics Section (Full Width) --}}
     <div class="row">
         <div class="col-12 mb-4">
             @include('admin.dashboard.training.index')
         </div>
     </div>
 
-    {{-- Assessment Analytics Section (Full Width) --}}
     <div class="row">
         <div class="col-12 mb-4">
             @include('admin.dashboard.assessment.index')
         </div>
     </div>
 
-    {{-- Employment Feedback Section (Full Width) --}}
     <div class="row">
         <div class="col-12">
             @include('admin.dashboard.employment.index')
         </div>
     </div>
 
-    {{-- Assessment Volume Analytics Section --}}
     <div class="row mt-4">
         <div class="col-12">
             @include('admin.dashboard.analytics.index')

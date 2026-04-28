@@ -11,9 +11,6 @@ use Illuminate\Http\Request;
 
 class TrainingScheduleController extends Controller
 {
-    /**
-     * Display a listing of training schedules
-     */
     public function index(Request $request)
     {
         $ncProgram = $request->query('nc_program');
@@ -29,9 +26,6 @@ class TrainingScheduleController extends Controller
         return view('admin.schedules.index', compact('schedules', 'availablePrograms', 'ncProgram'));
     }
 
-    /**
-     * Store a newly created training schedule
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -69,35 +63,29 @@ class TrainingScheduleController extends Controller
         return redirect()->route('admin.training-batches.index')->with('success', 'Training schedule created successfully for Batch ' . $batch->batch_number);
     }
 
+    // public function update(Request $request, TrainingSchedule $schedule)
+    // {
+    //     $validated = $request->validate([
+    //         'schedule_name' => 'required|string|max:255',
+    //         'schedule_type' => 'required|in:regular,weekend',
+    //         'start_date' => 'required|date',
+    //         'end_date' => 'required|date|after_or_equal:start_date',
+    //         'start_time' => 'required',
+    //         'end_time' => 'required|after:start_time',
+    //         'days' => 'required|string|max:255',
+    //         'max_students' => 'required|integer|min:1|max:100',
+    //         'venue' => 'required|string|max:255',
+    //         'instructor' => 'required|string|max:255',
+    //         'description' => 'nullable|string',
+    //         'status' => 'required|in:active,completed,cancelled',
+    //     ]);
 
-    /**
-     * Update the specified training schedule
-     */
-    public function update(Request $request, TrainingSchedule $schedule)
-    {
-        $validated = $request->validate([
-            'schedule_name' => 'required|string|max:255',
-            'schedule_type' => 'required|in:regular,weekend',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'start_time' => 'required',
-            'end_time' => 'required|after:start_time',
-            'days' => 'required|string|max:255',
-            'max_students' => 'required|integer|min:1|max:100',
-            'venue' => 'required|string|max:255',
-            'instructor' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'status' => 'required|in:active,completed,cancelled',
-        ]);
+    //     $schedule->update($validated);
 
-        $schedule->update($validated);
+    //     return redirect()->back()->with('success', 'Training schedule updated successfully.');
+    // }
 
-        return redirect()->back()->with('success', 'Training schedule updated successfully.');
-    }
 
-    /**
-     * Remove the specified training schedule
-     */
     public function destroy(TrainingSchedule $schedule)
     {
         $schedule->delete();
@@ -105,9 +93,6 @@ class TrainingScheduleController extends Controller
         return redirect()->back()->with('success', 'Training schedule deleted successfully.');
     }
 
-    /**
-     * Get training schedule for editing
-     */
     public function edit(TrainingSchedule $schedule)
     {   
         return response()->json($schedule);
@@ -155,7 +140,5 @@ class TrainingScheduleController extends Controller
 
         return back()->with('success', $message);
     }
-
-
 
 }

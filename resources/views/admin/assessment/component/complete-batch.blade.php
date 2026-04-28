@@ -18,7 +18,6 @@
                     <p>Are you sure you want to mark <strong>{{ $assessment_batch->batch_name }}</strong> as completed?
                     </p>
                     <p class="text-muted">This batch will be moved to Assessment History.</p>
-
                     <div class="mt-3">
                         <strong>Current Status:</strong>
                         <ul class="mt-2">

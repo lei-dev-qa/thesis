@@ -25,99 +25,27 @@ class Application extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'reference_number',
-        'application_type',
-        'title_of_assessment_applied_for',
-        'photo',
-        'surname',
-        'firstname',
-        'middlename',
-        'middleinitial',
-        'name_extension',
-        'region_code',
-        'region_name',
-        'province_code',
-        'province_name',
-        'city_code',
-        'city_name',
-        'barangay_code',
-        'barangay_name',
-        'district',
-        'street_address',
-        'zip_code',
-        'mothers_name',
-        'fathers_name',
-        'sex',
-        'civil_status',
-        'mobile',
-        'email',
-        'highest_educational_attainment',
-        'employment_status',
-        'birthdate',
-        'birthplace',
-        'age',
-        'status',
-        'training_batch_id',
-        'training_schedule_id',
-        'training_status',
-        'training_completed_at',
-        'training_remarks',
-        'reviewed_by',
-        'reviewed_at',
-        'review_remarks',
-        'assessment_batch_id',
-        'assessment_status',
-        'assessment_date',
-         // New fields for pages 3-4
-        'nationality',
-        'employment_before_training_status',
-        'employment_before_training_type',
-        'birthplace_region',
-        'birthplace_region_code',
-        'birthplace_province',
-        'birthplace_province_code',
-        'birthplace_city', 
-        'birthplace_city_code',
-        'educational_attainment_before_training',
-        'parent_guardian_name',
-        'parent_guardian_region_code',
-        'parent_guardian_region_name',
-        'parent_guardian_province_code',
-        'parent_guardian_province_name',
-        'parent_guardian_city_code',
-        'parent_guardian_city_name',
-        'parent_guardian_barangay_code',
-        'parent_guardian_barangay_name',
-        'parent_guardian_street',
-        'parent_guardian_district',
-        'learner_classification',
-        'scholarship_type',
-        'privacy_consent',
-        'payment_proof',
-        'payment_status',
-        'payment_submitted_at',
-        'payment_remarks',
-        'official_receipt_photo',
-        'official_receipt_uploaded_at',
-        'correction_requested',
-        'correction_message',
-        'correction_requested_at',
-        'was_corrected',    
-        'resubmitted_at',
-        'is_reassessment',
-        'reassessment_fee',
-        'reassessment_payment_proof',
-        'reassessment_payment_date',
-        'reassessment_payment_status',
-        'reassessment_official_receipt_photo',
-        'reassessment_official_receipt_uploaded_at',
-        'reassessment_attempt',
-        'second_reassessment_payment_proof',
-        'second_reassessment_payment_date',
-        'second_reassessment_payment_status',
-        'second_reassessment_official_receipt_photo',
-        'second_reassessment_official_receipt_uploaded_at',
+        'user_id','reference_number','application_type','title_of_assessment_applied_for','photo',
+        'surname','firstname','middlename','middleinitial','name_extension','region_code','region_name',
+        'province_code','province_name','city_code','city_name','barangay_code','barangay_name','district',
+        'street_address','zip_code','mothers_name','fathers_name','sex','civil_status','mobile','email',
+        'highest_educational_attainment','employment_status','birthdate','birthplace','age','status',
+        'training_batch_id','training_schedule_id','training_status','training_completed_at','training_remarks',
+        'reviewed_by','reviewed_at','review_remarks','assessment_batch_id','assessment_status','assessment_date',
+        'nationality','employment_before_training_status','employment_before_training_type','birthplace_region',
+        'birthplace_region_code','birthplace_province','birthplace_province_code','birthplace_city', 
+        'birthplace_city_code','educational_attainment_before_training','parent_guardian_name',
+        'parent_guardian_region_code','parent_guardian_region_name','parent_guardian_province_code',
+        'parent_guardian_province_name','parent_guardian_city_code','parent_guardian_city_name',
+        'parent_guardian_barangay_code','parent_guardian_barangay_name','parent_guardian_street',
+        'parent_guardian_district','learner_classification','scholarship_type','privacy_consent',
+        'payment_proof','payment_status','payment_submitted_at','payment_remarks','official_receipt_photo',
+        'official_receipt_uploaded_at','correction_requested','correction_message','correction_requested_at',
+        'was_corrected','resubmitted_at','is_reassessment','reassessment_fee','reassessment_payment_proof',
+        'reassessment_payment_date','reassessment_payment_status','reassessment_official_receipt_photo',
+        'reassessment_official_receipt_uploaded_at','reassessment_attempt','second_reassessment_payment_proof',
+        'second_reassessment_payment_date','second_reassessment_payment_status',
+        'second_reassessment_official_receipt_photo','second_reassessment_official_receipt_uploaded_at',
     ];
     protected $casts = [
         'reviewed_at' => 'datetime',
@@ -204,18 +132,16 @@ class Application extends Model
             ->orderBy('field_name');
     }
 
-    // Add a new method to get ALL assessment results
     public function assessmentResults(): HasMany
     {
         return $this->hasMany(AssessmentResult::class);
     }
 
-    // Add a method to get the latest assessment result
     public function latestAssessmentResult(): HasOne
     {
         return $this->assessmentResult();
     }
-        // Reassessment methods
+
     public function needsReassessment(): bool
     {
         return $this->assessmentResult && 
@@ -318,18 +244,15 @@ class Application extends Model
     public const PAYMENT_STATUS_VERIFIED = 'verified';
     public const PAYMENT_STATUS_REJECTED = 'rejected';
 
-    // Status constants
     public const STATUS_PENDING = 'pending';
     public const STATUS_APPROVED = 'approved';
     public const STATUS_REJECTED = 'rejected';
 
-     // training status constants
     public const TRAINING_STATUS_ENROLLED = 'enrolled';
     public const TRAINING_STATUS_ONGOING = 'ongoing';
     public const TRAINING_STATUS_COMPLETED = 'completed';
     public const TRAINING_STATUS_FAILED = 'failed';
 
-    // Assessment status constants
     public const ASSESSMENT_STATUS_PENDING = 'pending';
     public const ASSESSMENT_STATUS_ASSIGNED = 'assigned';
     public const ASSESSMENT_STATUS_COMPLETED = 'completed';
@@ -345,7 +268,7 @@ class Application extends Model
         return $this->title_of_assessment_applied_for === 'BOOKKEEPING NC III' 
             && $this->application_type === 'TWSP';
     }
-    // Check if training is completed
+
     public function isTrainingCompleted()
     {
         return $this->training_status === self::TRAINING_STATUS_COMPLETED;
@@ -353,7 +276,6 @@ class Application extends Model
 
     public function isEligibleForAssessment()
     {
-        // For BOOKKEEPING with TWSP: must complete training (completed or failed)
         if ($this->title_of_assessment_applied_for === 'BOOKKEEPING NC III' 
             && $this->application_type === 'TWSP') {
             return $this->status === self::STATUS_APPROVED && 
@@ -362,7 +284,6 @@ class Application extends Model
                 $this->assessment_status !== self::ASSESSMENT_STATUS_COMPLETED;
         }
         
-        // For BOOKKEEPING with Assessment Only OR Other NCs: skip training, only need approval
         return $this->status === self::STATUS_APPROVED &&
             $this->assessment_status !== self::ASSESSMENT_STATUS_ASSIGNED &&
             $this->assessment_status !== self::ASSESSMENT_STATUS_COMPLETED;
@@ -373,25 +294,21 @@ class Application extends Model
         return $this->hasMany(ApplicationView::class);
     }
 
-    // Check if ANY admin has viewed this
     public function hasBeenViewed(): bool
     {
         return $this->views()->exists();
     }
 
-    // Check if CURRENT admin has viewed this
     public function hasBeenViewedBy($userId): bool
     {
         return $this->views()->where('user_id', $userId)->exists();
     }
     
-    // Get last view time
     public function lastViewedAt()
     {
         return $this->views()->latest('viewed_at')->first()?->viewed_at;
     }
 
-    // Check if unviewed by anyone
     public function isUnviewed(): bool
     {
         return !$this->hasBeenViewed();

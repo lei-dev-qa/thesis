@@ -26,12 +26,10 @@ class AssessmentResult extends Model
         'assessed_at' => 'datetime',
     ];
 
-    // Result constants
     const RESULT_PASS = 'Competent';
     const RESULT_FAIL = 'Not Yet Competent';
     const RESULT_INCOMPLETE = 'incomplete';
 
-    // Relationships
     public function application(): BelongsTo
     {
         return $this->belongsTo(Application::class);
@@ -42,7 +40,6 @@ class AssessmentResult extends Model
         return $this->belongsTo(AssessmentBatch::class);
     }
 
-    // Helper methods
     public function isPassed()
     {
         return $this->result === self::RESULT_PASS;

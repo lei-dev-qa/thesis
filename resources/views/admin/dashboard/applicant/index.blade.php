@@ -1,4 +1,3 @@
-{{-- resources/views/admin/dashboard/applicant/index.blade.php --}}
 <div class="card analytics-card">
     <div class="card-header bg-primary text-white">
         <h5 class="mb-0">
@@ -7,7 +6,6 @@
     </div>
     <div class="card-body">
         <div class="row">
-            {{-- Total Applications Summary with Breakdown --}}
             <div class="col-md-2">
                 <div class="text-center mb-3 fade-in">
                     <div class="text-primary">
@@ -17,8 +15,6 @@
                         <div class="text-muted small">Total Applications</div>
                     </div>
                 </div>
-
-                {{-- Application Type Breakdown --}}
                 <div class="mt-3">
                     <div class="d-flex justify-content-between align-items-center mb-2 px-2 slide-in-left"
                         style="animation-delay: 0.2s;">
@@ -29,7 +25,6 @@
                         <span class="badge bg-info counter"
                             data-target="{{ $applicant['assessment_count'] ?? 0 }}">0</span>
                     </div>
-
                     <div class="d-flex justify-content-between align-items-center px-2 slide-in-left"
                         style="animation-delay: 0.3s;">
                         <div class="d-flex align-items-center">
@@ -41,8 +36,6 @@
                     </div>
                 </div>
             </div>
-
-            {{-- Program Applications Bar Graph --}}
             <div class="col-md-10">
                 <h6 class="text-muted mb-3 fade-in">Applications by Program (Highest to Lowest)</h6>
                 @if (isset($applicant['programs']) && count($applicant['programs']) > 0)
@@ -91,10 +84,8 @@
     </div>
 </div>
 
-{{-- Animation Styles and Scripts --}}
 @push('styles')
     <style>
-        /* Fade In Animation */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -112,7 +103,6 @@
             opacity: 0;
         }
 
-        /* Slide In from Left */
         @keyframes slideInLeft {
             from {
                 opacity: 0;
@@ -130,7 +120,6 @@
             opacity: 0;
         }
 
-        /* Slide In from Right */
         @keyframes slideInRight {
             from {
                 opacity: 0;
@@ -148,7 +137,6 @@
             opacity: 0;
         }
 
-        /* Icon Bounce */
         @keyframes iconBounce {
 
             0%,
@@ -165,7 +153,6 @@
             animation: iconBounce 2s ease-in-out infinite;
         }
 
-        /* Progress Bar Animation */
         .progress-bar-animated {
             transition: width 1.5s ease-out;
         }
@@ -175,11 +162,10 @@
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Counter Animation
             function animateCounter(element) {
                 const target = parseInt(element.getAttribute('data-target'));
-                const duration = 1500; // 1.5 seconds
-                const increment = target / (duration / 16); // 60fps
+                const duration = 1500; 
+                const increment = target / (duration / 16); 
                 let current = 0;
 
                 const timer = setInterval(() => {
@@ -193,21 +179,19 @@
                 }, 16);
             }
 
-            // Animate all counters
             const counters = document.querySelectorAll('.counter');
             counters.forEach((counter, index) => {
                 setTimeout(() => {
                     animateCounter(counter);
-                }, index * 100); // Stagger the animations
+                }, index * 100);
             });
 
-            // Animate progress bars
             const progressBars = document.querySelectorAll('.progress-bar-animated');
             progressBars.forEach((bar, index) => {
                 const targetWidth = bar.getAttribute('data-width');
                 setTimeout(() => {
                     bar.style.width = targetWidth + '%';
-                }, 300 + (index * 150)); // Stagger the animations
+                }, 300 + (index * 150));
             });
         });
     </script>

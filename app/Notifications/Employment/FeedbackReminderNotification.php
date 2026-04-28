@@ -11,7 +11,6 @@ use App\Models\Application\Application;
 class FeedbackReminderNotification extends Notification
 {
     use Queueable;
-
     protected $application;
 
     public function __construct(Application $application)

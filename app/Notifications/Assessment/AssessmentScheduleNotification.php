@@ -42,7 +42,6 @@ class AssessmentScheduleNotification extends Notification
             ->line('• Time: ' . $this->assessmentBatch->start_time->format('g:i A') . ' - ' . $this->assessmentBatch->end_time->format('g:i A'))
             ->line('• Venue: ' . $this->assessmentBatch->venue);
 
-        // Add intensive review days if available
         if ($this->assessmentBatch->intensive_review_day1) {
             $message->line('**Intensive Review Schedule:**')
                 ->line('• Day 1: ' . $this->assessmentBatch->intensive_review_day1->format('F d, Y') . 

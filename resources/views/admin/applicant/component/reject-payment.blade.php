@@ -14,7 +14,6 @@
                         <i class="fas fa-exclamation-triangle"></i>
                         The applicant will be notified and can re-upload a new payment proof.
                     </div>
-
                     <div class="mb-3">
                         <label for="payment_remarks" class="form-label">
                             Reason for Rejection <span class="text-danger">*</span>

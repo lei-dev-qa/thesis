@@ -5,8 +5,6 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-
-                <!-- Current Active Announcement -->
                 <div class="card mb-4 border border-primary">
                     <div
                         class="card-header bg-primary text-light d-flex justify-content-center align-items-center ">
@@ -23,7 +21,6 @@
                                     <span class="badge bg-success">Active</span>
                                 </p>
                             </div>
-
                             <form action="{{ route('admin.twsp.close', $announcement->id) }}" method="POST"
                                 class="d-inline">
                                 @csrf
@@ -43,10 +40,7 @@
                         @endif
                     </div>
                 </div>
-
-                <!-- Create Announcement Modal  -->
                 @include('admin.twsp.component.create-announcement')
-
                 <div class="card">
                     <div class="card-header">
                         <h4>Announcement History</h4>

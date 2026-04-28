@@ -16,11 +16,11 @@ class AssessmentBatchSeeder extends Seeder
     public function run(): void
     {
         $programs = [
-            // 'VISUAL GRAPHIC DESIGN NC III' => 20,
+            'VISUAL GRAPHIC DESIGN NC III' => 10,
             // 'BOOKKEEPING NC III' => 10,
-            // 'EVENTS MANAGEMENT SERVICES NC III' => 30,
+            // 'EVENTS MANAGEMENT SERVICES NC III' => 13,
             // 'TOURISM PROMOTION SERVICES NC II' => 10,
-            'PHARMACY SERVICES NC III' => 30,
+            // 'PHARMACY SERVICES NC III' => 12,
         ];
 
         foreach ($programs as $program => $count) {
@@ -45,7 +45,7 @@ class AssessmentBatchSeeder extends Seeder
         for ($i = 1; $i <= $numberOfApplicants; $i++) {
             $user = User::create([
                 'name' => strtoupper($programCode) . " Applicant {$i}",
-                'email' => "{$programCode}.applicant{$i}@test.com",
+                'email' => "{$programCode}.applicants6{$i}@test.com",
                 'password' => bcrypt('password123'),
                 'role' => 'applicant',
                 'email_verified_at' => now(),

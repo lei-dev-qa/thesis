@@ -68,13 +68,10 @@
 @section('scripts')
     <script>
         let timer;
-
-        // Debounced live search
         document.getElementById('searchInput').addEventListener('keyup', function() {
             clearTimeout(timer);
             timer = setTimeout(() => {
                 let query = this.value;
-
                 fetch(`{{ route('admin.history.index') }}?q=${encodeURIComponent(query)}`, {
                         headers: {
                             'X-Requested-With': 'XMLHttpRequest'

@@ -13,14 +13,10 @@ class ApplicationApprovedNotification extends Notification
     use Queueable;
     protected $application;
 
-    /**
-     * Create a new notification instance.
-     */
     public function __construct(Application $application)
     {
         $this->application = $application;
     }
-
     /**
      * Get the notification's delivery channels.
      *
@@ -30,10 +26,6 @@ class ApplicationApprovedNotification extends Notification
     {
         return ['mail'];
     }
-
-    /**
-     * Get the mail representation of the notification.
-     */
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
@@ -49,16 +41,9 @@ class ApplicationApprovedNotification extends Notification
             ->action('View Application', route('applicant.applications.show', $this->application))
             ->line('Thank you for choosing SHC-TVET Training and Assessment Center!');
     }
-
     /**
      * Get the array representation of the notification.
      *
      * @return array<string, mixed>
      */
-    public function toArray(object $notifiable): array
-    {
-        return [
-            //
-        ];
-    }
 }

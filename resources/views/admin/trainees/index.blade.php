@@ -9,8 +9,6 @@
                 <p class="text-muted">Overview of all training batches</p>
             </div>
         </div>
-
-        <!-- Statistics Cards -->
         <div class="row mb-4">
             <div class="col-md-3">
                 <div class="card border-0 shadow-sm">
@@ -46,7 +44,6 @@
             </div>
         </div>
 
-        <!-- Backout Applicants Section -->
         @if ($backoutApplicants->count() > 0)
             <div class="card border-0 shadow-sm mb-4">
                 <div class="card-header bg-warning bg-opacity-10 py-3">
@@ -106,7 +103,6 @@
                 </div>
             </div>
         @endif
-        <!-- Batches Table -->
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white py-3">
                 <h5 class="fw-bold mb-0">All Training Batches</h5>

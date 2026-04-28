@@ -43,14 +43,12 @@ class ApplicantController extends Controller
             if (!isset($eligibleCountsByProgram[$programName]['assessment'])) {
                 $eligibleCountsByProgram[$programName]['assessment'] = Application::where('title_of_assessment_applied_for', $programName)
                     ->where(function($query) {
-                        // NEW Assessment Only applicants
                         $query->where('application_type', 'Assessment Only')
                             ->where('status', Application::STATUS_APPROVED)
                             ->where('payment_status', Application::PAYMENT_STATUS_VERIFIED)
                             ->whereNull('assessment_batch_id');
                     })
                     ->orWhere(function($query) use ($programName) {
-                        // NEW TWSP applicants
                         $query->where('title_of_assessment_applied_for', $programName)
                             ->where('application_type', 'TWSP')
                             ->where('status', Application::STATUS_APPROVED)
@@ -96,7 +94,6 @@ class ApplicantController extends Controller
     public function store(Application $application, StoreApplicationRequest $request)
     {
         DB::transaction(function () use ($request) {
-                // Prepare application data
                 $data = array_merge(
                     $request->safe()->except(['work_experiences','trainings','licensure_exams','competency_assessments','psa_birth_certificate',
                                                 'psa_marriage_contract',
@@ -116,44 +113,33 @@ class ApplicantController extends Controller
                 $data['firstname'] = strtoupper($data['firstname'] ?? '');
                 $data['middlename'] = strtoupper($data['middlename'] ?? '');
                 $data['middleinitial'] = strtoupper($data['middleinitial'] ?? '');
-                // Handle learner classification "others" text
                 $learnerClassification = $request->input('learner_classification', []);
                 if ($request->filled('learner_classification_other')) {
                     $learnerClassification[] = $request->input('learner_classification_other');
                 }
                 $data['learner_classification'] = $learnerClassification;
-                // Handle photo upload
                 if ($request->hasFile('photo')) {
                     $data['photo'] = $request->file('photo')->store('applicant-photos', 'public');
                 }
-
                 $application = Application::create($data);
-
                 if ($request->input('application_type') === 'TWSP') {
                     $twspData = [];
-                    
-                    // Single file uploads
                     if ($request->hasFile('psa_birth_certificate')) {
                         $twspData['psa_birth_certificate'] = $request->file('psa_birth_certificate')
                             ->store('twsp_documents/birth_certificates', 'public');
                     }
-                    
                     if ($request->hasFile('psa_marriage_contract')) {
                         $twspData['psa_marriage_contract'] = $request->file('psa_marriage_contract')
                             ->store('twsp_documents/marriage_contracts', 'public');
                     }
-                    
                     if ($request->hasFile('high_school_document')) {
                         $twspData['high_school_document'] = $request->file('high_school_document')
                             ->store('twsp_documents/high_school', 'public');
                     }
-                    
                     if ($request->hasFile('certificate_of_indigency')) {
                         $twspData['certificate_of_indigency'] = $request->file('certificate_of_indigency')
                             ->store('twsp_documents/indigency', 'public');
                     }
-                    
-                    // Multiple file uploads
                     if ($request->hasFile('id_pictures_1x1')) {
                         $paths = [];
                         foreach ($request->file('id_pictures_1x1') as $file) {
@@ -177,7 +163,6 @@ class ApplicantController extends Controller
                         }
                         $twspData['government_school_id'] = $paths;
                 }
-                
                 // Create TWSP document record
                 $application->twspDocument()->create($twspData);
             }
@@ -232,7 +217,6 @@ class ApplicantController extends Controller
     }
     public function edit(Application $application)
     {
-        // Verify ownership
         abort_unless($application->user_id === auth()->id(), 403);
         
         // Only allow editing if correction is requested
@@ -241,7 +225,6 @@ class ApplicantController extends Controller
                 ->with('error', 'This application cannot be edited.');
         }
         
-        // Load relationships
         $application->load([
             'workExperiences',
             'trainings',
@@ -260,7 +243,6 @@ class ApplicantController extends Controller
                 ->with('error', 'This application cannot be updated.');
         }
 
-        // Validate the request
         $validated = $request->validate([
             'title_of_assessment_applied_for' => 'required|string|max:255',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
@@ -299,7 +281,6 @@ class ApplicantController extends Controller
             'birthplace_city_code' => 'nullable|string',
             'birthplace_city' => 'nullable|string',
             
-            // Parent/Guardian fields
             'parent_guardian_name' => 'nullable|string|max:255',
             'parent_guardian_region_code' => 'nullable|string',
             'parent_guardian_region_name' => 'nullable|string',
@@ -326,7 +307,6 @@ class ApplicantController extends Controller
             'certificate_of_indigency' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
         ]);
 
-        // Remove TWSP document fields from main application update
         $twspDocumentFields = [
             'psa_birth_certificate',
             'psa_marriage_contract', 
@@ -396,14 +376,11 @@ class ApplicantController extends Controller
 
         // Track changes for application fields only
         foreach ($applicationData as $field => $newValue) {
-            // Skip photo field for now (handle separately)
             if ($field === 'photo') {
                 continue;
             }
-
             $oldValue = $application->$field;
-
-            // Special handling for array fields like learner_classification
+           
             if ($field === 'learner_classification') {
                 $oldArray = is_array($oldValue) ? $oldValue : json_decode($oldValue, true) ?? [];
                 $newArray = is_array($newValue) ? $newValue : [];
@@ -578,20 +555,16 @@ class ApplicantController extends Controller
 
     public function uploadPaymentProof(Request $request, Application $application)
     {
-        // Verify ownership
         abort_unless($application->user_id === auth()->id(), 403);
         
-        // Validate
         $request->validate([
             'payment_proof' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048', // 2MB max
         ]);
         
-        // Delete old payment proof if exists
         if ($application->payment_proof) {
             Storage::disk('public')->delete($application->payment_proof);
         }
         
-        // Store new payment proof
         $path = $request->file('payment_proof')->store('payment-proofs', 'public');
         
         // Update application
@@ -606,10 +579,8 @@ class ApplicantController extends Controller
     }
     public function submitReassessmentPayment(Request $request, Application $application)
     {
-        // Verify ownership
         abort_unless($application->user_id === auth()->id(), 403);
-        
-        // Verify that application has failed assessment
+
         $assessmentResult = $application->assessmentResult;
         if (!$assessmentResult || $assessmentResult->result !== 'Not Yet Competent') {
             return redirect()->route('applicant.dashboard')
@@ -627,17 +598,11 @@ class ApplicantController extends Controller
         $isSecondReassessment = $failedCount >= 2;
         
         if ($isSecondReassessment) {
-            // This is the 2nd reassessment payment
-            
-            // Delete old payment proof if exists
             if ($application->second_reassessment_payment_proof) {
                 Storage::disk('public')->delete($application->second_reassessment_payment_proof);
             }
-            
-            // Store new payment proof
             $path = $request->file('payment_proof')->store('reassessment-payments', 'public');
-            
-            // Update application with 2nd reassessment payment
+        
             $application->update([
                 'second_reassessment_payment_proof' => $path,
                 'second_reassessment_payment_reference' => $request->input('payment_reference'),
@@ -648,17 +613,12 @@ class ApplicantController extends Controller
             return redirect()->route('applicant.dashboard')
                 ->with('success', '2nd Reassessment payment submitted successfully. Waiting for admin verification.');
         } else {
-            // This is the 1st reassessment payment
-            
-            // Delete old payment proof if exists
             if ($application->reassessment_payment_proof) {
                 Storage::disk('public')->delete($application->reassessment_payment_proof);
             }
             
-            // Store new payment proof
             $path = $request->file('payment_proof')->store('reassessment-payments', 'public');
             
-            // Update application with 1st reassessment payment
             $application->update([
                 'reassessment_payment_proof' => $path,
                 'reassessment_payment_reference' => $request->input('payment_reference'),

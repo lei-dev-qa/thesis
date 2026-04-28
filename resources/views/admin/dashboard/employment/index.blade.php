@@ -1,4 +1,3 @@
-{{-- resources/views/admin/dashboard/employment/index.blade.php --}}
 <div class="card analytics-card">
     <div class="card-header bg-info text-white">
         <h5 class="mb-0">
@@ -7,7 +6,6 @@
     </div>
     <div class="card-body">
         <div class="row">
-            {{-- Employment Rate --}}
             <div class="col-md-3">
                 <div class="text-center">
                     <div class="text-success">
@@ -17,8 +15,6 @@
                     </div>
                 </div>
             </div>
-            
-            {{-- Average Income --}}
             <div class="col-md-3">
                 <div class="text-center">
                     <div class="text-primary">
@@ -28,8 +24,6 @@
                     </div>
                 </div>
             </div>
-            
-            {{-- Employment Sectors --}}
             <div class="col-md-6">
                 <h6 class="text-muted mb-3">Employment by Sector</h6>
                 @if(isset($employment['sectors']) && count($employment['sectors']) > 0)

@@ -12,12 +12,10 @@
                     <i class="bi bi-info-circle me-2"></i>
                     <strong>This is your reassessment schedule.</strong> You will retake all COCs.
                 </div>
-
                 <div class="mb-3">
                     <label class="text-muted small">Program</label>
                     <h6 class="mb-0">{{ $app->title_of_assessment_applied_for }}</h6>
                 </div>
-
                 <div class="mb-3">
                     <label class="text-muted small">Batch Name</label>
                     <h6 class="mb-0">{{ $app->assessmentBatch->batch_name }}</h6>

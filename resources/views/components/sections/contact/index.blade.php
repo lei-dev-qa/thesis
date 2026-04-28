@@ -1,8 +1,6 @@
 <section class="contact-hero d-flex align-items-center py-5" id="hero-contact">
     <div class="container mt-3">
         <div class="row align-items-center">
-
-            <!-- LEFT CONTENT -->
             <div class="col-lg-6 text-white">
                 <h1 class="display-4 fw-bold mb-4">
                     We’d Love to Hear From You
@@ -15,21 +13,16 @@
                     Contact us today and we’ll be happy to guide you.
                 </p>
             </div>
-
-            <!-- RIGHT IMAGE -->
             <div class="col-lg-6 text-center mt-2 mt-lg-0">
                 <img src="{{ asset('images/contact/hero.png') }}" alt="TVET Training"
                     class="img-fluid rounded-4 shadow-lg">
             </div>
-
         </div>
     </div>
 </section>
-{{-- Get in touch: form + map --}}
 <section class="contact-form-map py-5" id="getintouch">
     <div class="container">
         <div class="row g-4 align-items-stretch">
-            {{-- Left column: form --}}
             <div class="col-lg-6">
                 <div class="contact-form-card h-100 p-4 p-lg-5 rounded-3 shadow-lg">
                     <h2 class="contact-heading fw-bold mb-3">Get in touch with us</h2>
@@ -56,7 +49,6 @@
                     </form>
                 </div>
             </div>
-            {{-- Right column: map --}}
             <div class="col-lg-6">
                 <div class="contact-map-wrapper h-100 rounded-3 overflow-hidden shadow-lg">
                     <iframe

@@ -61,7 +61,6 @@
                     </tbody>
                 </table>
             </div>
-
             {{ $batches->links() }}
         </div>
     </div>

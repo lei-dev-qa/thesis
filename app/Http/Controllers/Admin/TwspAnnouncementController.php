@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class TwspAnnouncementController extends Controller
 {
-    // Show announcement management page
     public function index()
     {
         $announcement = TwspAnnouncement::where('is_active', true)->first();

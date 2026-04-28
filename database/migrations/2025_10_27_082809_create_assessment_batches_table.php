@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('assessment_batches', function (Blueprint $table) {
@@ -31,14 +28,10 @@ return new class extends Migration
             $table->timestamp('schedule_notifications_sent_at')->nullable();
             $table->text('remarks')->nullable();
             $table->timestamps();
-            
             $table->index(['nc_program', 'status']);
-                });
+        });
     }
-
-    /**
-     * Reverse the migrations.
-     */
+    
     public function down(): void
     {
         Schema::dropIfExists('assessment_batches');

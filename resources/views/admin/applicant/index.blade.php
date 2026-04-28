@@ -25,7 +25,6 @@
             </div>
         </div>
         </br>
-        <!-- Application Type Tabs -->
         <ul class="nav nav-tabs mb-3" id="applicationTabs" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="twsp-tab" data-bs-toggle="tab" data-bs-target="#twsp" type="button"
@@ -42,10 +41,7 @@
                 </button>
             </li>
         </ul>
-
-        <!-- Tab Content -->
         <div class="tab-content" id="applicationTabsContent">
-            <!-- TWSP Tab -->
             <div class="tab-pane fade show active" id="twsp" role="tabpanel">
                 <div class="card">
                     <div class="table-responsive">
@@ -77,7 +73,6 @@
                                                 </span>
                                             @endif
                                             {{ $app->surname }}, {{ $app->firstname }}
-                                            {{-- {{ $app->user?->name ?? '—' }} --}}
                                         </td>
                                         <td>{{ $app->title_of_assessment_applied_for }}</td>
                                         <td>
@@ -132,8 +127,6 @@
                     @endif
                 </div>
             </div>
-
-            <!-- Assessment Tab -->
             <div class="tab-pane fade" id="assessment" role="tabpanel">
                 <div class="card">
                     <div class="table-responsive">

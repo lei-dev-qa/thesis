@@ -6,18 +6,14 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreApplicationRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return auth()->check() && auth()->user()->role === 'applicant';
     }
-
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string,
      */
     public function rules(): array
     {
@@ -56,7 +52,6 @@ class StoreApplicationRequest extends FormRequest
             'birthdate' => ['nullable','date'],
             'birthplace' => ['nullable','string','max:255'],
             'age' => ['nullable','integer','min:0','max:120'],
-            // NEW FIELDS FOR PAGES 3-4
             'nationality' => ['nullable','string','max:255'],
             'employment_before_training_status' => ['nullable','string','in:wage-employed,underemployed,self-employed,unemployed'],
             'employment_before_training_type' => ['nullable','string','in:regular,casual,job order,probationary,permanent,contractual,temporary'],
@@ -83,7 +78,6 @@ class StoreApplicationRequest extends FormRequest
             'scholarship_type' => ['nullable','string','max:255'],
             'privacy_consent' => ['required','accepted'],
 
-            // Arrays
             'work_experiences' => ['array'],
             'work_experiences.*.company_name' => ['required_with:work_experiences','string','max:255'],
             'work_experiences.*.position' => ['nullable','string','max:255'],

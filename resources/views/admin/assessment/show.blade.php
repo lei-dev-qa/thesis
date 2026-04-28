@@ -5,7 +5,6 @@
 
 @section('content')
     <div class="container-fluid py-4">
-        <!-- Back Button -->
         <div class="row mb-3">
             <div class="col-12">
                 <a href="{{ route('admin.assessment-batches.index') }}" class="btn btn-outline-secondary">
@@ -13,8 +12,6 @@
                 </a>
             </div>
         </div>
-
-        <!-- Batch Header -->
         <div class="card border-0 shadow-sm mb-4">
             <div class="card-header bg-white py-3">
                 <div class="row align-items-center">
@@ -33,7 +30,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6 mb-3">
@@ -79,8 +75,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Action Buttons -->
         <div class="row mb-3">
             <div class="col-12">
                 @if (
@@ -90,15 +84,12 @@
                         <i class="bi bi-person-plus"></i> Add Applicant
                     </button>
                 @endif
-
                 @if ($assessment_batch->applications->count() > 0 && $assessment_batch->status === 'scheduled')
                     @if ($assessment_batch->hasScheduleNotificationsSent())
-                        <!-- Show disabled button with different text when already sent -->
                         <button type="button" class="btn btn-primary" disabled>
                             <i class="fas fa-check"></i> Schedule Notifications Sent
                         </button>
                     @else
-                        <!-- Show normal send button when not sent yet -->
                         <form action="{{ route('admin.assessment-batches.send-schedule', $assessment_batch) }}"
                             method="POST" class="d-inline">
                             @csrf
@@ -109,13 +100,10 @@
                         </form>
                     @endif
                 @endif
-
-                <!-- Attendance PDF Button -->
                 <a href="{{ route('admin.assessment-batches.attendance-pdf', $assessment_batch) }}" target="_blank"
                     class="btn btn-secondary">
                     <i class="bi bi-file-pdf"></i> Print Attendance Sheet
                 </a>
-
                 @if ($assessment_batch->status !== 'completed')
                     <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#completeBatchModal">
                         <i class="bi bi-check-circle-fill"></i> Mark Batch as Done
@@ -123,8 +111,6 @@
                 @endif
             </div>
         </div>
-
-        <!-- Assigned Applicants -->
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white py-3">
                 <h5 class="fw-bold mb-0">Assigned Applicants ({{ $assessment_batch->applications->count() }})</h5>
@@ -168,7 +154,6 @@
                                                     ->where('assessment_batch_id', $assessment_batch->id)
                                                     ->first();
                                             @endphp
-
                                             @if ($res)
                                                 @php
                                                     $badgeClass = match ($res->result) {
@@ -184,12 +169,9 @@
                                                                 e($res->score) .
                                                                 '</small>';
                                                 @endphp
-
                                                 <div class="d-flex align-items-center justify-content-center gap-2">
                                                     <span
                                                         class="badge bg-{{ $badgeClass }}">{{ strtoupper($res->result) }}</span>{!! $scoreHtml !!}
-
-                                                    {{-- Add Edit Buttons - Show BOTH options to allow changing result type --}}
                                                     @if ($assessment_batch->status !== 'completed')
                                                         <div class="btn-group btn-group-sm">
                                                             <button class="btn btn-sm btn-outline-success"
@@ -224,14 +206,11 @@
                                                 </small>
                                             @endif
                                         </td>
-
-
                                         <td>
                                             <a href="{{ route('admin.applications.show', $applicant) }}" target="_blank"
                                                 class="btn btn-sm btn-outline-primary">
                                                 <i class="bi bi-eye"></i>
                                             </a>
-
                                             @if ($assessment_batch->status !== 'completed' && !$applicant->assessmentResult)
                                                 <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
                                                     data-bs-target="#removeApplicantModal{{ $applicant->id }}">
@@ -240,7 +219,6 @@
                                             @endif
                                         </td>
                                     </tr>
-                                    <!-- Remove Applicant Modal -->
                                     @include('admin.assessment.component.remove-applicant', [
                                         'assessment_batch' => $assessment_batch,
                                         'applicant' => $applicant,
@@ -258,13 +236,10 @@
             </div>
         </div>
     </div>
-
-    <!-- Add Applicant Modal -->
     @include('admin.assessment.component.add-applicant', [
         'assessment_batch' => $assessment_batch,
         'eligibleApplicants' => $eligibleApplicants,
     ])
-    <!-- Mark Batch as Done Modal -->
     @include('admin.assessment.component.complete-batch', ['assessment_batch' => $assessment_batch])
 
 @endsection

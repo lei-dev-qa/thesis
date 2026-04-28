@@ -20,33 +20,24 @@ class PaymentVerifiedNotification extends Notification
         $this->isReassessment = $isReassessment;
     }
 
-    /**
-     * Get the notification's delivery channels.
-     */
     public function via(object $notifiable): array
     {
         return ['mail'];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     */
     public function toMail(object $notifiable): MailMessage
     {
         $applicantName = trim($this->application->firstname . ' ' . $this->application->surname);
         $ncProgram = $this->application->title_of_assessment_applied_for;
         
-        // Count eligible applicants for the same NC program
         $eligibleCount = Application::where('title_of_assessment_applied_for', $ncProgram)
             ->where(function($query) {
-                // NEW Assessment Only applicants
                 $query->where('application_type', 'Assessment Only')
                     ->where('status', Application::STATUS_APPROVED)
                     ->where('payment_status', Application::PAYMENT_STATUS_VERIFIED)
                     ->whereNull('assessment_batch_id');
             })
             ->orWhere(function($query) use ($ncProgram) {
-                // NEW TWSP applicants
                 $query->where('title_of_assessment_applied_for', $ncProgram)
                     ->where('application_type', 'TWSP')
                     ->where('status', Application::STATUS_APPROVED)
@@ -54,7 +45,6 @@ class PaymentVerifiedNotification extends Notification
                     ->whereNull('assessment_batch_id');
             })
             ->orWhere(function($query) use ($ncProgram) {
-                // REASSESSMENT applicants
                 $query->where('title_of_assessment_applied_for', $ncProgram)
                     ->whereHas('assessmentResult', function($q) {
                         $q->where('result', 'Not Yet Competent');
@@ -84,10 +74,6 @@ class PaymentVerifiedNotification extends Notification
             ->line('Thank you,')
             ->salutation('SHC-TVET Training and Assessment Centre');
     }
-
-    /**
-     * Get the array representation of the notification.
-     */
     public function toArray(object $notifiable): array
     {
         return [

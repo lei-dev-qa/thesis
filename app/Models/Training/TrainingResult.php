@@ -26,12 +26,10 @@ class TrainingResult extends Model
         'completed_at' => 'datetime',
     ];
 
-    // Result constants
     const RESULT_ONGOING = 'ongoing';
     const RESULT_COMPLETED = 'completed';
     const RESULT_FAILED = 'failed';
 
-    // Relationships
     public function application(): BelongsTo
     {
         return $this->belongsTo(Application::class);
@@ -47,7 +45,6 @@ class TrainingResult extends Model
         return $this->belongsTo(User::class, 'evaluated_by');
     }
 
-    // Helper methods
     public function isCompleted()
     {
         return $this->result === self::RESULT_COMPLETED;
@@ -63,7 +60,6 @@ class TrainingResult extends Model
         return $this->result === self::RESULT_ONGOING;
     }
 
-    // Scopes
     public function scopeCompleted($query)
     {
         return $query->where('result', self::RESULT_COMPLETED);

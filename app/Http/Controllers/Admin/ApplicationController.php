@@ -17,9 +17,6 @@ use App\Notifications\Payment\PaymentVerifiedNotification;
 
 class ApplicationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
         $status = $request->query('status', 'pending');
@@ -50,28 +47,19 @@ class ApplicationController extends Controller
         return view('admin.applicant.index', compact('twspApps', 'assessmentApps', 'status', 'resubmittedCount', 'firstPaymentCount'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+    
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Application $application)
     {
-        // Record the view (only once per admin per application)
+        // per application
         ApplicationView::firstOrCreate(
             [
                 'application_id' => $application->id,
@@ -96,30 +84,19 @@ class ApplicationController extends Controller
         return view('admin.applicant.view', compact('application'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
     
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
-      
-            
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        //
+        
     }
     public function updateReference(Request $request, Application $application)
     {
@@ -181,47 +158,47 @@ class ApplicationController extends Controller
         return back()->with('success', 'Official receipt uploaded successfully.');
     }
 
-    public function uploadReassessmentOfficialReceipt(Request $request, Application $application)
-    {
-        $request->validate([
-            'reassessment_official_receipt_photo' => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120',
-        ]);
+    // public function uploadReassessmentOfficialReceipt(Request $request, Application $application)
+    // {
+    //     $request->validate([
+    //         'reassessment_official_receipt_photo' => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120',
+    //     ]);
 
-        // Delete old receipt if exists
-        if ($application->reassessment_official_receipt_photo) {
-            \Storage::disk('public')->delete($application->reassessment_official_receipt_photo);
-        }
+    //     // Delete old receipt if exists
+    //     if ($application->reassessment_official_receipt_photo) {
+    //         \Storage::disk('public')->delete($application->reassessment_official_receipt_photo);
+    //     }
 
-        $path = $request->file('reassessment_official_receipt_photo')->store('official-receipts/reassessment', 'public');
+    //     $path = $request->file('reassessment_official_receipt_photo')->store('official-receipts/reassessment', 'public');
 
-        $application->update([
-            'reassessment_official_receipt_photo' => $path,
-            'reassessment_official_receipt_uploaded_at' => now(),
-        ]);
+    //     $application->update([
+    //         'reassessment_official_receipt_photo' => $path,
+    //         'reassessment_official_receipt_uploaded_at' => now(),
+    //     ]);
 
-        return back()->with('success', 'Reassessment official receipt uploaded successfully.');
-    }
+    //     return back()->with('success', 'Reassessment official receipt uploaded successfully.');
+    // }
 
-    public function uploadSecondReassessmentOfficialReceipt(Request $request, Application $application)
-    {
-        $request->validate([
-            'second_reassessment_official_receipt_photo' => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120',
-        ]);
+    // public function uploadSecondReassessmentOfficialReceipt(Request $request, Application $application)
+    // {
+    //     $request->validate([
+    //         'second_reassessment_official_receipt_photo' => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120',
+    //     ]);
 
-        // Delete old receipt if exists
-        if ($application->second_reassessment_official_receipt_photo) {
-            \Storage::disk('public')->delete($application->second_reassessment_official_receipt_photo);
-        }
+    //     // Delete old receipt if exists
+    //     if ($application->second_reassessment_official_receipt_photo) {
+    //         \Storage::disk('public')->delete($application->second_reassessment_official_receipt_photo);
+    //     }
 
-        $path = $request->file('second_reassessment_official_receipt_photo')->store('official-receipts/second-reassessment', 'public');
+    //     $path = $request->file('second_reassessment_official_receipt_photo')->store('official-receipts/second-reassessment', 'public');
 
-        $application->update([
-            'second_reassessment_official_receipt_photo' => $path,
-            'second_reassessment_official_receipt_uploaded_at' => now(),
-        ]);
+    //     $application->update([
+    //         'second_reassessment_official_receipt_photo' => $path,
+    //         'second_reassessment_official_receipt_uploaded_at' => now(),
+    //     ]);
 
-        return back()->with('success', '2nd Reassessment official receipt uploaded successfully.');
-    }
+    //     return back()->with('success', '2nd Reassessment official receipt uploaded successfully.');
+    // }
     
     public function approveApplication(Application $application, Request $request)
     {
@@ -231,10 +208,10 @@ class ApplicationController extends Controller
         DB::transaction(function () use ($application, $request) {
             if ($application->title_of_assessment_applied_for === 'BOOKKEEPING NC III' 
                 && $application->application_type === 'TWSP') {
-                // BOOKKEEPING + TWSP: Goes to training
+                // TWSP: Goes to training
                 $trainingStatus = Application::TRAINING_STATUS_ENROLLED;
             } else {
-                // BOOKKEEPING + Assessment Only OR Other NCs: Skip training
+                // Assessment Only Skip training
                 $trainingStatus = Application::TRAINING_STATUS_COMPLETED;
             }
 
@@ -252,7 +229,6 @@ class ApplicationController extends Controller
                 $announcement->incrementFilledSlots();
             }
         }
-        // Auto-assign to training batch if BOOKKEEPING NC III
         if ($application->title_of_assessment_applied_for === 'BOOKKEEPING NC III' 
             && $application->application_type === 'TWSP') {
             $this->assignToTrainingBatch($application);
@@ -261,7 +237,7 @@ class ApplicationController extends Controller
         $application->user->notify(new ApplicationApprovedNotification($application));
     });
 
-    return redirect()->route('admin.applications.show', $application)->with('success', 'Application approved.');
+        return redirect()->route('admin.applications.show', $application)->with('success', 'Application approved.');
     }
 
     public function rejectApplication(Application $application, Request $request)
@@ -283,54 +259,7 @@ class ApplicationController extends Controller
 
         return redirect()->route('admin.applications.show', $application)->with('success', 'Application rejected.');
     }
-    private function assignToTrainingBatch(Application $application)
-    {
-        $ncProgram = $application->title_of_assessment_applied_for;
 
-        // Find the current open batch (enrolling or full but not scheduled)
-        $currentBatch = TrainingBatch::where('nc_program', $ncProgram)
-            ->whereIn('status', [TrainingBatch::STATUS_ENROLLING, TrainingBatch::STATUS_FULL])
-            ->whereDoesntHave('trainingSchedule') // Batch without schedule yet
-            ->orderBy('batch_number', 'desc')
-            ->first();
-
-         // Check if current batch has space
-        if ($currentBatch && $currentBatch->enrolled_count < $currentBatch->max_students) {
-            // Assign to current batch
-            $application->update(['training_batch_id' => $currentBatch->id]);
-
-            // Refresh the batch to get updated enrolled_count
-            $enrolledCount = \App\Models\Application\Application::where('training_batch_id', $currentBatch->id)->count();
-            if ($enrolledCount >= $currentBatch->max_students) {
-                        $currentBatch->update(['status' => TrainingBatch::STATUS_FULL]);
-                    }
-            } else {
-                    // Create new batch
-                    $nextBatchNumber = TrainingBatch::where('nc_program', $ncProgram)
-                        ->max('batch_number') + 1;
-
-                if (!$nextBatchNumber) {
-                    $nextBatchNumber = 1; // First batch
-                }
-
-                $newBatch = TrainingBatch::create([
-                    'nc_program' => $ncProgram,
-                    'batch_number' => $nextBatchNumber,
-                    'max_students' => 25,
-                    'status' => TrainingBatch::STATUS_ENROLLING,
-                ]);
-
-                // Assign to new batch
-                $application->update(['training_batch_id' => $newBatch->id]);
-            }
-
-            // Create training result record
-            \App\Models\Training\TrainingResult::create([
-                'application_id' => $application->id,
-                'training_batch_id' => $application->training_batch_id,
-                'result' => \App\Models\Training\TrainingResult::RESULT_ONGOING,
-            ]);
-    }
     public function requestCorrection(Request $request, Application $application)
     {
         $request->validate([
@@ -368,6 +297,53 @@ class ApplicationController extends Controller
         $application->save();
         
         return redirect()->back()->with('success', 'Application approved!');
+    }
+
+    private function assignToTrainingBatch(Application $application)
+    {
+        $ncProgram = $application->title_of_assessment_applied_for;
+
+        // Find the current open batch (enrolling or full but not scheduled)
+        $currentBatch = TrainingBatch::where('nc_program', $ncProgram)
+            ->whereIn('status', [TrainingBatch::STATUS_ENROLLING, TrainingBatch::STATUS_FULL])
+            ->whereDoesntHave('trainingSchedule') // Batch without schedule yet
+            ->orderBy('batch_number', 'desc')
+            ->first();
+
+         // Check if current batch has space
+        if ($currentBatch && $currentBatch->enrolled_count < $currentBatch->max_students) {
+            // Assign to current batch
+            $application->update(['training_batch_id' => $currentBatch->id]);
+
+            $enrolledCount = \App\Models\Application\Application::where('training_batch_id', $currentBatch->id)->count();
+            if ($enrolledCount >= $currentBatch->max_students) {
+                        $currentBatch->update(['status' => TrainingBatch::STATUS_FULL]);
+                    }
+            } else {
+                    // Create new batch
+                    $nextBatchNumber = TrainingBatch::where('nc_program', $ncProgram)
+                        ->max('batch_number') + 1;
+
+                if (!$nextBatchNumber) {
+                    $nextBatchNumber = 1; 
+                }
+
+                $newBatch = TrainingBatch::create([
+                    'nc_program' => $ncProgram,
+                    'batch_number' => $nextBatchNumber,
+                    'max_students' => 25,
+                    'status' => TrainingBatch::STATUS_ENROLLING,
+                ]);
+
+                // Assign to new batch
+                $application->update(['training_batch_id' => $newBatch->id]);
+            }
+
+            \App\Models\Training\TrainingResult::create([
+                'application_id' => $application->id,
+                'training_batch_id' => $application->training_batch_id,
+                'result' => \App\Models\Training\TrainingResult::RESULT_ONGOING,
+            ]);
     }
 
 }

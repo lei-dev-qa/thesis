@@ -1,6 +1,5 @@
 @props(['twspAnnouncement', 'twspAvailable'])
 
-<!-- Application Type Modal -->
 <div class="modal fade" id="applicationTypeModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">

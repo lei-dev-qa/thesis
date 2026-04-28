@@ -1,7 +1,6 @@
 <footer class="bg-dark text-light py-5 mt-auto">
     <div class="container">
         <div class="row g-4">
-            <!-- About Section -->
             <div class="col-md-6 col-lg-3">
                 <h5 class="fw-bold mb-3">About TESDA</h5>
                 <p class="small text-light">
@@ -9,8 +8,6 @@
                     and skills development for global competitiveness.
                 </p>
             </div>
-
-            <!-- Quick Links -->
             <div class="col-md-6 col-lg-3">
                 <h5 class="fw-bold mb-3">Quick Links</h5>
                 <ul class="list-unstyled">
@@ -21,8 +18,6 @@
                     <li><a href="#contact" class="text-light text-decoration-none small">Contact</a></li>
                 </ul>
             </div>
-
-            <!-- Contact Info -->
             <div class="col-md-6 col-lg-3">
                 <h5 class="fw-bold mb-3">Contact Us</h5>
                 <ul class="list-unstyled small">
@@ -48,8 +43,6 @@
                     </li>
                 </ul>
             </div>
-
-            <!-- Social Media -->
             <div class="col-md-6 col-lg-3">
                 <h5 class="fw-bold mb-3">Follow Us</h5>
                 <div class="d-flex gap-3 mb-3">
@@ -65,8 +58,6 @@
                 </p>
             </div>
         </div>
-
-        <!-- Bottom Bar -->
         <hr class="my-4 border-light">
         <div class="row">
             <div class="col-md-6">

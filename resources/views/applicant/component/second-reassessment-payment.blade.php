@@ -59,11 +59,6 @@
                         <small class="text-muted">Accepted formats: JPG, PNG, PDF (Max 2MB)</small>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Payment Reference Number (Optional)</label>
-                        <input type="text" name="payment_reference" class="form-control"
-                            placeholder="e.g., GCash Ref #, Bank Transaction #">
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
