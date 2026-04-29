@@ -8,7 +8,6 @@ use App\View\Composers\UnreadMessagesComposer;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\URL;
 
-
 class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
